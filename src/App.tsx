@@ -7,11 +7,14 @@ import GameUI from './components/GameUI';
 type AppState = 'menu' | 'cafe' | 'game';
 
 export default function App() {
+
+  const user = window.Telegram?.WebApp?.initDataUnsafe?.user
+
   const [state, setState] = useState<AppState>('menu');
   const [score, setScore] = useState(0);
 
   if (state === 'menu') {
-    return <MainMenu onStart={() => setState('cafe')} />;
+    return <MainMenu user={user?.first_name} onStart={() => setState('cafe')} />;
   }
 
   if (state === 'cafe') {
