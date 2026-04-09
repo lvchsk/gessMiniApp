@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './App.css';
 import MainMenu from './components/MainMenu';
 import CafeMenu from './components/CafeMenu';
 import GameCanvas from './components/GameCanvas';
@@ -38,7 +39,7 @@ export default function App() {
 
   if (state === 'runner') {
     return (
-      <div style={{ position: 'relative' }}>
+      <div className='app_screen app_screen--runner'>
         <RunnerCanvas
           onScoreChange={setScore}
           onGameOverChange={setRunnerGameOver}
@@ -56,7 +57,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className='app_screen app_screen--match3'>
       <GameCanvas onScoreChange={setScore} />
       <GameUI
         score={score}

@@ -1,0 +1,16 @@
+.app_screen {
+    position: relative;
+    width: 100%;
+    min-height: 100svh;
+    overflow: hidden;
+}
+
+.app_screen--match3 {
+    background:
+        radial-gradient(circle at top, rgba(92, 79, 131, 0.2), transparent 30%),
+        linear-gradient(180deg, #14111d 0%, #09080f 100%);
+}
+
+.app_screen--runner {
+    background: linear-gradient(180deg, #f6d29b 0%, #f1bf75 100%);
+}

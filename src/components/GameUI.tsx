@@ -1,3 +1,5 @@
+import './GameUI.styles.css';
+
 interface Props {
   score: number;
   onExit: () => void;
@@ -5,27 +7,13 @@ interface Props {
 
 export default function GameUI({ score, onExit }: Props) {
   return (
-    <div style={styles.container}>
-      <div style={styles.topBar}>
-        <button onClick={onExit}>← Назад</button>
-        <div>Score: {score}</div>
+    <div className='game_ui'>
+      <div className='game_ui__topbar'>
+        <button className='game_ui__back' onClick={onExit}>
+          Назад
+        </button>
+        <div className='game_ui__score'>Счёт: {score}</div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    position: 'absolute' as const,
-    top: 0,
-    left: 0,
-    width: '100%',
-    pointerEvents: 'none' as const
-  },
-  topBar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: '10px',
-    pointerEvents: 'auto' as const
-  }
-};

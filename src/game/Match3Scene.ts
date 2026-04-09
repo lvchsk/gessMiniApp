@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { GRID_SIZE, TILE_SIZE, OFFSET_X, OFFSET_Y, TILE_TYPES } from "./config";
+import { GEM_ASSET_COUNT, GRID_SIZE, TILE_SIZE, OFFSET_X, OFFSET_Y, TILE_TYPES } from "./config";
 
 import type { Grid, Tile } from "./types";
 
@@ -13,6 +13,7 @@ export default class Match3Scene extends Phaser.Scene {
   private grid: Grid = [];
   private selected: Tile | null = null;
   private busy = false;
+  private activeGemAssets: number[] = [];
 
   private callbacks: GameCallbacks;
   private score = 0;
@@ -23,16 +24,23 @@ export default class Match3Scene extends Phaser.Scene {
   }
 
   preload(): void {
-    for (let i = 0; i < TILE_TYPES; i++) {
+    for (let i = 0; i < GEM_ASSET_COUNT; i++) {
       this.load.image(`gem${i}`, `/assets/gem${i}.png`);
-      this.load.image("gem_bomb", "/assets/gem_bomb.png");
     }
+
+    this.load.image("gem_bomb", "/assets/gem_bomb.png");
   }
 
   create(): void {
+    this.activeGemAssets = this.pickActiveGemAssets();
     this.createBoard();
     this.time.delayedCall(50, () => this.resolve());
     this.input.on("gameobjectdown", this.handleClick, this);
+  }
+
+  private pickActiveGemAssets(): number[] {
+    const allAssets = Array.from({ length: GEM_ASSET_COUNT }, (_, index) => index);
+    return Phaser.Utils.Array.Shuffle(allAssets).slice(0, TILE_TYPES);
   }
 
   private createBoard(): void {
@@ -56,7 +64,10 @@ export default class Match3Scene extends Phaser.Scene {
     type: number | "bomb",
     spawnY: number,
   ): Tile {
-    const texture = type === "bomb" ? "gem_bomb" : `gem${type}`;
+    const texture =
+      type === "bomb"
+        ? "gem_bomb"
+        : `gem${this.activeGemAssets[type] ?? type}`;
 
     const sprite = this.add.image(
       OFFSET_X + x * TILE_SIZE + TILE_SIZE / 2,

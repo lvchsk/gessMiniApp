@@ -1,0 +1,72 @@
+.game_ui {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    padding:
+        max(16px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(16px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+    box-sizing: border-box;
+}
+
+.game_ui__topbar {
+    width: min(100%, 420px);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.game_ui__back,
+.game_ui__score {
+    pointer-events: auto;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(19, 15, 29, 0.72);
+    color: #f6efff;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(10px);
+}
+
+.game_ui__back {
+    border: 0;
+    padding: 12px 18px;
+    font: 700 16px/1 'Trebuchet MS', 'Segoe UI', sans-serif;
+    cursor: pointer;
+    transition: transform 160ms ease, filter 160ms ease;
+}
+
+.game_ui__back:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+
+.game_ui__back:active {
+    transform: translateY(1px) scale(0.985);
+}
+
+.game_ui__score {
+    padding: 12px 16px;
+    font: 700 16px/1 'Trebuchet MS', 'Segoe UI', sans-serif;
+}
+
+@media (max-width: 640px) {
+    .game_ui {
+        padding:
+            max(12px, env(safe-area-inset-top))
+            max(12px, env(safe-area-inset-right))
+            max(12px, env(safe-area-inset-bottom))
+            max(12px, env(safe-area-inset-left));
+    }
+
+    .game_ui__topbar {
+        width: 100%;
+    }
+
+    .game_ui__back,
+    .game_ui__score {
+        font-size: 15px;
+    }
+}

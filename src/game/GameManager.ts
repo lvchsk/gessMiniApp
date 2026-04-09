@@ -16,7 +16,11 @@ export class GameManager {
       height: GAME_HEIGHT,
       parent: container,
       backgroundColor: '#111',
-      scene: [new Match3Scene(callbacks)]
+      scene: [new Match3Scene(callbacks)],
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+      }
     });
   }
 

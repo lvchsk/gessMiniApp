@@ -8,3 +8,4 @@ export const OFFSET_X = (GAME_WIDTH - GRID_SIZE * TILE_SIZE) / 2;
 export const OFFSET_Y = 160;
 
 export const TILE_TYPES = 6;
+export const GEM_ASSET_COUNT = 9;

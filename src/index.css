@@ -53,19 +53,26 @@
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 1126px;
   margin: 0 auto;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
 
+@media (min-width: 1180px) {
+  #root {
+    border-inline: 1px solid var(--border);
+  }
+}
+
 body {
   margin: 0;
+  min-height: 100svh;
+  background: #120f18;
 }
 
 h1,

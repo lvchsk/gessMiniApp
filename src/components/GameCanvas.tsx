@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { GameManager } from '../game/GameManager';
+import './GameCanvas.styles.css';
 
 interface Props {
   onScoreChange: (score: number) => void;
@@ -7,7 +8,6 @@ interface Props {
 
 export default function GameCanvas({ onScoreChange }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const managerRef = useRef<GameManager | null>(null);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -17,12 +17,14 @@ export default function GameCanvas({ onScoreChange }: Props) {
       onScoreChange
     });
 
-    managerRef.current = manager;
-
     return () => {
       manager.destroy();
     };
   }, [onScoreChange]);
 
-  return <div ref={ref} />;
+  return (
+    <div className='game_canvas'>
+      <div ref={ref} className='game_canvas__mount' />
+    </div>
+  );
 }

@@ -3,9 +3,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100svh;
+    padding:
+        max(20px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(20px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+    box-sizing: border-box;
     gap: 20px;
-    background-image: url('/public/assets/start_menu.PNG');
+    background-image: url('/assets/start_menu.PNG');
+    background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
 }
 
