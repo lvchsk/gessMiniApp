@@ -1,0 +1,14 @@
+.cafe_menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: url('/public/assets/menu_main.png');
+    background-size: contain;
+}
+
+.btn_back {
+    display: none;
+}
