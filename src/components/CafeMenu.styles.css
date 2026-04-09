@@ -1,14 +1,137 @@
 .cafe_menu {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    gap: 12px;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    background-image: url('/public/assets/menu_main.png');
-    background-size: contain;
+    min-height: 100svh;
+    overflow: hidden;
+    background-image:
+        linear-gradient(180deg, rgba(17, 12, 10, 0.28), rgba(17, 12, 10, 0.58)),
+        url('/assets/menu_main.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.btn_back {
-    /* display: none; */
+.cafe_menu__actions {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.menu_button {
+    pointer-events: auto;
+    min-width: 168px;
+    border: 1px solid rgba(255, 236, 211, 0.8);
+    border-radius: 18px;
+    padding: 16px 28px;
+    font: 700 24px/1.1 'Trebuchet MS', 'Segoe UI', sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff7ea;
+    box-shadow:
+        0 14px 24px rgba(25, 8, 3, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    transition:
+        transform 160ms ease,
+        box-shadow 160ms ease,
+        filter 160ms ease,
+        background-color 160ms ease;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.menu_button:hover {
+    transform: translateY(-3px) scale(1.02);
+    filter: brightness(1.05);
+    box-shadow:
+        0 18px 28px rgba(25, 8, 3, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.menu_button:active {
+    transform: translateY(1px) scale(0.985);
+    box-shadow:
+        0 8px 14px rgba(25, 8, 3, 0.24),
+        inset 0 2px 3px rgba(0, 0, 0, 0.18);
+}
+
+.menu_button:focus-visible {
+    outline: 3px solid rgba(255, 249, 225, 0.9);
+    outline-offset: 4px;
+}
+
+.menu_button--primary {
+    background: linear-gradient(180deg, #c67f35, #8f4a13);
+}
+
+.menu_button--secondary {
+    background: linear-gradient(180deg, #d59b4a, #9d5f21);
+}
+
+.menu_button--ghost {
+    background: rgba(39, 20, 9, 0.72);
+    backdrop-filter: blur(3px);
+}
+
+.cafe_menu__button {
+    position: absolute;
+    top: 50%;
+}
+
+.cafe_menu__button--left {
+    left: calc(50% - 230px);
+}
+
+.cafe_menu__button--right {
+    left: calc(50% + 40px);
+}
+
+.cafe_menu__back {
+    position: absolute;
+    left: 32px;
+    bottom: 32px;
+    min-width: 132px;
+}
+
+@media (max-width: 768px) {
+    .menu_button {
+        min-width: 148px;
+        padding: 14px 24px;
+        font-size: 20px;
+    }
+
+    .cafe_menu__button--left {
+        left: calc(50% - 176px);
+    }
+
+    .cafe_menu__button--right {
+        left: calc(50% + 12px);
+    }
+}
+
+@media (max-width: 540px) {
+    .cafe_menu__actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 14px;
+        padding: 0 20px 116px;
+    }
+
+    .cafe_menu__button {
+        position: static;
+        width: 100%;
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cafe_menu__back {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        width: auto;
+    }
 }

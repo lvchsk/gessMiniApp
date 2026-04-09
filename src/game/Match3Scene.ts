@@ -31,6 +31,7 @@ export default class Match3Scene extends Phaser.Scene {
 
   create(): void {
     this.createBoard();
+    this.time.delayedCall(50, () => this.resolve());
     this.input.on("gameobjectdown", this.handleClick, this);
   }
 
@@ -47,8 +48,6 @@ export default class Match3Scene extends Phaser.Scene {
 
       this.grid.push(row);
     }
-
-    this.resolve();
   }
 
   private createTile(
@@ -148,6 +147,12 @@ export default class Match3Scene extends Phaser.Scene {
     this.animateSwap(a, b, () => {
       this.swapTiles(a, b);
 
+      if (a.isBomb || b.isBomb) {
+        const bombs = [a, b].filter((tile) => tile.isBomb);
+        this.remove(bombs, null, () => this.settleBoard());
+        return;
+      }
+
       const groups = findMatchGroups(this.grid);
       const matches = uniqueTiles(groups);
 
@@ -160,6 +165,18 @@ export default class Match3Scene extends Phaser.Scene {
       }
 
       this.resolve();
+    });
+  }
+
+  private settleBoard(): void {
+    const moved = collapse(this.grid);
+
+    this.animateFall(moved, () => {
+      const created = refill(this, this.grid, this.createTile.bind(this));
+
+      this.animateFall(created, () => {
+        this.time.delayedCall(50, () => this.resolve());
+      });
     });
   }
 
@@ -221,15 +238,7 @@ export default class Match3Scene extends Phaser.Scene {
     this.addScore(matches.length * 10);
 
     this.remove(matches, bombSpawn, () => {
-      const moved = collapse(this.grid);
-
-      this.animateFall(moved, () => {
-        const created = refill(this, this.grid, this.createTile.bind(this));
-
-        this.animateFall(created, () => {
-          this.time.delayedCall(50, () => this.resolve());
-        });
-      });
+      this.settleBoard();
     });
 
     // this.drawDebug();
@@ -306,14 +315,43 @@ export default class Match3Scene extends Phaser.Scene {
     tile.sprite.destroy();
 
     const newTile = this.createTile(x, y, "bomb", y);
+    const targetScaleX = newTile.sprite.scaleX;
+    const targetScaleY = newTile.sprite.scaleY;
+
+    newTile.sprite.setScale(targetScaleX * 0.4, targetScaleY * 0.4);
+    newTile.sprite.setAlpha(0);
+    newTile.sprite.setAngle(-8);
 
     this.grid[y][x] = newTile;
 
     this.tweens.add({
       targets: newTile.sprite,
-      scale: 1.2,
-      yoyo: true,
-      duration: 150,
+      scaleX: targetScaleX,
+      scaleY: targetScaleY,
+      alpha: 1,
+      angle: 0,
+      duration: 320,
+      ease: "Back.Out",
+      onComplete: () => {
+        this.tweens.add({
+          targets: newTile.sprite,
+          angle: 6,
+          duration: 45,
+          ease: "Sine.InOut",
+          yoyo: true,
+          repeat: 5,
+        });
+
+        this.tweens.add({
+          targets: newTile.sprite,
+          scaleX: targetScaleX * 1.08,
+          scaleY: targetScaleY * 1.08,
+          duration: 90,
+          ease: "Quad.Out",
+          yoyo: true,
+          repeat: 1,
+        });
+      },
     });
   }
 

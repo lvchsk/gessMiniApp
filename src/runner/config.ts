@@ -1,0 +1,16 @@
+export const RUNNER_WIDTH = 1126;
+export const RUNNER_HEIGHT = 720;
+export const GROUND_Y = RUNNER_HEIGHT - 120;
+export const PLAYER_X = 210;
+export const BASE_SCROLL_SPEED = 250;
+export const MAX_SCROLL_SPEED = 700;
+export const SPEED_GROWTH = 0.12;
+export const GRAVITY_Y = 2250;
+export const JUMP_VELOCITY = -980;
+export const BOOST_JUMP_VELOCITY = -1260;
+export const OBSTACLE_MIN_SPAWN_MS = 1180;
+export const OBSTACLE_MAX_SPAWN_MS = 2140;
+export const COYOTE_TIME_MS = 110;
+export const JUMP_BUFFER_MS = 140;
+export const SCORE_PER_SECOND = 120;
+export const SCORE_PER_OBSTACLE = 80;
