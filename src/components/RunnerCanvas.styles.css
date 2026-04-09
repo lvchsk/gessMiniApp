@@ -1,0 +1,15 @@
+.runner_canvas {
+    width: 100%;
+    min-height: 100svh;
+    height: 100svh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #f6d29b 0%, #f1bf75 100%);
+}
+
+.runner_canvas canvas {
+    display: block;
+}

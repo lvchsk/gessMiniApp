@@ -1,0 +1,117 @@
+.runner_ui {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    color: #fff8ec;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+}
+
+.runner_ui__topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+}
+
+.runner_ui__back,
+.runner_ui__restart {
+    pointer-events: auto;
+    border: 0;
+    border-radius: 16px;
+    padding: 12px 18px;
+    font: 700 18px/1 'Trebuchet MS', 'Segoe UI', sans-serif;
+    color: #fff8ec;
+    background: linear-gradient(180deg, #d38b42, #97531a);
+    box-shadow: 0 10px 22px rgba(22, 10, 3, 0.26);
+    cursor: pointer;
+    transition: transform 160ms ease, filter 160ms ease;
+}
+
+.runner_ui__back:hover,
+.runner_ui__restart:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+
+.runner_ui__back:active,
+.runner_ui__restart:active {
+    transform: translateY(1px) scale(0.985);
+}
+
+.runner_ui__score,
+.runner_ui__tips,
+.runner_ui__card {
+    background: rgba(28, 15, 7, 0.62);
+    border: 1px solid rgba(255, 242, 221, 0.22);
+    box-shadow: 0 10px 30px rgba(13, 7, 3, 0.18);
+    backdrop-filter: blur(8px);
+}
+
+.runner_ui__score {
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.runner_ui__tips {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    max-width: min(520px, calc(100% - 40px));
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 15px;
+}
+
+.runner_ui__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 7, 2, 0.26);
+}
+
+.runner_ui__card {
+    pointer-events: auto;
+    width: min(420px, 100%);
+    border-radius: 24px;
+    padding: 24px;
+}
+
+.runner_ui__title {
+    margin-bottom: 12px;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.runner_ui__hint {
+    margin-bottom: 18px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+    .runner_ui__topbar {
+        padding: 14px;
+    }
+
+    .runner_ui__score {
+        font-size: 16px;
+    }
+
+    .runner_ui__tips {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        max-width: none;
+        font-size: 14px;
+    }
+
+    .runner_ui__title {
+        font-size: 26px;
+    }
+}
