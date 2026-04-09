@@ -1,4 +1,4 @@
-import './MainMenu.css'
+import './MainMenu.styles.css'
 
 interface Props {
   onStart: () => void;
@@ -13,14 +13,3 @@ export default function MainMenu({ onStart, user }: Props) {
     </div>
   );
 }
-
-// const styles = {
-//   container: {
-//     display: 'flex',
-//     flexDirection: 'column' as const,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     height: '100vh',
-//     gap: '20px',
-//   }
-// };

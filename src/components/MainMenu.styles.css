@@ -6,7 +6,7 @@
     height: 100vh;
     gap: 20px;
     background-image: url('/public/assets/start_menu.PNG');
-    background-size: contain;
+    background-size: cover;
 }
 
 .btn {
