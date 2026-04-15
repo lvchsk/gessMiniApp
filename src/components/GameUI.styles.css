@@ -63,6 +63,7 @@
 
     .game_ui__topbar {
         width: 100%;
+        padding-top: 50px;
     }
 
     .game_ui__back,

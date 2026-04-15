@@ -117,7 +117,7 @@
         flex-direction: column;
         justify-content: flex-end;
         gap: 14px;
-        padding: 0 20px 116px;
+        padding: 0 20px 150px;
     }
 
     .cafe_menu__button {
@@ -131,7 +131,7 @@
     .cafe_menu__back {
         left: 20px;
         right: 20px;
-        bottom: 20px;
+        bottom: 60px;
         width: auto;
     }
 }
