@@ -12,7 +12,7 @@ export default function GameUI({ score, onExit }: Props) {
         <button className='game_ui__back' onClick={onExit}>
           Назад
         </button>
-        <div className='game_ui__score'>Счёт: {score}</div>
+        <div className='game_ui__score'>Кепок: {score}</div>
       </div>
     </div>
   );

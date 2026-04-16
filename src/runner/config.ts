@@ -14,3 +14,4 @@ export const COYOTE_TIME_MS = 110;
 export const JUMP_BUFFER_MS = 140;
 export const SCORE_PER_SECOND = 120;
 export const SCORE_PER_OBSTACLE = 80;
+export const RUNNER_TAP_EVENT = 'runner:tap';

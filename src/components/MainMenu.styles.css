@@ -1,8 +1,5 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    position: relative;
     min-height: 100svh;
     padding:
         max(20px, env(safe-area-inset-top))
@@ -10,15 +7,71 @@
         max(20px, env(safe-area-inset-bottom))
         max(16px, env(safe-area-inset-left));
     box-sizing: border-box;
-    gap: 20px;
+    overflow: hidden;
     background-image: url('/assets/start_menu.PNG');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.btn {
-    padding: 5px 10px;
-    color: black;
-    background-color: gray;
+.main_menu__greeting {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(84px, 11svh, 128px);
+    margin: 0;
+    transform: translateX(-50%);
+    font-size: clamp(28px, 8.2vw, 62px);
+    line-height: 1;
+    color: #fff8ec;
+    text-shadow:
+        0 4px 0 rgba(43, 28, 18, 0.42),
+        0 12px 26px rgba(10, 6, 3, 0.32);
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.main_menu__start_hitbox {
+    position: absolute;
+    left: 50%;
+    top: clamp(286px, 34svh, 344px);
+    width: min(86vw, 344px);
+    height: min(43svh, 372px);
+    transform: translateX(-50%);
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: transparent;
+    cursor: pointer;
+    z-index: 1;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.main_menu__start_hitbox:focus-visible {
+    outline: 3px solid rgba(255, 245, 220, 0.9);
+    outline-offset: 6px;
+}
+
+.main_menu__sr_only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 540px) {
+    .main_menu__greeting {
+        bottom: clamp(76px, 10svh, 112px);
+        font-size: clamp(24px, 7.4vw, 40px);
+    }
+
+    .main_menu__start_hitbox {
+        top: clamp(260px, 31svh, 308px);
+        width: min(88vw, 348px);
+        height: min(40svh, 348px);
+    }
 }

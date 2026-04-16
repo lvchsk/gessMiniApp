@@ -3,7 +3,7 @@
     inset: 0;
     pointer-events: none;
     color: #fff8ec;
-    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font-family: var(--ui-font);
 }
 
 .runner_ui__topbar {
@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    padding: 20px;
+    padding: max(56px, calc(env(safe-area-inset-top) + 52px)) 20px 20px;
 }
 
 .runner_ui__back,
@@ -20,7 +20,7 @@
     border: 0;
     border-radius: 16px;
     padding: 12px 18px;
-    font: 700 18px/1 'Trebuchet MS', 'Segoe UI', sans-serif;
+    font: 700 18px/1 var(--ui-font);
     color: #fff8ec;
     background: linear-gradient(180deg, #d38b42, #97531a);
     box-shadow: 0 10px 22px rgba(22, 10, 3, 0.26);
@@ -96,7 +96,7 @@
 
 @media (max-width: 640px) {
     .runner_ui__topbar {
-        padding: 14px;
+        padding: max(42px, calc(env(safe-area-inset-top) + 38px)) 14px 14px;
     }
 
     .runner_ui__score {

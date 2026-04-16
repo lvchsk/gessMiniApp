@@ -246,7 +246,7 @@ export default class Match3Scene extends Phaser.Scene {
 
     const bombSpawn = this.getBombSpawn(groups);
 
-    this.addScore(matches.length * 10);
+    this.addScore(matches.length);
 
     this.remove(matches, bombSpawn, () => {
       this.settleBoard();
@@ -286,6 +286,7 @@ export default class Match3Scene extends Phaser.Scene {
 
     if (bombs.length > 0) {
       targets = collectExplosion(this.grid, bombs);
+      this.addScore(targets.length);
     }
 
     if (targets.length === 0) {

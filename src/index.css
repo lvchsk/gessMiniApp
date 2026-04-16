@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Akedopikuseru';
+  src: url('/fonts/Akedopikuseru-Regular.otf') format('opentype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -13,9 +21,10 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --ui-font: 'Akedopikuseru', system-ui, sans-serif;
+  --sans: var(--ui-font);
+  --heading: var(--ui-font);
+  --mono: var(--ui-font);
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -73,6 +82,14 @@ body {
   margin: 0;
   min-height: 100svh;
   background: #120f18;
+  font-family: var(--ui-font);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--ui-font);
 }
 
 h1,

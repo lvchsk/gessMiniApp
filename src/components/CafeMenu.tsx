@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { playMenuMainMusic, stopMenuMainMusic } from '../audio/menuMainMusic';
 import './CafeMenu.styles.css';
 
 interface Props {
@@ -7,6 +9,33 @@ interface Props {
 }
 
 export default function CafeMenu({ onPlay, onRunnerPlay, onBack }: Props) {
+  useEffect(() => {
+    let isMounted = true;
+
+    const tryStartMusic = async () => {
+      const didStart = await playMenuMainMusic();
+      if (didStart && isMounted) {
+        window.removeEventListener('pointerdown', handleUnlock);
+        window.removeEventListener('keydown', handleUnlock);
+      }
+    };
+
+    const handleUnlock = () => {
+      void tryStartMusic();
+    };
+
+    void tryStartMusic();
+    window.addEventListener('pointerdown', handleUnlock, { passive: true });
+    window.addEventListener('keydown', handleUnlock);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('pointerdown', handleUnlock);
+      window.removeEventListener('keydown', handleUnlock);
+      stopMenuMainMusic();
+    };
+  }, []);
+
   return (
     <div className='cafe_menu'>
       <div className='cafe_menu__actions'>

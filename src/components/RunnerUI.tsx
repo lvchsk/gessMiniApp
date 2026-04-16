@@ -13,7 +13,7 @@ export default function RunnerUI({ score, isGameOver, onExit }: Props) {
         <button className='runner_ui__back' onClick={onExit}>
           Назад
         </button>
-        <div className='runner_ui__score'>Счёт: {score}</div>
+        <div className='runner_ui__score'>Ничего: {score}</div>
       </div>
 
       {isGameOver ? (

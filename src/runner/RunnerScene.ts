@@ -11,6 +11,7 @@ import {
   OBSTACLE_MAX_SPAWN_MS,
   OBSTACLE_MIN_SPAWN_MS,
   PLAYER_X,
+  RUNNER_TAP_EVENT,
   RUNNER_HEIGHT,
   RUNNER_WIDTH,
   SCORE_PER_OBSTACLE,
@@ -97,10 +98,11 @@ export default class RunnerScene extends Phaser.Scene {
     this.scheduleObstacle();
 
     window.addEventListener(RESTART_EVENT, this.handleExternalRestart);
+    window.addEventListener(RUNNER_TAP_EVENT, this.handleJumpInput);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.spaceKey?.off('down', this.handleJumpInput, this);
-      this.input.off('pointerdown', this.handleJumpInput, this);
       window.removeEventListener(RESTART_EVENT, this.handleExternalRestart);
+      window.removeEventListener(RUNNER_TAP_EVENT, this.handleJumpInput);
     });
   }
 
@@ -247,10 +249,9 @@ export default class RunnerScene extends Phaser.Scene {
   private createControls(): void {
     this.spaceKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.spaceKey?.on('down', this.handleJumpInput, this);
-    this.input.on('pointerdown', this.handleJumpInput, this);
   }
 
-  private handleJumpInput(): void {
+  private handleJumpInput = (): void => {
     if (this.isGameOver) {
       this.restartRun();
       return;
@@ -267,7 +268,7 @@ export default class RunnerScene extends Phaser.Scene {
     if (this.shouldConsumeBufferedJump(now)) {
       this.performGroundJump();
     }
-  }
+  };
 
   private isGrounded(): boolean {
     const body = this.player.body as Phaser.Physics.Arcade.Body;

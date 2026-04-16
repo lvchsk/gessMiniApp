@@ -2,14 +2,69 @@
     width: 100%;
     min-height: 100svh;
     height: 100svh;
+    padding:
+        max(16px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(18px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+    box-sizing: border-box;
     overflow: hidden;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: linear-gradient(180deg, #f6d29b 0%, #f1bf75 100%);
 }
 
-.runner_canvas canvas {
+.runner_canvas__tap_zone {
+    position: absolute;
+    left: clamp(2px, 0.9vw, 8px);
+    right: clamp(2px, 0.9vw, 8px);
+    top: clamp(118px, 16svh, 152px);
+    bottom: clamp(8px, 1.5svh, 16px);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: clamp(54px, 8svh, 92px);
+    box-sizing: border-box;
+    touch-action: manipulation;
+}
+
+.runner_canvas__mount {
+    width: min(72vw, 42svh, 420px);
+    aspect-ratio: 1 / 1;
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+    border-radius: clamp(18px, 3vw, 28px);
+    box-shadow:
+        0 24px 70px rgba(66, 35, 10, 0.28),
+        0 0 0 1px rgba(255, 245, 225, 0.55);
+    background:
+        radial-gradient(circle at top, rgba(255, 247, 226, 0.48), transparent 38%),
+        linear-gradient(180deg, #f7cb8a 0%, #efb96d 100%);
+}
+
+.runner_canvas__mount canvas {
     display: block;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none;
+}
+
+@media (max-width: 640px) {
+    .runner_canvas {
+        padding:
+            max(12px, env(safe-area-inset-top))
+            max(12px, env(safe-area-inset-right))
+            max(14px, env(safe-area-inset-bottom))
+            max(12px, env(safe-area-inset-left));
+    }
+
+    .runner_canvas__tap_zone {
+        top: clamp(106px, 15svh, 138px);
+        bottom: clamp(6px, 1svh, 12px);
+        padding-top: clamp(38px, 6svh, 64px);
+    }
+
+    .runner_canvas__mount {
+        width: min(72vw, 39svh, 320px);
+    }
 }
