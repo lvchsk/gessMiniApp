@@ -11,7 +11,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    padding: max(102px, calc(env(safe-area-inset-top) + 98px)) 20px 20px;
+    padding: max(104px, calc(env(safe-area-inset-top) + 100px)) 20px 20px;
 }
 
 .runner_ui__back,
@@ -26,10 +26,6 @@
     box-shadow: 0 10px 22px rgba(22, 10, 3, 0.26);
     cursor: pointer;
     transition: transform 160ms ease, filter 160ms ease;
-}
-
-.runner_ui__back {
-    font: 700 16px/1 var(--ui-font);
 }
 
 .runner_ui__back:hover,
@@ -62,7 +58,8 @@
     min-width: fit-content;
     white-space: nowrap;
     text-align: center;
-    font: 700 16px/1 var(--ui-font);
+    font-size: clamp(14px, 3.9vw, 18px);
+    font-weight: 700;
 }
 
 .runner_ui__tips {
@@ -106,15 +103,11 @@
 
 @media (max-width: 640px) {
     .runner_ui__topbar {
-        padding: max(86px, calc(env(safe-area-inset-top) + 82px)) 14px 14px;
+        padding: max(94px, calc(env(safe-area-inset-top) + 90px)) 14px 14px;
     }
 
     .runner_ui__score {
-        font-size: 15px;
-    }
-
-    .runner_ui__back {
-        font-size: 15px;
+        font-size: clamp(13px, 3.8vw, 15px);
     }
 
     .runner_ui__tips {
