@@ -85,6 +85,20 @@ body {
   font-family: var(--ui-font);
 }
 
+html,
+body,
+#root,
+#root * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#root,
+#root * {
+  -webkit-tap-highlight-color: transparent;
+}
+
 button,
 input,
 textarea,

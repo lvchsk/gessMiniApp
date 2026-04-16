@@ -5,6 +5,22 @@
     overflow: hidden;
 }
 
+.app_screen--interactive,
+.app_screen--interactive * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.app_screen--interactive {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.app_screen--interactive canvas {
+    -webkit-user-drag: none;
+}
+
 .app_screen--match3 {
     background:
         radial-gradient(circle at top, rgba(92, 79, 131, 0.2), transparent 30%),
