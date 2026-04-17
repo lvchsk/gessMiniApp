@@ -4,6 +4,7 @@ declare global {
       WebApp?: {
         ready(): void;
         expand(): void;
+        requestFullscreen(): void;
         initDataUnsafe?: {
           user?: {
             id: number;
