@@ -18,8 +18,9 @@ export default function App() {
   const [runnerGameOver, setRunnerGameOver] = useState(false);
 
   useEffect(() => {
-    tg?.ready()
+    tg?.ready();
     tg?.expand();
+    tg?.requestFullscreen();
 
     const preventDefault = (event: Event) => {
       event.preventDefault();
