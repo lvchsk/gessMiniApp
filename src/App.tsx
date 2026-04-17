@@ -8,15 +8,19 @@ import RunnerCanvas from './components/RunnerCanvas';
 import RunnerUI from './components/RunnerUI';
 
 type AppState = 'menu' | 'cafe' | 'game' | 'runner';
+const tg = window.Telegram?.WebApp;
 
 export default function App() {
-  const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
+  const user = tg?.initDataUnsafe?.user;
 
   const [state, setState] = useState<AppState>('menu');
   const [score, setScore] = useState(0);
   const [runnerGameOver, setRunnerGameOver] = useState(false);
 
   useEffect(() => {
+    tg?.ready()
+    tg?.expand();
+
     const preventDefault = (event: Event) => {
       event.preventDefault();
     };

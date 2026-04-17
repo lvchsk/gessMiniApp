@@ -3,6 +3,7 @@ declare global {
     Telegram?: {
       WebApp?: {
         ready(): void;
+        expand(): void;
         initDataUnsafe?: {
           user?: {
             id: number;
