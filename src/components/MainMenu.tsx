@@ -11,7 +11,7 @@ export default function MainMenu({ onStart, user }: Props) {
       <button className='main_menu__start_hitbox' onClick={onStart} aria-label='Играть'>
         <span className='main_menu__sr_only'>Играть</span>
       </button>
-      <h1 className='main_menu__greeting'>Привет, {user}</h1>
+      <h1 className='main_menu__greeting'>Привет{user ? `, ${user}` : ''}</h1>
     </div>
   );
 }

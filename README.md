@@ -1,73 +1,143 @@
-# React + TypeScript + Vite
+# Gess Mini App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+В корне проекта живет frontend Telegram Mini App на React + Vite. Backend для авторизации, рекордов и лидербордов вынесен в папку `server/`.
 
-Currently, two official plugins are available:
+## Что умеет backend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- регистрирует пользователя при первом успешном входе через Telegram Mini App;
+- хранит пользователей и рекорды в MongoDB Atlas Free;
+- обновляет рекорд только если новый результат выше предыдущего;
+- отдает top-10 по `runner` и `match`;
+- валидирует `Telegram.WebApp.initData` на сервере;
+- хранит чувствительные данные только в переменных окружения.
 
-## React Compiler
+## Стек backend
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js + Express + TypeScript
+- MongoDB Atlas Free + Mongoose
+- JWT для серверной сессии
+- Helmet, CORS, express-rate-limit
 
-## Expanding the ESLint configuration
+## Быстрый старт backend
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Установить зависимости:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd server
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Создать `.env` из шаблона:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
 ```
+
+3. Заполнить переменные:
+
+- `MONGODB_URI`
+- `TELEGRAM_BOT_TOKEN`
+- `JWT_SECRET`
+- `CORS_ORIGIN`
+
+4. Запустить backend:
+
+```bash
+npm run dev
+```
+
+По умолчанию сервер стартует на `http://localhost:4000`.
+
+## Root scripts
+
+Из корня проекта доступны:
+
+```bash
+npm run server:dev
+npm run server:build
+```
+
+## MongoDB Atlas Free
+
+Для этой задачи выбран MongoDB Atlas Free: он хорошо сочетается с Mongoose, подходит для простой облачной бесплатной базы и не требует держать собственный сервер базы данных.
+
+Минимальная схема пользователя:
+
+```ts
+telegramId: { type: Number, unique: true, required: true }
+username: { type: String, required: true }
+registrationDate: { type: String, default: () => formatDate(new Date()) }
+scoreRunner: { type: Number, default: 0 }
+scoreMatch: { type: Number, default: 0 }
+```
+
+## API
+
+### `POST /api/auth/telegram`
+
+Регистрирует пользователя при первом входе или возвращает уже существующего.
+
+Body:
+
+```json
+{
+  "initData": "<Telegram.WebApp.initData>"
+}
+```
+
+Response:
+
+```json
+{
+  "token": "<jwt>",
+  "user": {
+    "telegramId": 123456789,
+    "username": "player",
+    "registrationDate": "23:04:2026_21:45:11",
+    "scoreRunner": 0,
+    "scoreMatch": 0
+  }
+}
+```
+
+### `GET /api/auth/me`
+
+Возвращает текущего пользователя.
+
+Header:
+
+```text
+Authorization: Bearer <jwt>
+```
+
+### `POST /api/scores/runner`
+### `POST /api/scores/match`
+
+Обновляет рекорд только если новый результат выше старого.
+
+Body:
+
+```json
+{
+  "score": 1540
+}
+```
+
+### `GET /api/leaderboards/runner?limit=10`
+### `GET /api/leaderboards/match?limit=10`
+
+Возвращает лидерборд по нужной игре.
+
+## Что отправлять с клиента
+
+- На backend нужно отправлять именно `Telegram.WebApp.initData`, а не `initDataUnsafe`.
+- JWT из `/api/auth/telegram` нужно использовать для `/api/auth/me` и `/api/scores/*`.
+- Если у пользователя нет `username` в Telegram, backend сам подставит безопасный fallback, чтобы поле оставалось обязательным.
+
+## Безопасность
+
+- `TELEGRAM_BOT_TOKEN`, `JWT_SECRET` и `MONGODB_URI` не хранятся в коде.
+- `initData` проверяется по HMAC согласно Telegram Mini Apps.
+- `auth_date` проверяется на устаревание.
+- На auth и score endpoints включен rate limiting.
+- CORS ограничивается списком доменов из env.

@@ -93,9 +93,114 @@
     left: 32px;
     bottom: 32px;
     min-width: 132px;
+    z-index: 3;
 }
 
-@media (max-width: 768px) {
+.cafe_menu__status {
+    position: absolute;
+    top: max(24px, calc(env(safe-area-inset-top) + 12px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(420px, calc(100% - 40px));
+    padding: 14px 18px;
+    border: 1px solid rgba(255, 236, 211, 0.72);
+    border-radius: 22px;
+    background: rgba(31, 16, 8, 0.74);
+    backdrop-filter: blur(8px);
+    color: #fff7ea;
+    box-shadow: 0 14px 28px rgba(25, 8, 3, 0.28);
+    z-index: 2;
+}
+
+.cafe_menu__player {
+    font: 700 16px/1.2 var(--ui-font);
+}
+
+.cafe_menu__sync {
+    margin-top: 8px;
+    font: 400 11px/1.45 var(--ui-font);
+    color: rgba(255, 247, 234, 0.84);
+}
+
+.cafe_menu__leaderboards {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    width: min(760px, calc(100% - 220px));
+    z-index: 2;
+}
+
+.cafe_menu__leaderboard_card {
+    min-height: 258px;
+    padding: 16px;
+    border: 1px solid rgba(255, 236, 211, 0.66);
+    border-radius: 24px;
+    background: rgba(31, 16, 8, 0.78);
+    backdrop-filter: blur(8px);
+    color: #fff7ea;
+    box-shadow: 0 18px 30px rgba(25, 8, 3, 0.3);
+}
+
+.cafe_menu__leaderboard_title {
+    margin-bottom: 12px;
+    text-align: left;
+    font: 700 14px/1.2 var(--ui-font);
+    text-transform: uppercase;
+    color: #ffe7c2;
+}
+
+.cafe_menu__leaderboard_loading,
+.cafe_menu__leaderboard_empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    margin: 0;
+    font: 400 11px/1.4 var(--ui-font);
+    color: rgba(255, 247, 234, 0.84);
+}
+
+.cafe_menu__leaderboard_list {
+    display: grid;
+    gap: 8px;
+    max-height: 196px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-y: auto;
+}
+
+.cafe_menu__leaderboard_item {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 10px;
+    border-radius: 14px;
+    background: rgba(255, 243, 225, 0.08);
+    font: 400 10px/1.2 var(--ui-font);
+}
+
+.cafe_menu__leaderboard_rank {
+    color: #ffd08e;
+}
+
+.cafe_menu__leaderboard_name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.cafe_menu__leaderboard_score {
+    color: #fff0cb;
+}
+
+@media (max-width: 900px) {
     .menu_button {
         min-width: 148px;
         padding: 14px 24px;
@@ -108,6 +213,52 @@
 
     .cafe_menu__button--right {
         left: calc(50% + 12px);
+    }
+
+    .cafe_menu__leaderboards {
+        width: min(640px, calc(100% - 40px));
+        bottom: 108px;
+    }
+
+    .cafe_menu__back {
+        bottom: 28px;
+    }
+}
+
+@media (max-width: 640px) {
+    .cafe_menu__status {
+        top: max(18px, calc(env(safe-area-inset-top) + 10px));
+        width: calc(100% - 28px);
+        padding: 12px 14px;
+    }
+
+    .cafe_menu__player {
+        font-size: 14px;
+    }
+
+    .cafe_menu__sync {
+        font-size: 10px;
+    }
+
+    .cafe_menu__leaderboards {
+        top: 96px;
+        bottom: auto;
+        width: calc(100% - 24px);
+        grid-template-columns: 1fr;
+    }
+
+    .cafe_menu__leaderboard_card {
+        min-height: 164px;
+        padding: 14px;
+    }
+
+    .cafe_menu__leaderboard_loading,
+    .cafe_menu__leaderboard_empty {
+        min-height: 112px;
+    }
+
+    .cafe_menu__leaderboard_list {
+        max-height: 108px;
     }
 }
 
