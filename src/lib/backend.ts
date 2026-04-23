@@ -42,8 +42,19 @@ interface RequestOptions {
 
 function getApiBaseUrl(): string {
   const configuredUrl = import.meta.env.VITE_API_BASE_URL?.trim();
-  const baseUrl =
-    configuredUrl || (import.meta.env.DEV ? 'http://localhost:4000' : window.location.origin);
+  if (configuredUrl) {
+    return configuredUrl.replace(/\/+$/, '');
+  }
+
+  if (import.meta.env.DEV) {
+    const hostname = window.location.hostname;
+    const isLocalHost =
+      hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
+
+    return (isLocalHost ? 'http://localhost:4000' : window.location.origin).replace(/\/+$/, '');
+  }
+
+  const baseUrl = window.location.origin;
   return baseUrl.replace(/\/+$/, '');
 }
 

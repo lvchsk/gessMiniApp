@@ -22,8 +22,8 @@
 }
 
 .game_ui__back,
-.game_ui__score {
-    pointer-events: auto;
+.game_ui__score,
+.game_ui__card {
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(19, 15, 29, 0.72);
@@ -32,30 +32,88 @@
     backdrop-filter: blur(10px);
 }
 
-.game_ui__back {
+.game_ui__back,
+.game_ui__confirm {
+    pointer-events: auto;
     border: 0;
     padding: 12px 18px;
     font: 700 16px/1 var(--ui-font);
     cursor: pointer;
-    transition: transform 160ms ease, filter 160ms ease;
+    transition: transform 160ms ease, filter 160ms ease, opacity 160ms ease;
 }
 
-.game_ui__back:hover {
+.game_ui__back {
+    background: rgba(19, 15, 29, 0.72);
+    color: #f6efff;
+}
+
+.game_ui__back:hover,
+.game_ui__confirm:hover:not(:disabled) {
     transform: translateY(-2px);
     filter: brightness(1.06);
 }
 
-.game_ui__back:active {
+.game_ui__back:active,
+.game_ui__confirm:active:not(:disabled) {
     transform: translateY(1px) scale(0.985);
 }
 
 .game_ui__score {
+    pointer-events: auto;
     padding: 12px 16px;
     font: 700 16px/1 var(--ui-font);
     flex: 0 0 auto;
     min-width: fit-content;
     white-space: nowrap;
     text-align: center;
+}
+
+.game_ui__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(8, 6, 14, 0.42);
+    pointer-events: auto;
+}
+
+.game_ui__card {
+    pointer-events: auto;
+    width: min(420px, 100%);
+    padding: 24px;
+    border-radius: 24px;
+}
+
+.game_ui__title {
+    margin-bottom: 12px;
+    font: 700 28px/1.05 var(--ui-font);
+    color: #fff8ec;
+}
+
+.game_ui__result {
+    margin-bottom: 12px;
+    font: 700 18px/1.3 var(--ui-font);
+    color: #fff8ec;
+}
+
+.game_ui__message {
+    margin-bottom: 18px;
+    font: 400 14px/1.45 var(--ui-font);
+    color: rgba(246, 239, 255, 0.88);
+}
+
+.game_ui__confirm {
+    width: 100%;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #7f4fb5, #4a2a73);
+    color: #fff8ec;
+}
+
+.game_ui__confirm:disabled {
+    cursor: default;
+    opacity: 0.72;
 }
 
 @media (max-width: 640px) {
@@ -73,7 +131,12 @@
     }
 
     .game_ui__back,
-    .game_ui__score {
+    .game_ui__score,
+    .game_ui__confirm {
         font-size: 15px;
+    }
+
+    .game_ui__title {
+        font-size: 24px;
     }
 }

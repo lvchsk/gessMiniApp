@@ -17,6 +17,12 @@ import {
 
 type AppState = 'menu' | 'cafe' | 'game' | 'runner';
 type SyncState = 'idle' | 'loading' | 'ready' | 'guest' | 'error';
+type ScoreSyncStatus = 'guest' | 'unchanged' | 'synced';
+
+interface ScoreSyncResult {
+  status: ScoreSyncStatus;
+  bestScore: number;
+}
 
 const tg = window.Telegram?.WebApp;
 
@@ -25,12 +31,32 @@ const EMPTY_LEADERBOARDS: Record<BackendGame, LeaderboardItem[]> = {
   match: [],
 };
 
+function getScoreSyncMessage(game: BackendGame, status: ScoreSyncStatus): string {
+  if (status === 'synced') {
+    return game === 'runner'
+      ? 'Результат раннера сохранён и отправлен в лидерборд.'
+      : 'Результат 3 в ряд сохранён и отправлен в лидерборд.';
+  }
+
+  if (status === 'guest') {
+    return 'Открой приложение внутри Telegram, чтобы результат попадал в лидерборд.';
+  }
+
+  return 'Новый рекорд не побит, поэтому лидерборд не изменился.';
+}
+
 export default function App() {
   const telegramUser = tg?.initDataUnsafe?.user;
 
   const [state, setState] = useState<AppState>('menu');
   const [score, setScore] = useState(0);
   const [runnerGameOver, setRunnerGameOver] = useState(false);
+  const [runnerFinalScore, setRunnerFinalScore] = useState(0);
+  const [runnerResultMessage, setRunnerResultMessage] = useState<string | null>(null);
+  const [matchResultOpen, setMatchResultOpen] = useState(false);
+  const [matchResultScore, setMatchResultScore] = useState(0);
+  const [matchResultMessage, setMatchResultMessage] = useState<string | null>(null);
+  const [matchResultSyncing, setMatchResultSyncing] = useState(false);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [backendUser, setBackendUser] = useState<BackendUser | null>(null);
   const [syncState, setSyncState] = useState<SyncState>('idle');
@@ -49,9 +75,23 @@ export default function App() {
   });
 
   useEffect(() => {
-    tg?.ready();
-    tg?.expand();
-    tg?.requestFullscreen?.();
+    try {
+      tg?.ready();
+    } catch (error) {
+      console.warn('Telegram WebApp ready() failed', error);
+    }
+
+    try {
+      tg?.expand();
+    } catch (error) {
+      console.warn('Telegram WebApp expand() failed', error);
+    }
+
+    try {
+      tg?.requestFullscreen?.();
+    } catch (error) {
+      console.warn('Telegram WebApp requestFullscreen() failed', error);
+    }
 
     const preventDefault = (event: Event) => {
       event.preventDefault();
@@ -140,7 +180,7 @@ export default function App() {
         setAuthError(
           error instanceof Error
             ? error.message
-            : 'Не удалось подключить профиль к backend',
+            : 'Не удалось подключить профиль к backend.',
         );
       }
     };
@@ -158,21 +198,30 @@ export default function App() {
     }
   }, [refreshLeaderboards, state]);
 
-  const persistHighScore = useCallback(
-    async (game: BackendGame, rawScore: number) => {
+  const syncHighScore = useCallback(
+    async (game: BackendGame, rawScore: number): Promise<ScoreSyncResult> => {
       const nextScore = Math.max(0, Math.floor(rawScore));
 
-      if (!sessionToken || nextScore <= 0) {
-        return;
+      if (!sessionToken) {
+        return {
+          status: 'guest',
+          bestScore: bestScoresRef.current[game],
+        };
       }
 
       if (nextScore <= bestScoresRef.current[game]) {
-        return;
+        return {
+          status: 'unchanged',
+          bestScore: bestScoresRef.current[game],
+        };
       }
 
       const pendingScore = pendingScoresRef.current[game];
       if (pendingScore !== null && nextScore <= pendingScore) {
-        return;
+        return {
+          status: 'unchanged',
+          bestScore: pendingScore,
+        };
       }
 
       pendingScoresRef.current[game] = nextScore;
@@ -184,19 +233,37 @@ export default function App() {
         bestScoresRef.current[game] = response.bestScore;
         setBackendUser(response.user);
         await refreshLeaderboards();
+
+        return {
+          status: response.updated ? 'synced' : 'unchanged',
+          bestScore: response.bestScore,
+        };
       } catch (error) {
         pendingScoresRef.current[game] = null;
-        console.error(`Failed to sync ${game} score`, error);
+        throw error;
       }
     },
     [refreshLeaderboards, sessionToken],
   );
 
   useEffect(() => {
-    if (state === 'runner' && runnerGameOver) {
-      void persistHighScore('runner', score);
+    if (state !== 'runner' || !runnerGameOver) {
+      return;
     }
-  }, [persistHighScore, runnerGameOver, score, state]);
+
+    const finalScore = Math.max(0, Math.floor(score));
+    setRunnerFinalScore(finalScore);
+    setRunnerResultMessage('Фиксируем результат...');
+
+    void syncHighScore('runner', finalScore)
+      .then((result) => {
+        setRunnerResultMessage(getScoreSyncMessage('runner', result.status));
+      })
+      .catch((error) => {
+        console.error('Failed to sync runner score', error);
+        setRunnerResultMessage('Не удалось отправить результат раннера в backend.');
+      });
+  }, [runnerGameOver, score, state, syncHighScore]);
 
   const syncMessage =
     syncState === 'loading'
@@ -207,21 +274,60 @@ export default function App() {
           ? authError || 'Backend недоступен.'
           : null;
 
-  const displayName = telegramUser?.first_name || backendUser?.username;
+  const displayName = backendUser?.username || telegramUser?.first_name;
 
   const handleOpenCafe = () => {
     void refreshLeaderboards();
     setState('cafe');
   };
 
-  const handleMatchExit = () => {
-    void persistHighScore('match', score);
+  const handleOpenMatch3 = () => {
+    setScore(0);
+    setMatchResultOpen(false);
+    setMatchResultScore(0);
+    setMatchResultMessage(null);
+    setMatchResultSyncing(false);
+    setState('game');
+  };
+
+  const handleOpenRunner = () => {
+    setScore(0);
+    setRunnerGameOver(false);
+    setRunnerFinalScore(0);
+    setRunnerResultMessage(null);
+    setState('runner');
+  };
+
+  const handleMatchExitRequest = () => {
+    const finalScore = Math.max(0, Math.floor(score));
+
+    setMatchResultScore(finalScore);
+    setMatchResultOpen(true);
+    setMatchResultSyncing(true);
+    setMatchResultMessage('Фиксируем результат...');
+
+    void syncHighScore('match', finalScore)
+      .then((result) => {
+        setMatchResultMessage(getScoreSyncMessage('match', result.status));
+      })
+      .catch((error) => {
+        console.error('Failed to sync match-3 score', error);
+        setMatchResultMessage('Не удалось отправить результат 3 в ряд в backend.');
+      })
+      .finally(() => {
+        setMatchResultSyncing(false);
+      });
+  };
+
+  const handleMatchResultClose = () => {
+    setMatchResultOpen(false);
     setState('cafe');
   };
 
   const handleRunnerExit = () => {
-    void persistHighScore('runner', score);
     setRunnerGameOver(false);
+    setRunnerFinalScore(0);
+    setRunnerResultMessage(null);
     setState('cafe');
   };
 
@@ -232,15 +338,8 @@ export default function App() {
   if (state === 'cafe') {
     return (
       <CafeMenu
-        onPlay={() => {
-          setScore(0);
-          setState('game');
-        }}
-        onRunnerPlay={() => {
-          setScore(0);
-          setRunnerGameOver(false);
-          setState('runner');
-        }}
+        onPlay={handleOpenMatch3}
+        onRunnerPlay={handleOpenRunner}
         onBack={() => setState('menu')}
         playerName={backendUser?.username || displayName}
         leaderboards={leaderboards}
@@ -260,6 +359,8 @@ export default function App() {
         <RunnerUI
           score={score}
           isGameOver={runnerGameOver}
+          finalScore={runnerFinalScore}
+          resultMessage={runnerResultMessage}
           onExit={handleRunnerExit}
         />
       </div>
@@ -271,7 +372,12 @@ export default function App() {
       <GameCanvas onScoreChange={setScore} />
       <GameUI
         score={score}
-        onExit={handleMatchExit}
+        isResultOpen={matchResultOpen}
+        resultScore={matchResultScore}
+        resultMessage={matchResultMessage}
+        isSyncingResult={matchResultSyncing}
+        onExitRequest={handleMatchExitRequest}
+        onResultClose={handleMatchResultClose}
       />
     </div>
   );
