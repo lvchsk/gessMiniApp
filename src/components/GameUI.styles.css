@@ -106,6 +106,7 @@
 
 .game_ui__confirm {
     width: 100%;
+    margin-bottom: 14px;
     border-radius: 16px;
     background: linear-gradient(180deg, #7f4fb5, #4a2a73);
     color: #fff8ec;

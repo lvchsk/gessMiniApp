@@ -91,7 +91,7 @@ export async function updateHighScore(userId: string, game: ScoreGame, score: nu
 
 export async function getLeaderboard(game: ScoreGame, limit: number) {
   const field = SCORE_FIELD_BY_GAME[game];
-  const safeLimit = Math.min(Math.max(limit, 1), 10);
+  const safeLimit = Math.min(Math.max(limit, 1), 100);
 
   const users = await UserModel.find({})
     .sort({ [field]: -1, telegramId: 1 })

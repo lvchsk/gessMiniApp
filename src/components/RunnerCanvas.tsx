@@ -7,10 +7,24 @@ import './RunnerCanvas.styles.css';
 interface Props {
   onScoreChange: (score: number) => void;
   onGameOverChange: (isGameOver: boolean) => void;
+  isRunnerMusicMuted?: boolean;
 }
 
-export default function RunnerCanvas({ onScoreChange, onGameOverChange }: Props) {
+export default function RunnerCanvas({
+  onScoreChange,
+  onGameOverChange,
+  isRunnerMusicMuted = false,
+}: Props) {
   const mountRef = useRef<HTMLDivElement | null>(null);
+  const isRunnerMusicMutedRef = useRef(isRunnerMusicMuted);
+
+  useEffect(() => {
+    isRunnerMusicMutedRef.current = isRunnerMusicMuted;
+
+    if (isRunnerMusicMuted) {
+      stopRunnerMusic();
+    }
+  }, [isRunnerMusicMuted]);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -18,6 +32,10 @@ export default function RunnerCanvas({ onScoreChange, onGameOverChange }: Props)
     let isMounted = true;
 
     const tryStartMusic = async () => {
+      if (isRunnerMusicMutedRef.current) {
+        return;
+      }
+
       const didStart = await playRunnerMusic();
       if (didStart && isMounted) {
         window.removeEventListener('pointerdown', handleUnlock);
@@ -26,6 +44,10 @@ export default function RunnerCanvas({ onScoreChange, onGameOverChange }: Props)
     };
 
     const handleUnlock = () => {
+      if (isRunnerMusicMutedRef.current) {
+        return;
+      }
+
       void tryStartMusic();
     };
 

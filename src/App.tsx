@@ -14,6 +14,7 @@ import {
   type BackendUser,
   type LeaderboardItem,
 } from './lib/backend';
+import { RUNNER_SHIPMENT_SCORE_THRESHOLD } from './runner/config';
 
 type AppState = 'menu' | 'cafe' | 'game' | 'runner';
 type SyncState = 'idle' | 'loading' | 'ready' | 'guest' | 'error';
@@ -342,25 +343,33 @@ export default function App() {
         onRunnerPlay={handleOpenRunner}
         onBack={() => setState('menu')}
         playerName={backendUser?.username || displayName}
-        leaderboards={leaderboards}
-        isLeaderboardsLoading={leaderboardsLoading}
         syncMessage={syncMessage}
       />
     );
   }
 
   if (state === 'runner') {
+    const runnerDisplayedFinalScore = runnerGameOver
+      ? Math.max(0, Math.floor(score))
+      : runnerFinalScore;
+    const showRunnerShipmentReward =
+      runnerGameOver && runnerDisplayedFinalScore >= RUNNER_SHIPMENT_SCORE_THRESHOLD;
+
     return (
       <div className='app_screen app_screen--runner app_screen--interactive'>
         <RunnerCanvas
           onScoreChange={setScore}
           onGameOverChange={setRunnerGameOver}
+          isRunnerMusicMuted={showRunnerShipmentReward}
         />
         <RunnerUI
           score={score}
           isGameOver={runnerGameOver}
-          finalScore={runnerFinalScore}
+          finalScore={runnerDisplayedFinalScore}
+          showShipmentReward={showRunnerShipmentReward}
           resultMessage={runnerResultMessage}
+          leaderboardItems={leaderboards.runner}
+          isLeaderboardLoading={leaderboardsLoading}
           onExit={handleRunnerExit}
         />
       </div>
@@ -376,6 +385,8 @@ export default function App() {
         resultScore={matchResultScore}
         resultMessage={matchResultMessage}
         isSyncingResult={matchResultSyncing}
+        leaderboardItems={leaderboards.match}
+        isLeaderboardLoading={leaderboardsLoading}
         onExitRequest={handleMatchExitRequest}
         onResultClose={handleMatchResultClose}
       />

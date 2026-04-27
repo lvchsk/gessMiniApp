@@ -1,3 +1,5 @@
+import type { LeaderboardItem } from '../lib/backend';
+import ResultLeaderboard from './ResultLeaderboard';
 import './GameUI.styles.css';
 
 interface Props {
@@ -6,6 +8,8 @@ interface Props {
   resultScore: number;
   resultMessage?: string | null;
   isSyncingResult: boolean;
+  leaderboardItems: LeaderboardItem[];
+  isLeaderboardLoading: boolean;
   onExitRequest: () => void;
   onResultClose: () => void;
 }
@@ -16,6 +20,8 @@ export default function GameUI({
   resultScore,
   resultMessage,
   isSyncingResult,
+  leaderboardItems,
+  isLeaderboardLoading,
   onExitRequest,
   onResultClose,
 }: Props) {
@@ -41,6 +47,12 @@ export default function GameUI({
             >
               {isSyncingResult ? 'Сохраняем...' : 'В меню'}
             </button>
+            <ResultLeaderboard
+              game='match'
+              items={leaderboardItems}
+              scoreLabel='кепок'
+              isLoading={isLeaderboardLoading}
+            />
           </div>
         </div>
       ) : null}

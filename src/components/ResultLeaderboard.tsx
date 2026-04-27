@@ -1,0 +1,121 @@
+import { useState, type KeyboardEvent, type MouseEvent } from 'react';
+import { createPortal } from 'react-dom';
+import type { BackendGame, LeaderboardItem } from '../lib/backend';
+import './ResultLeaderboard.styles.css';
+
+interface Props {
+  game: BackendGame;
+  items: LeaderboardItem[];
+  scoreLabel: string;
+  isLoading: boolean;
+  showTopThree?: boolean;
+  className?: string;
+}
+
+const TITLE_BY_GAME: Record<BackendGame, string> = {
+  match: 'Топ кепок',
+  runner: 'Топ ничегошек',
+};
+
+export default function ResultLeaderboard({
+  game,
+  items,
+  scoreLabel,
+  isLoading,
+  showTopThree = true,
+  className,
+}: Props) {
+  const [isTopOpen, setIsTopOpen] = useState(false);
+  const leaders = items.slice(0, 100);
+  const topThree = leaders.slice(0, 3);
+  const rootClassName = ['result_leaderboard', className].filter(Boolean).join(' ');
+
+  const handleOpenTop = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setIsTopOpen(true);
+  };
+
+  const handleCloseTop = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setIsTopOpen(false);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
+
+  const topModal = isTopOpen ? (
+    <div
+      className='result_leaderboard__modal'
+      role='dialog'
+      aria-modal='true'
+      onClick={(event) => event.stopPropagation()}
+      onKeyDown={handleKeyDown}
+    >
+      <div className='result_leaderboard__modal_header'>
+        <div className='result_leaderboard__modal_title'>{TITLE_BY_GAME[game]}</div>
+        <button
+          className='result_leaderboard__close'
+          type='button'
+          aria-label='Закрыть топ-100'
+          onClick={handleCloseTop}
+        >
+          Закрыть
+        </button>
+      </div>
+
+      <div className='result_leaderboard__modal_list'>
+        {isLoading ? (
+          <div className='result_leaderboard__modal_empty'>Загрузка...</div>
+        ) : leaders.length > 0 ? (
+          leaders.map((item) => (
+            <div className='result_leaderboard__modal_item' key={`${game}-top-${item.rank}-${item.username}`}>
+              <span className='result_leaderboard__modal_rank'>#{item.rank}</span>
+              <span className='result_leaderboard__modal_name'>{item.username}</span>
+              <span className='result_leaderboard__modal_score'>
+                {item.score} {scoreLabel}
+              </span>
+            </div>
+          ))
+        ) : (
+          <div className='result_leaderboard__modal_empty'>Лидеров пока нет</div>
+        )}
+      </div>
+    </div>
+  ) : null;
+
+  return (
+    <div className={rootClassName} onClick={(event) => event.stopPropagation()} onKeyDown={handleKeyDown}>
+      {showTopThree ? (
+        <div className='result_leaderboard__preview'>
+          {isLoading ? (
+            <div className='result_leaderboard__empty'>Загрузка...</div>
+          ) : topThree.length > 0 ? (
+            topThree.map((item, index) => (
+              <div className='result_leaderboard__preview_item' key={`${game}-${item.rank}-${item.username}`}>
+                <img
+                  className='result_leaderboard__badge'
+                  src={`/assets/leader_${index + 1}.svg`}
+                  alt=''
+                  aria-hidden='true'
+                />
+                <span className='result_leaderboard__name'>{item.username}</span>
+                <span className='result_leaderboard__score'>
+                  {item.score} {scoreLabel}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className='result_leaderboard__empty'>Лидеров пока нет</div>
+          )}
+        </div>
+      ) : null}
+
+      <button className='result_leaderboard__top_button' type='button' onClick={handleOpenTop}>
+        топ-100
+      </button>
+
+      {topModal ? createPortal(topModal, document.body) : null}
+    </div>
+  );
+}

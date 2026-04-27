@@ -132,6 +132,126 @@
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.runner_ui__shipment_overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-height: 100%;
+    border: 0;
+    padding: 0;
+    color: #fff8ec;
+    font-family: var(--ui-font);
+    text-align: center;
+    background: rgba(10, 5, 2, 0.72);
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.runner_ui__shipment_message {
+    position: absolute;
+    top: max(144px, calc(env(safe-area-inset-top) + 140px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: min(920px, 100%);
+    font-size: clamp(24px, 5vw, 44px);
+    font-weight: 900;
+    line-height: 1.12;
+    text-shadow: 0 5px 18px rgba(0, 0, 0, 0.38);
+}
+
+.runner_ui__shipment_leaderboard {
+    position: absolute;
+    left: 50%;
+    bottom: max(28px, calc(env(safe-area-inset-bottom) + 24px));
+    width: min(300px, calc(100% - 40px));
+    transform: translateX(-50%);
+}
+
+.runner_ui__shipment_sprite {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(500px, 82vmin);
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: 0 24px 54px rgba(0, 0, 0, 0.34);
+}
+
+.runner_ui__shipment_sprite_track {
+    width: 1200%;
+    height: 100%;
+    background-image: url('/assets/spritesheet_runner.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    animation: runner_ui__shipment_sprite_frames 6s step-end infinite;
+}
+
+@keyframes runner_ui__shipment_sprite_frames {
+    0%,
+    8.32% {
+        transform: translateX(0);
+    }
+
+    8.33%,
+    16.65% {
+        transform: translateX(-8.333333%);
+    }
+
+    16.66%,
+    24.99% {
+        transform: translateX(-16.666667%);
+    }
+
+    25%,
+    33.32% {
+        transform: translateX(-25%);
+    }
+
+    33.33%,
+    41.65% {
+        transform: translateX(-33.333333%);
+    }
+
+    41.66%,
+    49.99% {
+        transform: translateX(-41.666667%);
+    }
+
+    50%,
+    58.32% {
+        transform: translateX(-50%);
+    }
+
+    58.33%,
+    66.65% {
+        transform: translateX(-58.333333%);
+    }
+
+    66.66%,
+    74.99% {
+        transform: translateX(-66.666667%);
+    }
+
+    75%,
+    83.32% {
+        transform: translateX(-75%);
+    }
+
+    83.33%,
+    91.65% {
+        transform: translateX(-83.333333%);
+    }
+
+    91.66%,
+    100% {
+        transform: translateX(-91.666667%);
+    }
 }
 
 @media (max-width: 640px) {
@@ -157,5 +277,14 @@
 
     .runner_ui__actions {
         flex-direction: column;
+    }
+
+    .runner_ui__shipment_sprite {
+        width: min(500px, 86vmin);
+    }
+
+    .runner_ui__shipment_message {
+        top: max(128px, calc(env(safe-area-inset-top) + 124px));
+        width: calc(100% - 28px);
     }
 }
