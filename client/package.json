@@ -8,9 +8,7 @@
     "dev:host": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "server:dev": "npm --prefix server run dev",
-    "server:build": "npm --prefix server run build"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",

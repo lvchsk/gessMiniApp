@@ -1,6 +1,6 @@
 # Gess Mini App
 
-В корне проекта живет frontend Telegram Mini App на React + Vite. Backend для авторизации, рекордов и лидербордов вынесен в папку `server/`.
+Репозиторий разделен на две отдельные части: frontend Telegram Mini App живет в `client/`, а backend для авторизации, рекордов и лидербордов находится в соседней папке `server/`.
 
 ## Что умеет backend
 
@@ -20,7 +20,7 @@
 
 ## Быстрый старт backend
 
-1. Установить зависимости:
+1. Из корня репозитория установить зависимости:
 
 ```bash
 cd server
@@ -48,13 +48,11 @@ npm run dev
 
 По умолчанию сервер стартует на `http://localhost:4000`.
 
-## Root scripts
+## Структура проекта
 
-Из корня проекта доступны:
-
-```bash
-npm run server:dev
-npm run server:build
+```text
+client/  frontend на React + Vite
+server/  backend на Express + TypeScript
 ```
 
 ## MongoDB Atlas Free

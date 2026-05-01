@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, models, type Model } from 'mongoose';
 import { formatDate } from '../lib/formatDate.js';
 
 export interface UserDocument {
@@ -28,4 +28,5 @@ const userSchema = new Schema<UserDocument>(
 userSchema.index({ scoreRunner: -1, telegramId: 1 });
 userSchema.index({ scoreMatch: -1, telegramId: 1 });
 
-export const UserModel = model<UserDocument>('User', userSchema);
+export const UserModel =
+  (models.User as Model<UserDocument> | undefined) ?? model<UserDocument>('User', userSchema);

@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express from 'express';
+import express, { type Express } from 'express';
 import helmet from 'helmet';
 import { env } from './config/env.js';
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js';
@@ -8,7 +8,9 @@ import healthRoutes from './routes/health.js';
 import leaderboardRoutes from './routes/leaderboards.js';
 import scoreRoutes from './routes/scores.js';
 
-export function createApp() {
+let appInstance: Express | null = null;
+
+function buildApp(): Express {
   const app = express();
 
   app.set('trust proxy', 1);
@@ -48,4 +50,12 @@ export function createApp() {
   app.use(errorHandler);
 
   return app;
+}
+
+export function getApp(): Express {
+  if (!appInstance) {
+    appInstance = buildApp();
+  }
+
+  return appInstance;
 }

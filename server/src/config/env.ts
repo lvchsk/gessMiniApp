@@ -45,6 +45,7 @@ export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   port: parseNumber('PORT', 4000),
   mongodbUri: requireEnv('MONGODB_URI'),
+  mongodbDbName: process.env.MONGODB_DB_NAME?.trim() || 'gess-mini-app',
   telegramBotToken: requireEnv('TELEGRAM_BOT_TOKEN'),
   jwtSecret: requireEnv('JWT_SECRET'),
   jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? '7d',

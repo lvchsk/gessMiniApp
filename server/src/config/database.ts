@@ -1,16 +1,39 @@
 import mongoose from 'mongoose';
 import { env } from './env.js';
 
-let isConnected = false;
+type MongooseCache = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
 
-export async function connectToDatabase(): Promise<void> {
-  if (isConnected) {
-    return;
+declare global {
+  // Reuse the same connection across warm serverless invocations and local reloads.
+  var __mongooseCache__: MongooseCache | undefined;
+}
+
+const mongooseCache = globalThis.__mongooseCache__ ?? {
+  conn: null,
+  promise: null,
+};
+
+globalThis.__mongooseCache__ = mongooseCache;
+
+export async function connectToDatabase(): Promise<typeof mongoose> {
+  if (mongooseCache.conn) {
+    return mongooseCache.conn;
   }
 
-  await mongoose.connect(env.mongodbUri, {
-    dbName: 'gess-mini-app',
-  });
+  if (!mongooseCache.promise) {
+    mongooseCache.promise = mongoose.connect(env.mongodbUri, {
+      dbName: env.mongodbDbName,
+    });
+  }
 
-  isConnected = true;
+  try {
+    mongooseCache.conn = await mongooseCache.promise;
+    return mongooseCache.conn;
+  } catch (error) {
+    mongooseCache.promise = null;
+    throw error;
+  }
 }
