@@ -1,12 +1,17 @@
-import cors from 'cors';
+import { createRequire } from 'node:module';
 import express, { type Express } from 'express';
-import helmet from 'helmet';
 import { env } from '../config/env.js';
 import { errorHandler, notFoundHandler } from '../middlewares/errorHandler.js';
 import authRoutes from '../routes/auth.js';
 import healthRoutes from '../routes/health.js';
 import leaderboardRoutes from '../routes/leaderboards.js';
 import scoreRoutes from '../routes/scores.js';
+
+const require = createRequire(import.meta.url);
+const cors = require('cors') as (
+  options?: import('cors').CorsOptions | import('cors').CorsOptionsDelegate,
+) => express.RequestHandler;
+const helmet = require('helmet') as typeof import('helmet').default;
 
 let appInstance: Express | null = null;
 
