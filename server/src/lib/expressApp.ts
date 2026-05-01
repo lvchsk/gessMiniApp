@@ -1,12 +1,12 @@
 import cors from 'cors';
 import express, { type Express } from 'express';
 import helmet from 'helmet';
-import { env } from './config/env.js';
-import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js';
-import authRoutes from './routes/auth.js';
-import healthRoutes from './routes/health.js';
-import leaderboardRoutes from './routes/leaderboards.js';
-import scoreRoutes from './routes/scores.js';
+import { env } from '../config/env.js';
+import { errorHandler, notFoundHandler } from '../middlewares/errorHandler.js';
+import authRoutes from '../routes/auth.js';
+import healthRoutes from '../routes/health.js';
+import leaderboardRoutes from '../routes/leaderboards.js';
+import scoreRoutes from '../routes/scores.js';
 
 let appInstance: Express | null = null;
 

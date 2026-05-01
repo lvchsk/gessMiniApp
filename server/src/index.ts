@@ -1,5 +1,5 @@
 import 'express';
-import { getApp } from './app.js';
+import { getApp } from './lib/expressApp.js';
 import { connectToDatabase } from './config/database.js';
 
 await connectToDatabase();
