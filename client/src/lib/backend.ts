@@ -28,6 +28,8 @@ export interface LeaderboardItem {
   score: number;
 }
 
+const DEFAULT_PRODUCTION_API_BASE_URL = 'https://gess-mini-app-server.vercel.app';
+
 interface LeaderboardResponse {
   game: BackendGame;
   total: number;
@@ -54,8 +56,7 @@ function getApiBaseUrl(): string {
     return (isLocalHost ? 'http://localhost:4000' : window.location.origin).replace(/\/+$/, '');
   }
 
-  const baseUrl = window.location.origin;
-  return baseUrl.replace(/\/+$/, '');
+  return DEFAULT_PRODUCTION_API_BASE_URL;
 }
 
 async function requestJson<T>(path: string, options: RequestOptions = {}): Promise<T> {
