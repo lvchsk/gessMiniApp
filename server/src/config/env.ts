@@ -2,6 +2,18 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+export interface Env {
+  nodeEnv: string;
+  port: number;
+  mongodbUri: string;
+  mongodbDbName: string;
+  telegramBotToken: string;
+  jwtSecret: string;
+  jwtExpiresIn: string;
+  telegramInitDataMaxAgeSeconds: number;
+  corsOrigins: string[];
+}
+
 function requireEnv(name: string): string {
   const value = process.env[name];
 
@@ -41,14 +53,32 @@ function parseCorsOrigins(): string[] {
     .filter(Boolean);
 }
 
-export const env = {
-  nodeEnv: process.env.NODE_ENV ?? 'development',
-  port: parseNumber('PORT', 4000),
-  mongodbUri: requireEnv('MONGODB_URI'),
-  mongodbDbName: process.env.MONGODB_DB_NAME?.trim() || 'gess-mini-app',
-  telegramBotToken: requireEnv('TELEGRAM_BOT_TOKEN'),
-  jwtSecret: requireEnv('JWT_SECRET'),
-  jwtExpiresIn: process.env.JWT_EXPIRES_IN ?? '7d',
-  telegramInitDataMaxAgeSeconds: parseNumber('TELEGRAM_INIT_DATA_MAX_AGE_SECONDS', 86_400),
-  corsOrigins: parseCorsOrigins(),
+export const env: Env = {
+  get nodeEnv() {
+    return process.env.NODE_ENV ?? 'development';
+  },
+  get port() {
+    return parseNumber('PORT', 4000);
+  },
+  get mongodbUri() {
+    return requireEnv('MONGODB_URI');
+  },
+  get mongodbDbName() {
+    return process.env.MONGODB_DB_NAME?.trim() || 'gess-mini-app';
+  },
+  get telegramBotToken() {
+    return requireEnv('TELEGRAM_BOT_TOKEN');
+  },
+  get jwtSecret() {
+    return requireEnv('JWT_SECRET');
+  },
+  get jwtExpiresIn() {
+    return process.env.JWT_EXPIRES_IN ?? '7d';
+  },
+  get telegramInitDataMaxAgeSeconds() {
+    return parseNumber('TELEGRAM_INIT_DATA_MAX_AGE_SECONDS', 86_400);
+  },
+  get corsOrigins() {
+    return parseCorsOrigins();
+  },
 };
