@@ -25,7 +25,6 @@ export async function findOrCreateUser(telegramId: number, username: string): Pr
     {
       $setOnInsert: {
         telegramId,
-        username,
       },
       $set: {
         username,
