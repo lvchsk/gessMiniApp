@@ -14,6 +14,7 @@ const authLimiter = rateLimit({
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: false,
 });
 
 router.post(

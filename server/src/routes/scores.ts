@@ -12,6 +12,7 @@ const scoreLimiter = rateLimit({
   max: 60,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: false,
 });
 
 function parseGame(value: string): ScoreGame {
