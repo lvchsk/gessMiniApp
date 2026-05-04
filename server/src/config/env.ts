@@ -53,6 +53,27 @@ function parseCorsOrigins(): string[] {
     .filter(Boolean);
 }
 
+function isVercelPreviewOrigin(origin: string): boolean {
+  try {
+    const url = new URL(origin);
+    return url.protocol === 'https:' && url.hostname.endsWith('.vercel.app');
+  } catch {
+    return false;
+  }
+}
+
+export function isAllowedCorsOrigin(origin: string | undefined): boolean {
+  if (!origin) {
+    return true;
+  }
+
+  if (parseCorsOrigins().includes(origin)) {
+    return true;
+  }
+
+  return isVercelPreviewOrigin(origin);
+}
+
 export const env: Env = {
   get nodeEnv() {
     return process.env.NODE_ENV ?? 'development';

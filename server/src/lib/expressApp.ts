@@ -1,6 +1,6 @@
 import { createRequire } from 'node:module';
 import express, { type Express } from 'express';
-import { env } from '../config/env.js';
+import { env, isAllowedCorsOrigin } from '../config/env.js';
 import { ensureDatabaseConnection } from '../middlewares/database.js';
 import { errorHandler, notFoundHandler } from '../middlewares/errorHandler.js';
 import authRoutes from '../routes/auth.js';
@@ -24,7 +24,7 @@ function buildApp(): Express {
   app.use(
     cors({
       origin(origin, callback) {
-        if (!origin || env.corsOrigins.includes(origin)) {
+        if (isAllowedCorsOrigin(origin)) {
           callback(null, true);
           return;
         }
