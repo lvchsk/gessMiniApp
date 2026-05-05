@@ -57,7 +57,6 @@ export default function GameUI({
             <ResultLeaderboard
               game='match'
               items={leaderboardItems}
-              scoreLabel='кепок'
               isLoading={isLeaderboardLoading}
             />
           </div>

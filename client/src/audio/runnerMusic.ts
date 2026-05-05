@@ -13,7 +13,7 @@ function getRunnerAudio(): HTMLAudioElement | null {
   if (!runnerAudio) {
     runnerAudio = new Audio(RUNNER_SOUNDTRACK_SRC);
     runnerAudio.loop = true;
-    runnerAudio.preload = 'auto';
+    runnerAudio.preload = 'none';
     runnerAudio.volume = RUNNER_VOLUME;
   }
 

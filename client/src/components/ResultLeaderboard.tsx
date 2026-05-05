@@ -6,7 +6,6 @@ import './ResultLeaderboard.styles.css';
 interface Props {
   game: BackendGame;
   items: LeaderboardItem[];
-  scoreLabel: string;
   isLoading: boolean;
   showTopThree?: boolean;
   className?: string;
@@ -22,10 +21,13 @@ const TITLE_COIN_BY_GAME: Record<BackendGame, string> = {
   runner: '/assets/nichego_coin.svg',
 };
 
+function getDisplayName(username: string): string {
+  return Array.from(username).slice(0, 11).join('');
+}
+
 export default function ResultLeaderboard({
   game,
   items,
-  scoreLabel,
   isLoading,
   showTopThree = true,
   className,
@@ -81,15 +83,33 @@ export default function ResultLeaderboard({
         {isLoading ? (
           <div className='result_leaderboard__modal_empty'>Загрузка...</div>
         ) : leaders.length > 0 ? (
-          leaders.map((item) => (
-            <div className='result_leaderboard__modal_item' key={`${game}-top-${item.rank}-${item.username}`}>
-              <span className='result_leaderboard__modal_rank'>#{item.rank}</span>
-              <span className='result_leaderboard__modal_name'>{item.username}</span>
-              <span className='result_leaderboard__modal_score'>
-                {item.score} {scoreLabel}
-              </span>
-            </div>
-          ))
+          leaders.map((item) => {
+            const displayName = getDisplayName(item.username);
+
+            return (
+              <div
+                className='result_leaderboard__modal_item'
+                key={`${game}-top-${item.rank}-${item.username}`}
+              >
+                <span className='result_leaderboard__modal_rank'>#{item.rank}</span>
+                <span className='result_leaderboard__modal_name' title={item.username}>
+                  {displayName}
+                </span>
+                <span
+                  className='result_leaderboard__modal_score'
+                  aria-label={`${item.score} ${TITLE_LABEL_BY_GAME[game]}`}
+                >
+                  <span>{item.score}</span>
+                  <img
+                    className='result_leaderboard__score_icon'
+                    src={TITLE_COIN_BY_GAME[game]}
+                    alt=''
+                    aria-hidden='true'
+                  />
+                </span>
+              </div>
+            );
+          })
         ) : (
           <div className='result_leaderboard__modal_empty'>Лидеров пока нет</div>
         )}
@@ -104,20 +124,35 @@ export default function ResultLeaderboard({
           {isLoading ? (
             <div className='result_leaderboard__empty'>Загрузка...</div>
           ) : topThree.length > 0 ? (
-            topThree.map((item, index) => (
-              <div className='result_leaderboard__preview_item' key={`${game}-${item.rank}-${item.username}`}>
-                <img
-                  className='result_leaderboard__badge'
-                  src={`/assets/leader_${index + 1}.svg`}
-                  alt=''
-                  aria-hidden='true'
-                />
-                <span className='result_leaderboard__name'>{item.username}</span>
-                <span className='result_leaderboard__score'>
-                  {item.score} {scoreLabel}
-                </span>
-              </div>
-            ))
+            topThree.map((item, index) => {
+              const displayName = getDisplayName(item.username);
+
+              return (
+                <div className='result_leaderboard__preview_item' key={`${game}-${item.rank}-${item.username}`}>
+                  <img
+                    className='result_leaderboard__badge'
+                    src={`/assets/leader_${index + 1}.svg`}
+                    alt=''
+                    aria-hidden='true'
+                  />
+                  <span className='result_leaderboard__name' title={item.username}>
+                    {displayName}
+                  </span>
+                  <span
+                    className='result_leaderboard__score'
+                    aria-label={`${item.score} ${TITLE_LABEL_BY_GAME[game]}`}
+                  >
+                    <span>{item.score}</span>
+                    <img
+                      className='result_leaderboard__score_icon'
+                      src={TITLE_COIN_BY_GAME[game]}
+                      alt=''
+                      aria-hidden='true'
+                    />
+                  </span>
+                </div>
+              );
+            })
           ) : (
             <div className='result_leaderboard__empty'>Лидеров пока нет</div>
           )}

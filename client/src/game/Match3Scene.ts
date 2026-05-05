@@ -1,5 +1,14 @@
 import Phaser from "phaser";
-import { GEM_ASSET_COUNT, GRID_SIZE, TILE_SIZE, OFFSET_X, OFFSET_Y, TILE_TYPES } from "./config";
+import {
+  GEM_ASSET_COUNT,
+  GRID_COLUMNS,
+  GRID_ROWS,
+  TILE_GAP,
+  TILE_SIZE,
+  OFFSET_X,
+  OFFSET_Y,
+  TILE_TYPES,
+} from "./config";
 
 import type { Grid, Tile } from "./types";
 
@@ -46,10 +55,10 @@ export default class Match3Scene extends Phaser.Scene {
   private createBoard(): void {
     this.grid = [];
 
-    for (let y = 0; y < GRID_SIZE; y++) {
+    for (let y = 0; y < GRID_ROWS; y++) {
       const row: (Tile | null)[] = [];
 
-      for (let x = 0; x < GRID_SIZE; x++) {
+      for (let x = 0; x < GRID_COLUMNS; x++) {
         const type = Phaser.Math.Between(0, TILE_TYPES - 1);
         row.push(this.createTile(x, y, type, y));
       }
@@ -75,7 +84,7 @@ export default class Match3Scene extends Phaser.Scene {
       texture,
     );
 
-    sprite.setDisplaySize(TILE_SIZE - 4, TILE_SIZE - 4);
+    sprite.setDisplaySize(TILE_SIZE - TILE_GAP, TILE_SIZE - TILE_GAP);
     sprite.setInteractive();
 
     const tile: Tile = {

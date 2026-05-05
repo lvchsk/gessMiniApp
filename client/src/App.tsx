@@ -32,18 +32,16 @@ const EMPTY_LEADERBOARDS: Record<BackendGame, LeaderboardItem[]> = {
   match: [],
 };
 
-function getScoreSyncMessage(game: BackendGame, status: ScoreSyncStatus): string {
+function getScoreSyncMessage(_game: BackendGame, status: ScoreSyncStatus): string {
   if (status === 'synced') {
-    return game === 'runner'
-      ? 'Результат раннера сохранён и отправлен в лидерборд.'
-      : 'Результат 3 в ряд сохранён и отправлен в лидерборд.';
+    return 'новый рекорд!';
   }
 
   if (status === 'guest') {
     return 'Открой приложение внутри Telegram, чтобы результат попадал в лидерборд.';
   }
 
-  return 'Новый рекорд не побит, поэтому лидерборд не изменился.';
+  return '';
 }
 
 export default function App() {

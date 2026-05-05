@@ -4,7 +4,7 @@ export interface AssetPreloadProgress {
   progress: number;
 }
 
-type AssetKind = 'audio' | 'font' | 'image';
+type AssetKind = 'font' | 'image';
 
 interface AssetEntry {
   kind: AssetKind;
@@ -35,10 +35,6 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/leader_3.svg' },
   { kind: 'image', path: '/favicon.svg' },
   { kind: 'image', path: '/icons.svg' },
-  { kind: 'audio', path: '/assets/soundtrack_menu_main.mp3' },
-  { kind: 'audio', path: '/assets/soundtrack3_in_a_row.m4a' },
-  { kind: 'audio', path: '/assets/soundtrack_runner.m4a' },
-  { kind: 'audio', path: '/assets/soundtrack_runner_underdog.mp3' },
 ];
 
 function preloadImage(path: string): Promise<void> {

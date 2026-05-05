@@ -13,7 +13,7 @@ function getShipmentAudio(): HTMLAudioElement | null {
   if (!shipmentAudio) {
     shipmentAudio = new Audio(RUNNER_SHIPMENT_SOUNDTRACK_SRC);
     shipmentAudio.loop = true;
-    shipmentAudio.preload = 'auto';
+    shipmentAudio.preload = 'none';
     shipmentAudio.volume = RUNNER_SHIPMENT_VOLUME;
   }
 

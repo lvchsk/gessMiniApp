@@ -90,7 +90,14 @@ export default function RunnerUI({
           <div className='runner_ui__shipment_message'>
             поздравляю!
             <br />
-            ты набрал 3500 ничегошек! отгрузки начнутся
+            ты набрал 3500
+            <img
+              className='runner_ui__shipment_message_icon'
+              src='/assets/nichego_coin.svg'
+              alt=''
+              aria-hidden='true'
+            />
+            ! отгрузки начнутся
           </div>
           <div className='runner_ui__shipment_sprite' aria-hidden='true'>
             <div className='runner_ui__shipment_sprite_track' />
@@ -99,7 +106,6 @@ export default function RunnerUI({
             className='runner_ui__shipment_leaderboard'
             game='runner'
             items={leaderboardItems}
-            scoreLabel='ничегошек'
             isLoading={isLeaderboardLoading}
             showTopThree={false}
           />
@@ -133,7 +139,6 @@ export default function RunnerUI({
             <ResultLeaderboard
               game='runner'
               items={leaderboardItems}
-              scoreLabel='ничегошек'
               isLoading={isLeaderboardLoading}
             />
           </div>

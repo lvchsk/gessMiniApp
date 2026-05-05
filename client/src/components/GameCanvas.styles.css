@@ -14,8 +14,8 @@
 }
 
 .game_canvas__mount {
-    width: min(100%, 420px);
-    aspect-ratio: 1 / 1;
+    width: min(100%, 390px);
+    aspect-ratio: 3 / 5;
     height: auto;
     display: flex;
     align-items: center;
@@ -28,7 +28,7 @@
     display: block;
     width: 100% !important;
     height: 100% !important;
-    border-radius: clamp(18px, calc(var(--app-vw) * 3), 28px);
+    border-radius: 0;
     box-shadow:
         0 24px 70px rgba(0, 0, 0, 0.45),
         0 0 0 1px rgba(255, 255, 255, 0.08);

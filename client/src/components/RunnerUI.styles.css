@@ -11,7 +11,13 @@
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    padding: max(104px, calc(env(safe-area-inset-top) + 100px)) 20px 20px;
+    padding:
+        max(
+            clamp(62px, calc(var(--app-vh) * 10.8), 78px),
+            calc(env(safe-area-inset-top) + clamp(54px, calc(var(--app-vh) * 9.5), 72px))
+        )
+        20px
+        20px;
 }
 
 .runner_ui__back,
@@ -200,6 +206,16 @@
     text-shadow: 0 5px 18px rgba(0, 0, 0, 0.38);
 }
 
+.runner_ui__shipment_message_icon {
+    display: inline-block;
+    width: 1.05em;
+    height: 1.05em;
+    margin: 0 0.12em;
+    object-fit: contain;
+    transform: translateY(0.12em);
+    vertical-align: baseline;
+}
+
 .runner_ui__shipment_leaderboard {
     position: relative;
     z-index: 2;
@@ -304,7 +320,13 @@
 
 @media (max-width: 640px), (hover: hover) and (pointer: fine) and (min-width: 768px) {
     .runner_ui__topbar {
-        padding: max(94px, calc(env(safe-area-inset-top) + 90px)) 14px 14px;
+        padding:
+            max(
+                clamp(56px, calc(var(--app-vh) * 10), 70px),
+                calc(env(safe-area-inset-top) + clamp(48px, calc(var(--app-vh) * 8.7), 64px))
+            )
+            14px
+            14px;
     }
 
     .runner_ui__score {

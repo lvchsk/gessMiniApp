@@ -2,13 +2,14 @@ import type { Grid, Tile } from './types';
 
 export function findMatchGroups(grid: Grid): Tile[][] {
   const groups: Tile[][] = [];
-  const size = grid.length;
+  const rows = grid.length;
+  const columns = grid[0]?.length ?? 0;
 
   // горизонталь
-  for (let y = 0; y < size; y++) {
+  for (let y = 0; y < rows; y++) {
     let run: Tile[] = [];
 
-    for (let x = 0; x < size; x++) {
+    for (let x = 0; x < columns; x++) {
       const tile = grid[y][x];
 
       if (
@@ -26,10 +27,10 @@ export function findMatchGroups(grid: Grid): Tile[][] {
   }
 
   // вертикаль
-  for (let x = 0; x < size; x++) {
+  for (let x = 0; x < columns; x++) {
     let run: Tile[] = [];
 
-    for (let y = 0; y < size; y++) {
+    for (let y = 0; y < rows; y++) {
       const tile = grid[y][x];
 
       if (

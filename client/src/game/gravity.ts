@@ -2,12 +2,13 @@ import type { Grid, Tile } from './types';
 
 export function collapse(grid: Grid): Tile[] {
   const moved: Tile[] = [];
-  const size = grid.length;
+  const rows = grid.length;
+  const columns = grid[0]?.length ?? 0;
 
-  for (let x = 0; x < size; x++) {
-    let writeY = size - 1;
+  for (let x = 0; x < columns; x++) {
+    let writeY = rows - 1;
 
-    for (let y = size - 1; y >= 0; y--) {
+    for (let y = rows - 1; y >= 0; y--) {
       const tile = grid[y][x];
 
       if (!tile) continue;

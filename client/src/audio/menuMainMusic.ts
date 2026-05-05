@@ -13,7 +13,7 @@ function getMenuMainAudio(): HTMLAudioElement | null {
   if (!menuMainAudio) {
     menuMainAudio = new Audio(MENU_MAIN_SOUNDTRACK_SRC);
     menuMainAudio.loop = true;
-    menuMainAudio.preload = 'auto';
+    menuMainAudio.preload = 'none';
     menuMainAudio.volume = MENU_MAIN_VOLUME;
   }
 

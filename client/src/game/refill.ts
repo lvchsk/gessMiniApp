@@ -8,16 +8,17 @@ export function refill(
   createTile: (x: number, y: number, type: number, spawnY: number) => Tile,
 ): Tile[] {
   const created: Tile[] = [];
-  const size = grid.length;
+  const rows = grid.length;
+  const columns = grid[0]?.length ?? 0;
 
-  for (let x = 0; x < size; x++) {
+  for (let x = 0; x < columns; x++) {
     let emptyCount = 0;
 
-    for (let y = size - 1; y >= 0; y--) {
+    for (let y = rows - 1; y >= 0; y--) {
       if (!grid[y][x]) emptyCount++;
     }
 
-    for (let y = 0; y < size; y++) {
+    for (let y = 0; y < rows; y++) {
       if (grid[y][x]) continue;
 
       const type = Phaser.Math.Between(0, TILE_TYPES - 1);
