@@ -11,16 +11,17 @@
 }
 
 .game_ui__topbar {
-    width: min(100%, 420px);
-    margin: 0 auto;
+    position: absolute;
+    top: max(
+        clamp(56px, calc(var(--app-vh) * 10), 72px),
+        calc(env(safe-area-inset-top) + clamp(48px, calc(var(--app-vh) * 8.7), 64px))
+    );
+    left: max(14px, env(safe-area-inset-left));
+    right: max(14px, env(safe-area-inset-right));
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding-top: max(
-        clamp(54px, calc(var(--app-vh) * 10), 72px),
-        calc(env(safe-area-inset-top) + clamp(48px, calc(var(--app-vh) * 8.8), 66px))
-    );
+    gap: 10px;
     box-sizing: border-box;
 }
 
@@ -48,6 +49,8 @@
 .game_ui__back {
     background: rgba(19, 15, 29, 0.72);
     color: #f6efff;
+    padding: 8px 13px;
+    font-size: clamp(12px, calc(var(--app-vw) * 3.45), 14px);
 }
 
 .game_ui__back:hover,
@@ -66,9 +69,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 9px 14px;
-    font: 700 16px/1 var(--ui-font);
+    gap: 6px;
+    padding: 6px 10px;
+    font: 700 clamp(12px, calc(var(--app-vw) * 3.45), 14px)/1 var(--ui-font);
     flex: 0 0 auto;
     min-width: fit-content;
     white-space: nowrap;
@@ -82,8 +85,8 @@
 }
 
 .game_ui__score_icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
     flex: 0 0 auto;
 }
@@ -147,22 +150,21 @@
     }
 
     .game_ui__topbar {
-        width: 100%;
-        padding-top: max(
-            clamp(48px, calc(var(--app-vh) * 9.2), 64px),
-            calc(env(safe-area-inset-top) + clamp(42px, calc(var(--app-vh) * 8), 58px))
+        top: max(
+            clamp(52px, calc(var(--app-vh) * 9.4), 66px),
+            calc(env(safe-area-inset-top) + clamp(44px, calc(var(--app-vh) * 8.2), 58px))
         );
+        left: max(12px, env(safe-area-inset-left));
+        right: max(12px, env(safe-area-inset-right));
     }
 
-    .game_ui__back,
-    .game_ui__score,
     .game_ui__confirm {
         font-size: 15px;
     }
 
     .game_ui__score_icon {
-        width: 26px;
-        height: 26px;
+        width: 22px;
+        height: 22px;
     }
 
     .game_ui__title {
