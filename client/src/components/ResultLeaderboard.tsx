@@ -22,7 +22,19 @@ const TITLE_COIN_BY_GAME: Record<BackendGame, string> = {
 };
 
 function getDisplayName(username: string): string {
-  return Array.from(username).slice(0, 11).join('');
+  return Array.from(username).slice(0, 12).join('');
+}
+
+function formatLeaderboardScore(score: number): string {
+  const normalizedScore = Math.max(0, Math.floor(score));
+
+  if (normalizedScore < 10000) {
+    return String(normalizedScore);
+  }
+
+  const thousands = Math.round((normalizedScore / 1000) * 10) / 10;
+
+  return `${Number.isInteger(thousands) ? thousands.toFixed(0) : thousands.toFixed(1)}k`;
 }
 
 export default function ResultLeaderboard({
@@ -85,6 +97,7 @@ export default function ResultLeaderboard({
         ) : leaders.length > 0 ? (
           leaders.map((item) => {
             const displayName = getDisplayName(item.username);
+            const displayScore = formatLeaderboardScore(item.score);
 
             return (
               <div
@@ -99,7 +112,7 @@ export default function ResultLeaderboard({
                   className='result_leaderboard__modal_score'
                   aria-label={`${item.score} ${TITLE_LABEL_BY_GAME[game]}`}
                 >
-                  <span>{item.score}</span>
+                  <span>{displayScore}</span>
                   <img
                     className='result_leaderboard__score_icon'
                     src={TITLE_COIN_BY_GAME[game]}
@@ -126,6 +139,7 @@ export default function ResultLeaderboard({
           ) : topThree.length > 0 ? (
             topThree.map((item, index) => {
               const displayName = getDisplayName(item.username);
+              const displayScore = formatLeaderboardScore(item.score);
 
               return (
                 <div className='result_leaderboard__preview_item' key={`${game}-${item.rank}-${item.username}`}>
@@ -142,7 +156,7 @@ export default function ResultLeaderboard({
                     className='result_leaderboard__score'
                     aria-label={`${item.score} ${TITLE_LABEL_BY_GAME[game]}`}
                   >
-                    <span>{item.score}</span>
+                    <span>{displayScore}</span>
                     <img
                       className='result_leaderboard__score_icon'
                       src={TITLE_COIN_BY_GAME[game]}
