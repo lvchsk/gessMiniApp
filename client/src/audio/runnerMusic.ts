@@ -1,3 +1,5 @@
+import { isGameMusicEnabled } from './musicPreference';
+
 const RUNNER_SOUNDTRACK_SRC = '/assets/soundtrack_runner.m4a';
 const RUNNER_VOLUME = 0.42;
 
@@ -19,6 +21,10 @@ function getRunnerAudio(): HTMLAudioElement | null {
 }
 
 export async function playRunnerMusic(): Promise<boolean> {
+  if (!isGameMusicEnabled()) {
+    return false;
+  }
+
   const audio = getRunnerAudio();
   if (!audio) {
     return false;

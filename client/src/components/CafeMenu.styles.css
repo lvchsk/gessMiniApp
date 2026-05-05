@@ -3,7 +3,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100svh;
+    min-height: var(--app-height);
+    height: var(--app-height);
     overflow: hidden;
     background-image:
         linear-gradient(180deg, rgba(17, 12, 10, 0.28), rgba(17, 12, 10, 0.58)),
@@ -13,173 +14,141 @@
     background-size: cover;
 }
 
-.cafe_menu__actions {
+.cafe_menu__hitbox {
     position: absolute;
-    inset: 0;
-    pointer-events: none;
-}
-
-.menu_button {
-    pointer-events: auto;
-    min-width: 168px;
-    border: 1px solid rgba(255, 236, 211, 0.8);
-    border-radius: 18px;
-    padding: 16px 28px;
-    font: 700 24px/1.1 var(--ui-font);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #fff7ea;
-    box-shadow:
-        0 14px 24px rgba(25, 8, 3, 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.32);
-    transition:
-        transform 160ms ease,
-        box-shadow 160ms ease,
-        filter 160ms ease,
-        background-color 160ms ease;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: transparent;
     cursor: pointer;
-    user-select: none;
     -webkit-tap-highlight-color: transparent;
-}
-
-.menu_button:hover {
-    transform: translateY(-3px) scale(1.02);
-    filter: brightness(1.05);
-    box-shadow:
-        0 18px 28px rgba(25, 8, 3, 0.32),
-        inset 0 1px 0 rgba(255, 255, 255, 0.35);
-}
-
-.menu_button:active {
-    transform: translateY(1px) scale(0.985);
-    box-shadow:
-        0 8px 14px rgba(25, 8, 3, 0.24),
-        inset 0 2px 3px rgba(0, 0, 0, 0.18);
-}
-
-.menu_button:focus-visible {
-    outline: 3px solid rgba(255, 249, 225, 0.9);
-    outline-offset: 4px;
-}
-
-.menu_button--primary {
-    background: linear-gradient(180deg, #c67f35, #8f4a13);
-}
-
-.menu_button--secondary {
-    background: linear-gradient(180deg, #d59b4a, #9d5f21);
-}
-
-.menu_button--ghost {
-    background: rgba(39, 20, 9, 0.72);
-    backdrop-filter: blur(3px);
-}
-
-.cafe_menu__button {
-    position: absolute;
-    top: 50%;
-}
-
-.cafe_menu__button--left {
-    left: calc(50% - 230px);
-}
-
-.cafe_menu__button--right {
-    left: calc(50% + 40px);
-}
-
-.cafe_menu__back {
-    position: absolute;
-    left: 32px;
-    bottom: 32px;
-    min-width: 132px;
-    z-index: 3;
-}
-
-.cafe_menu__status {
-    position: absolute;
-    top: max(24px, calc(env(safe-area-inset-top) + 12px));
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(420px, calc(100% - 40px));
-    padding: 14px 18px;
-    border: 1px solid rgba(255, 236, 211, 0.72);
-    border-radius: 22px;
-    background: rgba(31, 16, 8, 0.74);
-    backdrop-filter: blur(8px);
-    color: #fff7ea;
-    box-shadow: 0 14px 28px rgba(25, 8, 3, 0.28);
     z-index: 2;
 }
 
-.cafe_menu__player {
-    font: 700 16px/1.2 var(--ui-font);
+.cafe_menu__hitbox:focus-visible {
+    outline: 3px solid rgba(255, 249, 225, 0.86);
+    outline-offset: 3px;
 }
 
-.cafe_menu__sync {
-    margin-top: 8px;
-    font: 400 11px/1.45 var(--ui-font);
-    color: rgba(255, 247, 234, 0.84);
+.cafe_menu__music_toggle {
+    position: absolute;
+    top: 12.2%;
+    right: 5.4%;
+    z-index: 3;
+    width: clamp(54px, calc(var(--app-width) * 0.16), 70px);
+    aspect-ratio: 1;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    filter: drop-shadow(0 10px 16px rgba(8, 3, 1, 0.32));
+    transition: filter 160ms ease, opacity 160ms ease, transform 160ms ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
-@media (max-width: 900px) {
-    .menu_button {
-        min-width: 148px;
-        padding: 14px 24px;
-        font-size: 20px;
-    }
-
-    .cafe_menu__button--left {
-        left: calc(50% - 176px);
-    }
-
-    .cafe_menu__button--right {
-        left: calc(50% + 12px);
-    }
-
-    .cafe_menu__back {
-        bottom: 28px;
-    }
+.cafe_menu__music_toggle::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 86%;
+    height: 8px;
+    border-radius: 999px;
+    background: #bf271f;
+    box-shadow: 0 0 0 3px rgba(255, 242, 221, 0.38);
+    content: '';
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-38deg);
+    transition: opacity 160ms ease;
 }
 
-@media (max-width: 640px) {
-    .cafe_menu__status {
-        top: max(18px, calc(env(safe-area-inset-top) + 10px));
-        width: calc(100% - 28px);
-        padding: 12px 14px;
-    }
-
-    .cafe_menu__player {
-        font-size: 14px;
-    }
-
-    .cafe_menu__sync {
-        font-size: 10px;
-    }
-
+.cafe_menu__music_toggle--off {
+    filter: grayscale(0.72) drop-shadow(0 8px 14px rgba(8, 3, 1, 0.3));
+    opacity: 0.76;
 }
 
-@media (max-width: 540px) {
-    .cafe_menu__actions {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        gap: 14px;
-        padding: 0 20px 150px;
-    }
+.cafe_menu__music_toggle--off::after {
+    opacity: 1;
+}
 
-    .cafe_menu__button {
-        position: static;
-        width: 100%;
-        max-width: 280px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+.cafe_menu__music_toggle:active {
+    transform: scale(0.94);
+}
 
-    .cafe_menu__back {
-        left: 20px;
-        right: 20px;
-        bottom: 60px;
-        width: auto;
-    }
+.cafe_menu__music_toggle:focus-visible {
+    outline: 3px solid rgba(255, 249, 225, 0.86);
+    outline-offset: 4px;
+}
+
+.cafe_menu__music_toggle_sprite {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.cafe_menu__hitbox--runner {
+    left: 72%;
+    top: 25%;
+    width: 27%;
+    height: 36%;
+}
+
+.cafe_menu__hitbox--match {
+    left: 8%;
+    top: 65%;
+    width: 42%;
+    height: 23%;
+}
+
+.cafe_menu__hitbox--listik {
+    left: 8%;
+    top: 88%;
+    width: 48%;
+    height: 10%;
+}
+
+.cafe_menu__hitbox--kepka {
+    left: 33%;
+    top: 41%;
+    width: 40%;
+    height: 24%;
+}
+
+.cafe_menu__popup {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    gap: 18px;
+    align-content: center;
+    border: 0;
+    padding:
+        max(24px, env(safe-area-inset-top))
+        max(18px, env(safe-area-inset-right))
+        max(24px, env(safe-area-inset-bottom))
+        max(18px, env(safe-area-inset-left));
+    background: rgba(14, 7, 4, 0.92);
+    color: #fff8ec;
+    font-family: var(--ui-font);
+    cursor: pointer;
+}
+
+.cafe_menu__popup_title {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    font-size: clamp(28px, calc(var(--app-vw) * 8), 46px);
+    font-weight: 900;
+    line-height: 1.05;
+    text-overflow: clip;
+    text-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+    white-space: nowrap;
+}
+
+.cafe_menu__popup_hint {
+    display: block;
+    color: rgba(255, 248, 236, 0.72);
+    font-size: 13px;
+    font-weight: 700;
 }

@@ -25,6 +25,14 @@
   --sans: var(--ui-font);
   --heading: var(--ui-font);
   --mono: var(--ui-font);
+  --iphone-15-pro-max-width: 430px;
+  --iphone-15-pro-max-height: 932px;
+  --app-width: 100vw;
+  --app-height: 100svh;
+  --app-vw: calc(var(--app-width) / 100);
+  --app-vh: calc(var(--app-height) / 100);
+  --app-vmin: min(var(--app-width), var(--app-height));
+  --app-radius: 0px;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
@@ -62,27 +70,27 @@
 }
 
 #root {
-  width: 100%;
-  max-width: 1126px;
+  position: relative;
+  width: var(--app-width);
   margin: 0 auto;
   text-align: center;
-  min-height: 100svh;
+  min-height: var(--app-height);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-}
-
-@media (min-width: 1180px) {
-  #root {
-    border-inline: 1px solid var(--border);
-  }
+  overflow: hidden;
+  background: #120f18;
+  container: app / size;
 }
 
 body {
   margin: 0;
   min-height: 100svh;
-  background: #120f18;
+  background:
+    radial-gradient(circle at top, rgba(214, 155, 74, 0.2), transparent 32%),
+    linear-gradient(180deg, #0d0a12 0%, #1d140d 100%);
   font-family: var(--ui-font);
+  overflow-x: hidden;
 }
 
 html,
@@ -148,4 +156,31 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+  :root {
+    --app-width: var(--iphone-15-pro-max-width);
+    --app-height: min(var(--iphone-15-pro-max-height), calc(100svh - 32px));
+    --app-radius: 46px;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+
+  #root {
+    height: var(--app-height);
+    min-height: 0;
+    border: 1px solid rgba(255, 248, 236, 0.14);
+    border-radius: var(--app-radius);
+    box-shadow:
+      0 28px 80px rgba(0, 0, 0, 0.46),
+      0 0 0 10px rgba(255, 255, 255, 0.025);
+  }
 }

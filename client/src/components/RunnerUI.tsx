@@ -5,6 +5,7 @@ import {
   stopRunnerShipmentMusic,
 } from '../audio/runnerShipmentMusic';
 import type { LeaderboardItem } from '../lib/backend';
+import { RUNNER_END_EVENT } from '../runner/config';
 import ResultLeaderboard from './ResultLeaderboard';
 import './RunnerUI.styles.css';
 
@@ -49,14 +50,31 @@ export default function RunnerUI({
     }
   };
 
+  const handleBack = () => {
+    if (isGameOver) {
+      onExit();
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent(RUNNER_END_EVENT));
+  };
+
   return (
     <div className='runner_ui'>
       {!showShipmentReward ? (
         <div className='runner_ui__topbar'>
-          <button className='runner_ui__back' onClick={onExit}>
+          <button className='runner_ui__back' onClick={handleBack}>
             Назад
           </button>
-          <div className='runner_ui__score'>Ничего: {score}</div>
+          <div className='runner_ui__score' aria-label={`Ничегошек: ${score}`}>
+            <img
+              className='runner_ui__score_icon'
+              src='/assets/nichego_coin.svg'
+              alt=''
+              aria-hidden='true'
+            />
+            <span className='runner_ui__score_value'>{score}</span>
+          </div>
         </div>
       ) : null}
 
@@ -90,11 +108,17 @@ export default function RunnerUI({
         <div className='runner_ui__overlay'>
           <div className='runner_ui__card'>
             <div className='runner_ui__title'>Забег окончен</div>
-            <div className='runner_ui__result'>Итог: {finalScore}</div>
-            {resultMessage ? <div className='runner_ui__result_note'>{resultMessage}</div> : null}
-            <div className='runner_ui__hint'>
-              Нажми пробел, тапни по экрану или используй кнопку ниже, чтобы начать заново.
+            <div className='runner_ui__result' aria-label={`Итог: ${finalScore} ничегошек`}>
+              <span>Итог:</span>
+              <img
+                className='runner_ui__result_icon'
+                src='/assets/nichego_coin.svg'
+                alt=''
+                aria-hidden='true'
+              />
+              <span>{finalScore}</span>
             </div>
+            {resultMessage ? <div className='runner_ui__result_note'>{resultMessage}</div> : null}
             <div className='runner_ui__actions'>
               <button
                 className='runner_ui__restart'

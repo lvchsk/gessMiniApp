@@ -31,14 +31,21 @@ export default function GameUI({
         <button className='game_ui__back' onClick={onExitRequest}>
           Назад
         </button>
-        <div className='game_ui__score'>Кепок: {score}</div>
+        <div className='game_ui__score' aria-label={`Кепок: ${score}`}>
+          <img
+            className='game_ui__score_icon'
+            src='/assets/kepka_coin.svg'
+            alt=''
+            aria-hidden='true'
+          />
+          <span className='game_ui__score_value'>{score}</span>
+        </div>
       </div>
 
       {isResultOpen ? (
         <div className='game_ui__overlay'>
           <div className='game_ui__card'>
-            <div className='game_ui__title'>Результат</div>
-            <div className='game_ui__result'>Набрано кепок: {resultScore}</div>
+            <div className='game_ui__result'>Передумал {resultScore} раз</div>
             {resultMessage ? <div className='game_ui__message'>{resultMessage}</div> : null}
             <button
               className='game_ui__confirm'

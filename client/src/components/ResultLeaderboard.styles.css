@@ -124,11 +124,21 @@
 }
 
 .result_leaderboard__modal_title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     min-width: 0;
     overflow: hidden;
-    font: 900 clamp(20px, 5.8vw, 34px)/1 var(--ui-font);
+    font: 900 clamp(16px, calc(var(--app-vw) * 4.8), 26px)/1 var(--ui-font);
     text-overflow: clip;
     white-space: nowrap;
+}
+
+.result_leaderboard__modal_title_icon {
+    width: 1.15em;
+    height: 1.15em;
+    object-fit: contain;
+    flex: 0 0 auto;
 }
 
 .result_leaderboard__modal_list {
@@ -160,7 +170,7 @@
 .result_leaderboard__modal_empty {
     display: grid;
     place-items: center;
-    min-height: 50svh;
+    min-height: calc(var(--app-height) * 0.5);
     color: rgba(255, 248, 236, 0.8);
     font: 800 16px/1.3 var(--ui-font);
 }
@@ -171,7 +181,7 @@
     }
 
     .result_leaderboard__modal_title {
-        font-size: clamp(18px, 5.2vw, 24px);
+        font-size: clamp(15px, calc(var(--app-vw) * 4.4), 20px);
     }
 
     .result_leaderboard__preview_item,
@@ -184,5 +194,19 @@
         grid-column: 2;
         justify-self: start;
         font-size: 0.9em;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+    .result_leaderboard__modal {
+        inset: auto;
+        top: 50%;
+        left: 50%;
+        width: var(--app-width);
+        height: var(--app-height);
+        border: 1px solid rgba(255, 248, 236, 0.14);
+        border-radius: var(--app-radius);
+        overflow: hidden;
+        transform: translate(-50%, -50%);
     }
 }

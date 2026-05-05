@@ -1,3 +1,5 @@
+import { isGameMusicEnabled } from './musicPreference';
+
 const MENU_MAIN_SOUNDTRACK_SRC = '/assets/soundtrack_menu_main.mp3';
 const MENU_MAIN_VOLUME = 0.38;
 
@@ -19,6 +21,10 @@ function getMenuMainAudio(): HTMLAudioElement | null {
 }
 
 export async function playMenuMainMusic(): Promise<boolean> {
+  if (!isGameMusicEnabled()) {
+    return false;
+  }
+
   const audio = getMenuMainAudio();
   if (!audio) {
     return false;

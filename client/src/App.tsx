@@ -14,10 +14,10 @@ import {
   type BackendUser,
   type LeaderboardItem,
 } from './lib/backend';
+import { preloadAppAssets } from './lib/assetPreloader';
 import { RUNNER_SHIPMENT_SCORE_THRESHOLD } from './runner/config';
 
 type AppState = 'menu' | 'cafe' | 'game' | 'runner';
-type SyncState = 'idle' | 'loading' | 'ready' | 'guest' | 'error';
 type ScoreSyncStatus = 'guest' | 'unchanged' | 'synced';
 
 interface ScoreSyncResult {
@@ -60,11 +60,11 @@ export default function App() {
   const [matchResultSyncing, setMatchResultSyncing] = useState(false);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [backendUser, setBackendUser] = useState<BackendUser | null>(null);
-  const [syncState, setSyncState] = useState<SyncState>('idle');
-  const [authError, setAuthError] = useState<string | null>(null);
   const [leaderboards, setLeaderboards] =
     useState<Record<BackendGame, LeaderboardItem[]>>(EMPTY_LEADERBOARDS);
   const [leaderboardsLoading, setLeaderboardsLoading] = useState(false);
+  const [assetsProgress, setAssetsProgress] = useState(0);
+  const [areAssetsReady, setAreAssetsReady] = useState(false);
 
   const bestScoresRef = useRef<Record<BackendGame, number>>({
     runner: 0,
@@ -110,6 +110,25 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+
+    void preloadAppAssets(({ progress }) => {
+      if (!cancelled) {
+        setAssetsProgress(progress);
+      }
+    }).then(() => {
+      if (!cancelled) {
+        setAssetsProgress(1);
+        setAreAssetsReady(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     if (!backendUser) {
       return;
     }
@@ -149,15 +168,7 @@ export default function App() {
       const initData = tg?.initData?.trim();
 
       if (!initData) {
-        if (!cancelled) {
-          setSyncState('guest');
-        }
         return;
-      }
-
-      if (!cancelled) {
-        setSyncState('loading');
-        setAuthError(null);
       }
 
       try {
@@ -169,20 +180,8 @@ export default function App() {
 
         setSessionToken(response.token);
         setBackendUser(response.user);
-        setSyncState('ready');
       } catch (error) {
         console.error('Failed to authenticate with backend', error);
-
-        if (cancelled) {
-          return;
-        }
-
-        setSyncState('error');
-        setAuthError(
-          error instanceof Error
-            ? error.message
-            : 'Не удалось подключить профиль к backend.',
-        );
       }
     };
 
@@ -266,15 +265,6 @@ export default function App() {
       });
   }, [runnerGameOver, score, state, syncHighScore]);
 
-  const syncMessage =
-    syncState === 'loading'
-      ? 'Синхронизация профиля...'
-      : syncState === 'guest'
-        ? 'Открой приложение внутри Telegram, чтобы сохранять рекорды.'
-        : syncState === 'error'
-          ? authError || 'Backend недоступен.'
-          : null;
-
   const displayName = backendUser?.username || telegramUser?.first_name;
 
   const handleOpenCafe = () => {
@@ -333,7 +323,14 @@ export default function App() {
   };
 
   if (state === 'menu') {
-    return <MainMenu user={displayName} onStart={handleOpenCafe} />;
+    return (
+      <MainMenu
+        user={displayName}
+        onStart={handleOpenCafe}
+        isReady={areAssetsReady}
+        loadingProgress={assetsProgress}
+      />
+    );
   }
 
   if (state === 'cafe') {
@@ -341,9 +338,6 @@ export default function App() {
       <CafeMenu
         onPlay={handleOpenMatch3}
         onRunnerPlay={handleOpenRunner}
-        onBack={() => setState('menu')}
-        playerName={backendUser?.username || displayName}
-        syncMessage={syncMessage}
       />
     );
   }

@@ -1,7 +1,7 @@
 .runner_canvas {
     width: 100%;
-    min-height: 100svh;
-    height: 100svh;
+    min-height: var(--app-height);
+    height: var(--app-height);
     padding:
         max(16px, env(safe-area-inset-top))
         max(16px, env(safe-area-inset-right))
@@ -15,25 +15,25 @@
 
 .runner_canvas__tap_zone {
     position: absolute;
-    left: clamp(2px, 0.9vw, 8px);
-    right: clamp(2px, 0.9vw, 8px);
-    top: clamp(118px, 16svh, 152px);
-    bottom: clamp(8px, 1.5svh, 16px);
+    left: clamp(2px, calc(var(--app-vw) * 0.9), 8px);
+    right: clamp(2px, calc(var(--app-vw) * 0.9), 8px);
+    top: clamp(118px, calc(var(--app-vh) * 16), 152px);
+    bottom: clamp(8px, calc(var(--app-vh) * 1.5), 16px);
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: clamp(54px, 8svh, 92px);
+    padding-top: clamp(54px, calc(var(--app-vh) * 8), 92px);
     box-sizing: border-box;
     touch-action: manipulation;
 }
 
 .runner_canvas__mount {
-    width: min(72vw, 42svh, 420px);
+    width: min(calc(var(--app-width) * 0.72), calc(var(--app-height) * 0.42), 420px);
     aspect-ratio: 1 / 1;
     position: relative;
     overflow: hidden;
     pointer-events: none;
-    border-radius: clamp(18px, 3vw, 28px);
+    border-radius: clamp(18px, calc(var(--app-vw) * 3), 28px);
     box-shadow:
         0 24px 70px rgba(66, 35, 10, 0.28),
         0 0 0 1px rgba(255, 245, 225, 0.55);
@@ -49,7 +49,7 @@
     pointer-events: none;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 640px), (hover: hover) and (pointer: fine) and (min-width: 768px) {
     .runner_canvas {
         padding:
             max(12px, env(safe-area-inset-top))
@@ -59,12 +59,12 @@
     }
 
     .runner_canvas__tap_zone {
-        top: clamp(106px, 15svh, 138px);
-        bottom: clamp(6px, 1svh, 12px);
-        padding-top: clamp(38px, 6svh, 64px);
+        top: clamp(106px, calc(var(--app-vh) * 15), 138px);
+        bottom: clamp(6px, var(--app-vh), 12px);
+        padding-top: clamp(38px, calc(var(--app-vh) * 6), 64px);
     }
 
     .runner_canvas__mount {
-        width: min(72vw, 39svh, 320px);
+        width: min(calc(var(--app-width) * 0.72), calc(var(--app-height) * 0.39), 320px);
     }
 }

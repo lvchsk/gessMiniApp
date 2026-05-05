@@ -60,12 +60,29 @@
 
 .game_ui__score {
     pointer-events: auto;
-    padding: 12px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 14px;
     font: 700 16px/1 var(--ui-font);
     flex: 0 0 auto;
     min-width: fit-content;
     white-space: nowrap;
     text-align: center;
+}
+
+.game_ui__score_value {
+    display: inline-block;
+    line-height: 1;
+    transform: translateY(0.06em);
+}
+
+.game_ui__score_icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex: 0 0 auto;
 }
 
 .game_ui__overlay {
@@ -117,7 +134,7 @@
     opacity: 0.72;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 640px), (hover: hover) and (pointer: fine) and (min-width: 768px) {
     .game_ui {
         padding:
             max(12px, env(safe-area-inset-top))
@@ -135,6 +152,11 @@
     .game_ui__score,
     .game_ui__confirm {
         font-size: 15px;
+    }
+
+    .game_ui__score_icon {
+        width: 26px;
+        height: 26px;
     }
 
     .game_ui__title {

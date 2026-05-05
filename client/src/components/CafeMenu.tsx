@@ -1,22 +1,60 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { stopMatch3Music } from '../audio/match3Music';
 import { playMenuMainMusic, stopMenuMainMusic } from '../audio/menuMainMusic';
+import {
+  isGameMusicEnabled,
+  MUSIC_PREFERENCE_CHANGE_EVENT,
+  setGameMusicEnabled,
+} from '../audio/musicPreference';
+import { stopRunnerMusic } from '../audio/runnerMusic';
+import { stopRunnerShipmentMusic } from '../audio/runnerShipmentMusic';
 import './CafeMenu.styles.css';
 
 interface Props {
   onPlay: () => void;
   onRunnerPlay: () => void;
-  onBack: () => void;
-  playerName?: string;
-  syncMessage?: string | null;
+}
+
+const MOSCOW_TIME_ZONE = 'Europe/Moscow';
+const KEPKA_MENU_START_DAY = Date.UTC(2026, 4, 5) / 86_400_000;
+const KEPKA_MENU_COUNT = 10;
+
+function getMoscowDayNumber(date = new Date()): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: MOSCOW_TIME_ZONE,
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }).formatToParts(date);
+
+  const year = Number(parts.find((part) => part.type === 'year')?.value);
+  const month = Number(parts.find((part) => part.type === 'month')?.value);
+  const day = Number(parts.find((part) => part.type === 'day')?.value);
+
+  return Date.UTC(year, month - 1, day) / 86_400_000;
+}
+
+function getDailyKepkaMenuName(): string {
+  const daysSinceStart = getMoscowDayNumber() - KEPKA_MENU_START_DAY;
+  const index = ((daysSinceStart % KEPKA_MENU_COUNT) + KEPKA_MENU_COUNT) % KEPKA_MENU_COUNT;
+
+  return `kepka_menu_${index}`;
+}
+
+function stopAllGameMusic(): void {
+  stopMenuMainMusic();
+  stopMatch3Music();
+  stopRunnerMusic();
+  stopRunnerShipmentMusic();
 }
 
 export default function CafeMenu({
   onPlay,
   onRunnerPlay,
-  onBack,
-  playerName,
-  syncMessage,
 }: Props) {
+  const [popupTitle, setPopupTitle] = useState<string | null>(null);
+  const [isMusicEnabled, setIsMusicEnabledState] = useState(isGameMusicEnabled);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -44,31 +82,82 @@ export default function CafeMenu({
     };
   }, []);
 
+  useEffect(() => {
+    const handleMusicPreferenceChange = (event: Event) => {
+      const nextEnabled = (event as CustomEvent<{ enabled: boolean }>).detail?.enabled;
+
+      if (typeof nextEnabled === 'boolean') {
+        setIsMusicEnabledState(nextEnabled);
+      }
+    };
+
+    window.addEventListener(MUSIC_PREFERENCE_CHANGE_EVENT, handleMusicPreferenceChange);
+
+    return () => {
+      window.removeEventListener(MUSIC_PREFERENCE_CHANGE_EVENT, handleMusicPreferenceChange);
+    };
+  }, []);
+
+  const handleMusicToggle = () => {
+    const nextEnabled = !isMusicEnabled;
+
+    setIsMusicEnabledState(nextEnabled);
+    setGameMusicEnabled(nextEnabled);
+
+    if (nextEnabled) {
+      void playMenuMainMusic();
+    } else {
+      stopAllGameMusic();
+    }
+  };
+
   return (
     <div className='cafe_menu'>
-      <div className='cafe_menu__actions'>
-        <button
-          className='menu_button menu_button--primary cafe_menu__button cafe_menu__button--left'
-          onClick={onPlay}
-        >
-          Играть
-        </button>
-        <button
-          className='menu_button menu_button--secondary cafe_menu__button cafe_menu__button--right'
-          onClick={onRunnerPlay}
-        >
-          Играть
-        </button>
-      </div>
-
-      <button className='menu_button menu_button--ghost cafe_menu__back' onClick={onBack}>
-        Назад
+      <button
+        className={`cafe_menu__music_toggle${isMusicEnabled ? '' : ' cafe_menu__music_toggle--off'}`}
+        type='button'
+        aria-label={isMusicEnabled ? 'Выключить музыку игры' : 'Включить музыку игры'}
+        aria-pressed={isMusicEnabled}
+        onClick={handleMusicToggle}
+      >
+        <img className='cafe_menu__music_toggle_sprite' src='/assets/music_toggle.svg' alt='' />
       </button>
+      <button
+        className='cafe_menu__hitbox cafe_menu__hitbox--runner'
+        type='button'
+        aria-label='Играть в раннер'
+        onClick={onRunnerPlay}
+      />
+      <button
+        className='cafe_menu__hitbox cafe_menu__hitbox--match'
+        type='button'
+        aria-label='Играть в 3 в ряд'
+        onClick={onPlay}
+      />
+      <button
+        className='cafe_menu__hitbox cafe_menu__hitbox--listik'
+        type='button'
+        aria-label='Открыть listik_meshok'
+        onClick={() => setPopupTitle('listik_meshok')}
+      />
+      <button
+        className='cafe_menu__hitbox cafe_menu__hitbox--kepka'
+        type='button'
+        aria-label='Открыть ежедневное меню кепки'
+        onClick={() => setPopupTitle(getDailyKepkaMenuName())}
+      />
 
-      <div className='cafe_menu__status'>
-        <div className='cafe_menu__player'>Игрок: {playerName || 'гость'}</div>
-        {syncMessage ? <div className='cafe_menu__sync'>{syncMessage}</div> : null}
-      </div>
+      {popupTitle ? (
+        <button
+          className='cafe_menu__popup'
+          type='button'
+          aria-label='Закрыть поп-ап'
+          onClick={() => setPopupTitle(null)}
+        >
+          <span className='cafe_menu__popup_title'>{popupTitle}</span>
+          <span className='cafe_menu__popup_hint'>тапни, чтобы закрыть</span>
+        </button>
+      ) : null}
     </div>
   );
 }

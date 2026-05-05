@@ -62,17 +62,31 @@
 }
 
 .runner_ui__score {
-    padding: 12px 16px;
+    padding: 9px 14px;
     border-radius: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     flex: 0 0 auto;
     min-width: fit-content;
     white-space: nowrap;
     text-align: center;
-    font-size: clamp(14px, 3.9vw, 18px);
+    font-size: clamp(14px, calc(var(--app-vw) * 3.9), 18px);
     font-weight: 700;
+}
+
+.runner_ui__score_value {
+    display: inline-block;
+    line-height: 1;
+    transform: translateY(0.06em);
+}
+
+.runner_ui__score_icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    flex: 0 0 auto;
 }
 
 .runner_ui__tips {
@@ -110,9 +124,20 @@
 }
 
 .runner_ui__result {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     margin-bottom: 10px;
     font-size: 18px;
     font-weight: 700;
+}
+
+.runner_ui__result_icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    flex: 0 0 auto;
 }
 
 .runner_ui__result_note {
@@ -120,12 +145,6 @@
     font-size: 14px;
     line-height: 1.45;
     color: rgba(255, 248, 236, 0.88);
-}
-
-.runner_ui__hint {
-    margin-bottom: 18px;
-    font-size: 16px;
-    line-height: 1.5;
 }
 
 .runner_ui__actions {
@@ -136,12 +155,32 @@
 }
 
 .runner_ui__shipment_overlay {
+    --runner-shipment-top-space: max(
+        calc(env(safe-area-inset-top) + 48px),
+        clamp(58px, calc(var(--app-vh) * 8), 82px)
+    );
+    --runner-shipment-bottom-space: max(
+        calc(env(safe-area-inset-bottom) + 18px),
+        clamp(20px, calc(var(--app-vh) * 2.4), 28px)
+    );
+    --runner-shipment-gap: clamp(10px, calc(var(--app-vh) * 1.4), 16px);
+
     position: absolute;
     inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--runner-shipment-gap);
     width: 100%;
     min-height: 100%;
     border: 0;
-    padding: 0;
+    padding:
+        var(--runner-shipment-top-space)
+        max(14px, env(safe-area-inset-right))
+        var(--runner-shipment-bottom-space)
+        max(14px, env(safe-area-inset-left));
+    box-sizing: border-box;
     color: #fff8ec;
     font-family: var(--ui-font);
     text-align: center;
@@ -151,32 +190,41 @@
 }
 
 .runner_ui__shipment_message {
-    position: absolute;
-    top: max(144px, calc(env(safe-area-inset-top) + 140px));
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 40px);
-    max-width: min(920px, 100%);
-    font-size: clamp(24px, 5vw, 44px);
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(21px, calc(var(--app-vw) * 5), 34px);
     font-weight: 900;
     line-height: 1.12;
     text-shadow: 0 5px 18px rgba(0, 0, 0, 0.38);
 }
 
 .runner_ui__shipment_leaderboard {
-    position: absolute;
-    left: 50%;
-    bottom: max(28px, calc(env(safe-area-inset-bottom) + 24px));
+    position: relative;
+    z-index: 2;
+    margin-top: auto;
+    justify-self: center;
     width: min(300px, calc(100% - 40px));
-    transform: translateX(-50%);
 }
 
 .runner_ui__shipment_sprite {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(500px, 82vmin);
+    position: relative;
+    z-index: 1;
+    justify-self: center;
+    flex: 0 1 auto;
+    width: min(
+        500px,
+        calc(var(--app-width) - 48px),
+        calc(
+            (
+                var(--app-height)
+                - var(--runner-shipment-top-space)
+                - var(--runner-shipment-bottom-space)
+                - 228px
+            ) * 0.88
+        )
+    );
     aspect-ratio: 1;
     overflow: hidden;
     border-radius: 0;
@@ -254,13 +302,18 @@
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 640px), (hover: hover) and (pointer: fine) and (min-width: 768px) {
     .runner_ui__topbar {
         padding: max(94px, calc(env(safe-area-inset-top) + 90px)) 14px 14px;
     }
 
     .runner_ui__score {
-        font-size: clamp(13px, 3.8vw, 15px);
+        font-size: clamp(13px, calc(var(--app-vw) * 3.8), 15px);
+    }
+
+    .runner_ui__score_icon {
+        width: 27px;
+        height: 27px;
     }
 
     .runner_ui__tips {
@@ -279,12 +332,7 @@
         flex-direction: column;
     }
 
-    .runner_ui__shipment_sprite {
-        width: min(500px, 86vmin);
-    }
-
     .runner_ui__shipment_message {
-        top: max(128px, calc(env(safe-area-inset-top) + 124px));
-        width: calc(100% - 28px);
+        font-size: clamp(18px, calc(var(--app-vw) * 4.9), 28px);
     }
 }

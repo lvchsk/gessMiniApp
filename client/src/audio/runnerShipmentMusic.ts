@@ -1,3 +1,5 @@
+import { isGameMusicEnabled } from './musicPreference';
+
 const RUNNER_SHIPMENT_SOUNDTRACK_SRC = '/assets/soundtrack_runner_underdog.mp3';
 const RUNNER_SHIPMENT_VOLUME = 0.56;
 
@@ -19,6 +21,10 @@ function getShipmentAudio(): HTMLAudioElement | null {
 }
 
 export async function playRunnerShipmentMusic(): Promise<boolean> {
+  if (!isGameMusicEnabled()) {
+    return false;
+  }
+
   const audio = getShipmentAudio();
   if (!audio) {
     return false;

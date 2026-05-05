@@ -11,6 +11,7 @@ import {
   OBSTACLE_MAX_SPAWN_MS,
   OBSTACLE_MIN_SPAWN_MS,
   PLAYER_X,
+  RUNNER_END_EVENT,
   RUNNER_TAP_EVENT,
   RUNNER_HEIGHT,
   RUNNER_WIDTH,
@@ -98,10 +99,12 @@ export default class RunnerScene extends Phaser.Scene {
     this.scheduleObstacle();
 
     window.addEventListener(RESTART_EVENT, this.handleExternalRestart);
+    window.addEventListener(RUNNER_END_EVENT, this.handleExternalEnd);
     window.addEventListener(RUNNER_TAP_EVENT, this.handleJumpInput);
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.spaceKey?.off('down', this.handleJumpInput, this);
       window.removeEventListener(RESTART_EVENT, this.handleExternalRestart);
+      window.removeEventListener(RUNNER_END_EVENT, this.handleExternalEnd);
       window.removeEventListener(RUNNER_TAP_EVENT, this.handleJumpInput);
     });
   }
@@ -610,5 +613,9 @@ export default class RunnerScene extends Phaser.Scene {
 
   private handleExternalRestart = (): void => {
     this.restartRun();
+  };
+
+  private handleExternalEnd = (): void => {
+    this.triggerGameOver();
   };
 }

@@ -1,3 +1,5 @@
+import { isGameMusicEnabled } from './musicPreference';
+
 const MATCH3_SOUNDTRACK_SRC = '/assets/soundtrack3_in_a_row.m4a';
 const MATCH3_VOLUME = 0.42;
 
@@ -19,6 +21,10 @@ function getMatch3Audio(): HTMLAudioElement | null {
 }
 
 export async function playMatch3Music(): Promise<boolean> {
+  if (!isGameMusicEnabled()) {
+    return false;
+  }
+
   const audio = getMatch3Audio();
   if (!audio) {
     return false;

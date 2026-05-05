@@ -12,9 +12,14 @@ interface Props {
   className?: string;
 }
 
-const TITLE_BY_GAME: Record<BackendGame, string> = {
+const TITLE_LABEL_BY_GAME: Record<BackendGame, string> = {
   match: 'Топ кепок',
   runner: 'Топ ничегошек',
+};
+
+const TITLE_COIN_BY_GAME: Record<BackendGame, string> = {
+  match: '/assets/kepka_coin.svg',
+  runner: '/assets/nichego_coin.svg',
 };
 
 export default function ResultLeaderboard({
@@ -53,7 +58,15 @@ export default function ResultLeaderboard({
       onKeyDown={handleKeyDown}
     >
       <div className='result_leaderboard__modal_header'>
-        <div className='result_leaderboard__modal_title'>{TITLE_BY_GAME[game]}</div>
+        <div className='result_leaderboard__modal_title' aria-label={TITLE_LABEL_BY_GAME[game]}>
+          <span>топ</span>
+          <img
+            className='result_leaderboard__modal_title_icon'
+            src={TITLE_COIN_BY_GAME[game]}
+            alt=''
+            aria-hidden='true'
+          />
+        </div>
         <button
           className='result_leaderboard__close'
           type='button'
