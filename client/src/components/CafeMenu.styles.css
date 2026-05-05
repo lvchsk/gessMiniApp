@@ -140,7 +140,9 @@
     overflow: hidden;
     font-size: clamp(28px, calc(var(--app-vw) * 8), 46px);
     font-weight: 900;
-    line-height: 1.05;
+    line-height: var(--ui-pixel-line);
+    padding: 0.14em 0 0.08em;
+    margin: -0.08em 0;
     text-overflow: clip;
     text-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
     white-space: nowrap;

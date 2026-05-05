@@ -33,6 +33,7 @@
   --app-vh: calc(var(--app-height) / 100);
   --app-vmin: min(var(--app-width), var(--app-height));
   --app-radius: 0px;
+  --ui-pixel-line: 1.18;
 
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;

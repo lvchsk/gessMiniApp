@@ -25,7 +25,7 @@
     transform: translateX(-50%);
     width: min(calc(100% - 24px), 390px);
     font-size: clamp(19px, calc(var(--app-vw) * 5.8), 32px);
-    line-height: 1;
+    line-height: var(--ui-pixel-line);
     color: #fff8ec;
     text-shadow:
         0 4px 0 rgba(43, 28, 18, 0.42),
@@ -40,6 +40,8 @@
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
+    padding: 0.14em 0 0.08em;
+    margin: -0.08em 0;
     text-overflow: clip;
 }
 
@@ -103,7 +105,7 @@
     margin-bottom: 8px;
     font-size: clamp(14px, calc(var(--app-vw) * 3.8), 18px);
     font-weight: 900;
-    line-height: 1;
+    line-height: var(--ui-pixel-line);
 }
 
 .main_menu__loader_track {

@@ -27,7 +27,7 @@
     border: 0;
     border-radius: 16px;
     padding: 12px 18px;
-    font: 700 18px/1 var(--ui-font);
+    font: 700 18px/var(--ui-pixel-line) var(--ui-font);
     color: #fff8ec;
     cursor: pointer;
     transition: transform 160ms ease, filter 160ms ease;
@@ -89,7 +89,7 @@
 
 .runner_ui__score_value {
     display: inline-block;
-    line-height: 1;
+    line-height: var(--ui-pixel-line);
     transform: translateY(0.06em);
 }
 
@@ -207,7 +207,7 @@
     max-width: 100%;
     font-size: clamp(21px, calc(var(--app-vw) * 5), 34px);
     font-weight: 900;
-    line-height: 1.12;
+    line-height: var(--ui-pixel-line);
     text-shadow: 0 5px 18px rgba(0, 0, 0, 0.38);
 }
 
