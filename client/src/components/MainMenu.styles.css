@@ -19,9 +19,11 @@
     position: absolute;
     left: 50%;
     bottom: clamp(76px, calc(var(--app-vh) * 11), 128px);
+    display: grid;
+    gap: 0.16em;
     margin: 0;
     transform: translateX(-50%);
-    width: calc(100% - 24px);
+    width: min(calc(100% - 24px), 390px);
     font-size: clamp(19px, calc(var(--app-vw) * 5.8), 32px);
     line-height: 1;
     color: #fff8ec;
@@ -30,6 +32,21 @@
         0 12px 26px rgba(10, 6, 3, 0.32);
     white-space: nowrap;
     z-index: 2;
+}
+
+.main_menu__greeting_label,
+.main_menu__greeting_name {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.main_menu__greeting_name {
+    justify-self: center;
+    max-width: min(100%, 13ch);
+    font-size: 0.92em;
 }
 
 .main_menu__start_hitbox {

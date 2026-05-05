@@ -26,7 +26,10 @@ export default function MainMenu({
       >
         <span className='main_menu__sr_only'>Играть</span>
       </button>
-      <h1 className='main_menu__greeting'>Привет{user ? `, ${user}` : ''}</h1>
+      <h1 className='main_menu__greeting'>
+        <span className='main_menu__greeting_label'>Привет,</span>
+        {user ? <span className='main_menu__greeting_name'>{user}</span> : null}
+      </h1>
       {!isReady ? (
         <div className='main_menu__loader' role='status' aria-live='polite'>
           <div className='main_menu__loader_label'>Загрузка {loadingPercent}%</div>
