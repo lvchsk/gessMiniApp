@@ -8,6 +8,12 @@ import {
 } from '../audio/musicPreference';
 import { stopRunnerMusic } from '../audio/runnerMusic';
 import { stopRunnerShipmentMusic } from '../audio/runnerShipmentMusic';
+import {
+  CafeGuideOverlay,
+  isCafeGuideCompleted,
+  markCafeGuideCompleted,
+  resetCafeGuideCompletion,
+} from '../cafeGuide';
 import './CafeMenu.styles.css';
 
 interface Props {
@@ -54,6 +60,7 @@ export default function CafeMenu({
 }: Props) {
   const [popupTitle, setPopupTitle] = useState<string | null>(null);
   const [isMusicEnabled, setIsMusicEnabledState] = useState(isGameMusicEnabled);
+  const [isGuideOpen, setIsGuideOpen] = useState(() => !isCafeGuideCompleted());
 
   useEffect(() => {
     let isMounted = true;
@@ -111,8 +118,27 @@ export default function CafeMenu({
     }
   };
 
+  const handleGuideReplay = () => {
+    resetCafeGuideCompletion();
+    setPopupTitle(null);
+    setIsGuideOpen(true);
+  };
+
+  const handleGuideComplete = () => {
+    markCafeGuideCompleted();
+    setIsGuideOpen(false);
+  };
+
   return (
     <div className='cafe_menu'>
+      <button
+        className='cafe_menu__guide_button'
+        type='button'
+        aria-label='Открыть гид'
+        onClick={handleGuideReplay}
+      >
+        гид
+      </button>
       <button
         className={`cafe_menu__music_toggle${isMusicEnabled ? '' : ' cafe_menu__music_toggle--off'}`}
         type='button'
@@ -162,6 +188,8 @@ export default function CafeMenu({
           <span className='cafe_menu__popup_hint'>тапни, чтобы закрыть</span>
         </button>
       ) : null}
+
+      {isGuideOpen ? <CafeGuideOverlay onComplete={handleGuideComplete} /> : null}
     </div>
   );
 }

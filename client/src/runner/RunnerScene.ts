@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { getPreloadedImage } from '../lib/assetPreloader';
 import {
   BASE_SCROLL_SPEED,
   BOOST_JUMP_VELOCITY,
@@ -20,6 +21,8 @@ import {
 } from './config';
 import type { RunnerCallbacks, RunnerObstacle, RunnerPattern, RunnerSpawnSpec } from './types';
 
+const RUNNER_HERO_TEXTURE_KEY = 'runner-hero';
+const RUNNER_HERO_ASSET_PATH = '/assets/runner_hero.png';
 const PLAYER_BASELINE_Y = GROUND_Y - 48;
 const PLAYER_DISPLAY_WIDTH = 64;
 const PLAYER_DISPLAY_HEIGHT = 92;
@@ -74,8 +77,23 @@ export default class RunnerScene extends Phaser.Scene {
   }
 
   preload(): void {
-    this.load.image('runner-hero', '/assets/runner_hero.png');
+    this.addPreloadedHeroTexture();
     this.createTextures();
+  }
+
+  private addPreloadedHeroTexture(): void {
+    if (this.textures.exists(RUNNER_HERO_TEXTURE_KEY)) {
+      return;
+    }
+
+    const preloadedHero = getPreloadedImage(RUNNER_HERO_ASSET_PATH);
+    if (preloadedHero) {
+      this.textures.addImage(RUNNER_HERO_TEXTURE_KEY, preloadedHero);
+    }
+
+    if (!this.textures.exists(RUNNER_HERO_TEXTURE_KEY)) {
+      this.load.image(RUNNER_HERO_TEXTURE_KEY, RUNNER_HERO_ASSET_PATH);
+    }
   }
 
   create(): void {

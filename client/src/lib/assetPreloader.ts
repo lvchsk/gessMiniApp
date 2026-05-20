@@ -1,3 +1,5 @@
+import { CAFE_GUIDE_STEPS } from '../cafeGuide/guideSteps';
+
 export interface AssetPreloadProgress {
   loaded: number;
   total: number;
@@ -11,6 +13,8 @@ interface AssetEntry {
   path: string;
 }
 
+const preloadedImages = new Map<string, HTMLImageElement>();
+
 const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'font', path: '/fonts/Akedopikuseru-Regular.otf' },
   { kind: 'image', path: '/assets/start_menu.PNG' },
@@ -20,6 +24,7 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/runner_apparat.png?v=2' },
   { kind: 'image', path: '/assets/runner_menu_preview.png' },
   { kind: 'image', path: '/assets/runner_hero.png' },
+  ...CAFE_GUIDE_STEPS.map((step) => ({ kind: 'image' as const, path: step.asset })),
   { kind: 'image', path: '/assets/gem0.png' },
   { kind: 'image', path: '/assets/gem1.png' },
   { kind: 'image', path: '/assets/gem2.png' },
@@ -45,13 +50,18 @@ function preloadImage(path: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const image = new Image();
 
+    const finish = () => {
+      preloadedImages.set(path, image);
+      resolve();
+    };
+
     image.onload = () => {
       if ('decode' in image) {
-        image.decode().then(resolve).catch(() => resolve());
+        image.decode().then(finish).catch(finish);
         return;
       }
 
-      resolve();
+      finish();
     };
     image.onerror = () => reject(new Error(`Failed to preload image: ${path}`));
     image.src = path;
@@ -114,4 +124,8 @@ export async function preloadAppAssets(
       }
     }),
   );
+}
+
+export function getPreloadedImage(path: string): HTMLImageElement | null {
+  return preloadedImages.get(path) ?? null;
 }

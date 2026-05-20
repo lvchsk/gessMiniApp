@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="daily kepka placeholder">
+  <rect width="640" height="360" fill="#22140e"/>
+  <path d="M178 206c34-94 250-94 284 0 18 50-15 82-142 82s-160-32-142-82z" fill="#d24d23"/>
+  <path d="M210 206h220" stroke="#ffd18a" stroke-width="18" stroke-linecap="round"/>
+  <text x="320" y="132" text-anchor="middle" fill="#ffd18a" font-family="monospace" font-size="34" font-weight="700">daily_kepka</text>
+</svg>

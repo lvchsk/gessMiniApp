@@ -51,7 +51,6 @@ export default function RunnerCanvas({
       void tryStartMusic();
     };
 
-    void tryStartMusic();
     window.addEventListener('pointerdown', handleUnlock, { passive: true });
     window.addEventListener('keydown', handleUnlock);
 
@@ -59,6 +58,14 @@ export default function RunnerCanvas({
     manager.mount(mountRef.current, {
       onScoreChange,
       onGameOverChange,
+    });
+
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        if (isMounted) {
+          void tryStartMusic();
+        }
+      });
     });
 
     return () => {

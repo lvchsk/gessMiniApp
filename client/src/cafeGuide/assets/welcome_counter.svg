@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="welcome counter placeholder">
+  <rect width="640" height="360" fill="#2b1710"/>
+  <rect x="38" y="42" width="564" height="276" rx="18" fill="#7c2c18"/>
+  <rect x="70" y="78" width="500" height="200" rx="10" fill="#f0b56b"/>
+  <text x="320" y="190" text-anchor="middle" fill="#32140b" font-family="monospace" font-size="34" font-weight="700">welcome_counter</text>
+</svg>
