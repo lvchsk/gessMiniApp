@@ -1,70 +1,59 @@
 .runner_canvas {
+    z-index: 0;
     width: 100%;
     min-height: var(--app-height);
     height: var(--app-height);
-    padding:
-        max(16px, env(safe-area-inset-top))
-        max(16px, env(safe-area-inset-right))
-        max(18px, env(safe-area-inset-bottom))
-        max(16px, env(safe-area-inset-left));
     box-sizing: border-box;
     overflow: hidden;
     position: relative;
-    background: linear-gradient(180deg, #f6d29b 0%, #f1bf75 100%);
+    isolation: isolate;
+    background: #a77682;
 }
 
 .runner_canvas__tap_zone {
     position: absolute;
-    left: clamp(2px, calc(var(--app-vw) * 0.9), 8px);
-    right: clamp(2px, calc(var(--app-vw) * 0.9), 8px);
-    top: clamp(118px, calc(var(--app-vh) * 16), 152px);
-    bottom: clamp(8px, calc(var(--app-vh) * 1.5), 16px);
+    inset: 0;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding-top: clamp(54px, calc(var(--app-vh) * 8), 92px);
+    align-items: center;
     box-sizing: border-box;
     touch-action: manipulation;
 }
 
-.runner_canvas__mount {
-    width: min(calc(var(--app-width) * 0.72), calc(var(--app-height) * 0.42), 420px);
-    aspect-ratio: 1 / 1;
+.runner_canvas__cabinet {
     position: relative;
+    height: min(100%, calc(var(--app-width) * 2.165725));
+    max-width: 100%;
+    aspect-ratio: 1062 / 2300;
+}
+
+.runner_canvas__mount {
+    position: absolute;
+    left: 21.94%;
+    top: 26.57%;
+    z-index: 1;
+    width: 55.93%;
+    height: 28%;
     overflow: hidden;
     pointer-events: none;
-    border-radius: clamp(18px, calc(var(--app-vw) * 3), 28px);
-    box-shadow:
-        0 24px 70px rgba(66, 35, 10, 0.28),
-        0 0 0 1px rgba(255, 245, 225, 0.55);
-    background:
-        radial-gradient(circle at top, rgba(255, 247, 226, 0.48), transparent 38%),
-        linear-gradient(180deg, #f7cb8a 0%, #efb96d 100%);
+    background: linear-gradient(180deg, #f7cb8a 0%, #efb96d 100%);
 }
 
 .runner_canvas__mount canvas {
     display: block;
     width: 100% !important;
     height: 100% !important;
+    object-fit: cover;
+    object-position: left center;
     pointer-events: none;
 }
 
-@media (max-width: 640px), (hover: hover) and (pointer: fine) and (min-width: 768px) {
-    .runner_canvas {
-        padding:
-            max(12px, env(safe-area-inset-top))
-            max(12px, env(safe-area-inset-right))
-            max(14px, env(safe-area-inset-bottom))
-            max(12px, env(safe-area-inset-left));
-    }
-
-    .runner_canvas__tap_zone {
-        top: clamp(106px, calc(var(--app-vh) * 15), 138px);
-        bottom: clamp(6px, var(--app-vh), 12px);
-        padding-top: clamp(38px, calc(var(--app-vh) * 6), 64px);
-    }
-
-    .runner_canvas__mount {
-        width: min(calc(var(--app-width) * 0.72), calc(var(--app-height) * 0.39), 320px);
-    }
+.runner_canvas__apparat {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
 }

@@ -35,8 +35,8 @@
     top: 12.2%;
     right: 5.4%;
     z-index: 3;
-    width: clamp(54px, calc(var(--app-width) * 0.16), 70px);
-    aspect-ratio: 1;
+    width: clamp(52px, calc(var(--app-width) * 0.15), 68px);
+    aspect-ratio: 204 / 249;
     border: 0;
     padding: 0;
     background: transparent;
@@ -46,28 +46,8 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-.cafe_menu__music_toggle::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 86%;
-    height: 8px;
-    border-radius: 999px;
-    background: #bf271f;
-    box-shadow: 0 0 0 3px rgba(255, 242, 221, 0.38);
-    content: '';
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(-38deg);
-    transition: opacity 160ms ease;
-}
-
 .cafe_menu__music_toggle--off {
-    filter: grayscale(0.72) drop-shadow(0 8px 14px rgba(8, 3, 1, 0.3));
-    opacity: 0.76;
-}
-
-.cafe_menu__music_toggle--off::after {
-    opacity: 1;
+    filter: drop-shadow(0 8px 14px rgba(8, 3, 1, 0.3));
 }
 
 .cafe_menu__music_toggle:active {

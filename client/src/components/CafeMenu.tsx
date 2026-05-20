@@ -120,7 +120,11 @@ export default function CafeMenu({
         aria-pressed={isMusicEnabled}
         onClick={handleMusicToggle}
       >
-        <img className='cafe_menu__music_toggle_sprite' src='/assets/music_toggle.svg' alt='' />
+        <img
+          className='cafe_menu__music_toggle_sprite'
+          src={isMusicEnabled ? '/assets/music_on.png' : '/assets/music_off.png'}
+          alt=''
+        />
       </button>
       <button
         className='cafe_menu__hitbox cafe_menu__hitbox--runner'

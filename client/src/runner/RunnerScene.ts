@@ -21,10 +21,13 @@ import {
 import type { RunnerCallbacks, RunnerObstacle, RunnerPattern, RunnerSpawnSpec } from './types';
 
 const PLAYER_BASELINE_Y = GROUND_Y - 48;
+const PLAYER_DISPLAY_WIDTH = 64;
+const PLAYER_DISPLAY_HEIGHT = 92;
 const PLAYER_HITBOX_HEIGHT = 76;
+const PLAYER_HITBOX_WIDTH = 30;
+const PLAYER_HITBOX_OFFSET_X = 17;
 const PLAYER_HITBOX_OFFSET_Y = 12;
-const PLAYER_TEXTURE_HEIGHT = 92;
-const FLOOR_TOP = PLAYER_BASELINE_Y - PLAYER_TEXTURE_HEIGHT / 2 + PLAYER_HITBOX_OFFSET_Y + PLAYER_HITBOX_HEIGHT;
+const FLOOR_TOP = PLAYER_BASELINE_Y - PLAYER_DISPLAY_HEIGHT / 2 + PLAYER_HITBOX_OFFSET_Y + PLAYER_HITBOX_HEIGHT;
 const FLOOR_HEIGHT = 18;
 const RESTART_EVENT = 'runner:restart';
 const LANDING_RESET_DELAY_MS = 120;
@@ -71,6 +74,7 @@ export default class RunnerScene extends Phaser.Scene {
   }
 
   preload(): void {
+    this.load.image('runner-hero', '/assets/runner_hero.png');
     this.createTextures();
   }
 
@@ -140,67 +144,62 @@ export default class RunnerScene extends Phaser.Scene {
   }
 
   private createTextures(): void {
-    if (this.textures.exists('runner-player')) {
-      return;
-    }
-
     const graphics = this.make.graphics({ x: 0, y: 0 });
 
-    graphics.fillStyle(0x6a3210, 1);
-    graphics.fillRoundedRect(18, 8, 28, 54, 10);
-    graphics.fillStyle(0xf4d8bf, 1);
-    graphics.fillCircle(32, 14, 12);
-    graphics.fillStyle(0x2d1407, 1);
-    graphics.fillRect(18, 60, 8, 24);
-    graphics.fillRect(38, 60, 8, 24);
-    graphics.fillRect(12, 24, 10, 26);
-    graphics.fillRect(42, 24, 10, 26);
-    graphics.generateTexture('runner-player', 64, 92);
-    graphics.clear();
+    if (!this.textures.exists('runner-obstacle-single')) {
+      graphics.fillStyle(0x734117, 1);
+      graphics.fillRoundedRect(8, 8, 54, 90, 18);
+      graphics.fillStyle(0x492105, 1);
+      graphics.fillRect(0, 58, 64, 12);
+      graphics.fillRect(0, 84, 64, 14);
+      graphics.generateTexture('runner-obstacle-single', 64, 100);
+      graphics.clear();
+    }
 
-    graphics.fillStyle(0x734117, 1);
-    graphics.fillRoundedRect(8, 8, 54, 90, 18);
-    graphics.fillStyle(0x492105, 1);
-    graphics.fillRect(0, 58, 64, 12);
-    graphics.fillRect(0, 84, 64, 14);
-    graphics.generateTexture('runner-obstacle-single', 64, 100);
-    graphics.clear();
+    if (!this.textures.exists('runner-obstacle-double')) {
+      graphics.fillStyle(0x6d2f18, 1);
+      graphics.fillRoundedRect(14, 20, 44, 132, 18);
+      graphics.fillStyle(0xb73e1f, 1);
+      graphics.fillRoundedRect(18, 26, 36, 108, 14);
+      graphics.fillStyle(0xffd26f, 1);
+      graphics.fillRect(10, 12, 52, 10);
+      graphics.fillRect(10, 146, 52, 8);
+      graphics.fillStyle(0xfff1b8, 1);
+      graphics.fillRect(18, 42, 36, 8);
+      graphics.fillRect(18, 68, 36, 8);
+      graphics.fillRect(18, 94, 36, 8);
+      graphics.fillRect(18, 120, 36, 8);
+      graphics.generateTexture('runner-obstacle-double', 72, 160);
+      graphics.clear();
+    }
 
-    graphics.fillStyle(0x6d2f18, 1);
-    graphics.fillRoundedRect(14, 20, 44, 132, 18);
-    graphics.fillStyle(0xb73e1f, 1);
-    graphics.fillRoundedRect(18, 26, 36, 108, 14);
-    graphics.fillStyle(0xffd26f, 1);
-    graphics.fillRect(10, 12, 52, 10);
-    graphics.fillRect(10, 146, 52, 8);
-    graphics.fillStyle(0xfff1b8, 1);
-    graphics.fillRect(18, 42, 36, 8);
-    graphics.fillRect(18, 68, 36, 8);
-    graphics.fillRect(18, 94, 36, 8);
-    graphics.fillRect(18, 120, 36, 8);
-    graphics.generateTexture('runner-obstacle-double', 72, 160);
-    graphics.clear();
+    if (!this.textures.exists('runner-ground')) {
+      graphics.fillStyle(0xf5d59c, 1);
+      graphics.fillRect(0, 0, 256, 64);
+      graphics.fillStyle(0xe1ae61, 1);
+      graphics.fillRect(0, 44, 256, 20);
+      graphics.fillStyle(0xc47a33, 1);
+      graphics.fillRect(0, 50, 256, 14);
+      graphics.generateTexture('runner-ground', 256, 64);
+      graphics.clear();
+    }
 
-    graphics.fillStyle(0xf5d59c, 1);
-    graphics.fillRect(0, 0, 256, 64);
-    graphics.fillStyle(0xe1ae61, 1);
-    graphics.fillRect(0, 44, 256, 20);
-    graphics.fillStyle(0xc47a33, 1);
-    graphics.fillRect(0, 50, 256, 14);
-    graphics.generateTexture('runner-ground', 256, 64);
-    graphics.clear();
+    if (!this.textures.exists('runner-cloud')) {
+      graphics.fillStyle(0xffefcf, 1);
+      graphics.fillEllipse(70, 36, 92, 34);
+      graphics.fillEllipse(118, 30, 92, 42);
+      graphics.fillEllipse(160, 36, 82, 30);
+      graphics.generateTexture('runner-cloud', 220, 76);
+      graphics.clear();
+    }
 
-    graphics.fillStyle(0xffefcf, 1);
-    graphics.fillEllipse(70, 36, 92, 34);
-    graphics.fillEllipse(118, 30, 92, 42);
-    graphics.fillEllipse(160, 36, 82, 30);
-    graphics.generateTexture('runner-cloud', 220, 76);
-    graphics.clear();
+    if (!this.textures.exists('runner-hills')) {
+      graphics.fillStyle(0xd28d46, 1);
+      graphics.fillTriangle(0, 130, 70, 28, 140, 130);
+      graphics.fillTriangle(100, 130, 190, 42, 280, 130);
+      graphics.generateTexture('runner-hills', 280, 140);
+    }
 
-    graphics.fillStyle(0xd28d46, 1);
-    graphics.fillTriangle(0, 130, 70, 28, 140, 130);
-    graphics.fillTriangle(100, 130, 190, 42, 280, 130);
-    graphics.generateTexture('runner-hills', 280, 140);
     graphics.destroy();
   }
 
@@ -232,15 +231,21 @@ export default class RunnerScene extends Phaser.Scene {
   }
 
   private createPlayer(): void {
-    this.player = this.physics.add.sprite(PLAYER_X, PLAYER_BASELINE_Y, 'runner-player');
+    this.player = this.physics.add.sprite(PLAYER_X, PLAYER_BASELINE_Y, 'runner-hero');
     this.player.setCollideWorldBounds(true);
     this.player.setGravityY(GRAVITY_Y * 0.08);
-    this.player.setSize(30, PLAYER_HITBOX_HEIGHT);
-    this.player.setOffset(17, PLAYER_HITBOX_OFFSET_Y);
+    this.player.setDisplaySize(PLAYER_DISPLAY_WIDTH, PLAYER_DISPLAY_HEIGHT);
+    this.player.setSize(
+      PLAYER_HITBOX_WIDTH / this.player.scaleX,
+      PLAYER_HITBOX_HEIGHT / this.player.scaleY,
+    );
+    this.player.setOffset(
+      PLAYER_HITBOX_OFFSET_X / this.player.scaleX,
+      PLAYER_HITBOX_OFFSET_Y / this.player.scaleY,
+    );
     this.player.setDepth(10);
     this.player.setMaxVelocity(0, 1400);
     this.player.setDragX(0);
-    this.player.setScale(1);
     this.physics.add.collider(this.player, this.floor);
   }
 
@@ -573,18 +578,7 @@ export default class RunnerScene extends Phaser.Scene {
   }
 
   private updatePlayerAnimation(): void {
-    const body = this.player.body as Phaser.Physics.Arcade.Body;
-    const speedScale = this.getSpeedScale();
-
-    if (!this.isGrounded()) {
-      this.player.setAngle(Phaser.Math.Clamp(body.velocity.y * 0.02, -14, 18));
-      this.player.setScale(1);
-      return;
-    }
-
-    const runWave = Math.sin(this.time.now * 0.012 * speedScale);
-    this.player.setAngle(runWave * 3.5);
-    this.player.setScale(1);
+    this.player.setAngle(0);
   }
 
   private advanceBackground(deltaSeconds: number): void {

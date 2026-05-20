@@ -69,7 +69,7 @@ export default function RunnerUI({
           <div className='runner_ui__score' aria-label={`Ничегошек: ${score}`}>
             <img
               className='runner_ui__score_icon'
-              src='/assets/nichego_coin.svg'
+              src='/assets/nichego_сoin.png'
               alt=''
               aria-hidden='true'
             />
@@ -88,16 +88,19 @@ export default function RunnerUI({
           onKeyDown={handleShipmentKeyDown}
         >
           <div className='runner_ui__shipment_message'>
-            поздравляю!
-            <br />
-            ты набрал 3500
-            <img
-              className='runner_ui__shipment_message_icon'
-              src='/assets/nichego_coin.svg'
-              alt=''
-              aria-hidden='true'
-            />
-            ! отгрузки начнутся
+            <span className='runner_ui__shipment_message_line'>поздравляю!</span>
+            <span className='runner_ui__shipment_message_line'>ты набрал</span>
+            <span className='runner_ui__shipment_score'>
+              <span>{finalScore}</span>
+              <img
+                className='runner_ui__shipment_message_icon'
+                src='/assets/nichego_сoin.png'
+                alt=''
+                aria-hidden='true'
+              />
+            </span>
+            <span className='runner_ui__shipment_message_line'>отгрузки</span>
+            <span className='runner_ui__shipment_message_line'>начнутся</span>
           </div>
           <div className='runner_ui__shipment_sprite' aria-hidden='true'>
             <div className='runner_ui__shipment_sprite_track' />
@@ -118,7 +121,7 @@ export default function RunnerUI({
               <span>Итог:</span>
               <img
                 className='runner_ui__result_icon'
-                src='/assets/nichego_coin.svg'
+                src='/assets/nichego_сoin.png'
                 alt=''
                 aria-hidden='true'
               />
@@ -143,12 +146,7 @@ export default function RunnerUI({
             />
           </div>
         </div>
-      ) : (
-        <div className='runner_ui__tips'>
-          Коричневое препятствие: один точный прыжок. Высокая полосатая башня или плотная
-          связка: прыжок и затем air jump.
-        </div>
-      )}
+      ) : null}
     </div>
   );
 }

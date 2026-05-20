@@ -17,8 +17,8 @@ const TITLE_LABEL_BY_GAME: Record<BackendGame, string> = {
 };
 
 const TITLE_COIN_BY_GAME: Record<BackendGame, string> = {
-  match: '/assets/kepka_coin.svg',
-  runner: '/assets/nichego_coin.svg',
+  match: '/assets/kepka_coin.png',
+  runner: '/assets/nichego_сoin.png',
 };
 
 function getDisplayName(username: string): string {

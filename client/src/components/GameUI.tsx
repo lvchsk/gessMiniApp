@@ -34,7 +34,7 @@ export default function GameUI({
         <div className='game_ui__score' aria-label={`Кепок: ${score}`}>
           <img
             className='game_ui__score_icon'
-            src='/assets/kepka_coin.svg'
+            src='/assets/kepka_coin.png'
             alt=''
             aria-hidden='true'
           />
