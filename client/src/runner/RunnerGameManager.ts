@@ -33,3 +33,36 @@ export class RunnerGameManager {
     this.game = null;
   }
 }
+
+let hasWarmedRunnerGame = false;
+
+export function warmRunnerGame(): void {
+  if (hasWarmedRunnerGame || typeof document === 'undefined') {
+    return;
+  }
+
+  hasWarmedRunnerGame = true;
+
+  const container = document.createElement('div');
+  container.setAttribute('aria-hidden', 'true');
+  container.style.cssText = [
+    'position:fixed',
+    'left:-9999px',
+    'top:-9999px',
+    `width:${RUNNER_WIDTH}px`,
+    `height:${RUNNER_HEIGHT}px`,
+    'opacity:0',
+    'overflow:hidden',
+    'pointer-events:none',
+  ].join(';');
+
+  document.body.appendChild(container);
+
+  const manager = new RunnerGameManager();
+  manager.mount(container, {});
+
+  window.setTimeout(() => {
+    manager.destroy();
+    container.remove();
+  }, 250);
+}

@@ -13,11 +13,16 @@ function getRunnerAudio(): HTMLAudioElement | null {
   if (!runnerAudio) {
     runnerAudio = new Audio(RUNNER_SOUNDTRACK_SRC);
     runnerAudio.loop = true;
-    runnerAudio.preload = 'none';
+    runnerAudio.preload = 'auto';
     runnerAudio.volume = RUNNER_VOLUME;
   }
 
   return runnerAudio;
+}
+
+export function prepareRunnerMusic(): void {
+  const audio = getRunnerAudio();
+  audio?.load();
 }
 
 export async function playRunnerMusic(): Promise<boolean> {

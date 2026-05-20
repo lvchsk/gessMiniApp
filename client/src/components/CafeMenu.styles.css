@@ -40,14 +40,14 @@
     width: min(18%, 118px);
     aspect-ratio: 1.08 / 1;
     border: 0;
-    border-radius: 8px;
+    border-radius: 0;
     padding: 0;
-    background: rgba(26, 12, 4, 0.68);
+    background: rgba(24, 24, 24, 0.72);
     color: #fff8ec;
     cursor: pointer;
     font: 900 clamp(12px, calc(var(--app-vw) * 3), 15px)/var(--ui-pixel-line) var(--ui-font);
     text-transform: uppercase;
-    box-shadow: 0 10px 22px rgba(8, 4, 2, 0.28);
+    box-shadow: none;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -71,13 +71,12 @@
     padding: 0;
     background: transparent;
     cursor: pointer;
-    filter: drop-shadow(0 10px 16px rgba(8, 3, 1, 0.32));
-    transition: filter 160ms ease, opacity 160ms ease, transform 160ms ease;
+    transition: opacity 160ms ease, transform 160ms ease;
     -webkit-tap-highlight-color: transparent;
 }
 
 .cafe_menu__music_toggle--off {
-    filter: drop-shadow(0 8px 14px rgba(8, 3, 1, 0.3));
+    opacity: 1;
 }
 
 .cafe_menu__music_toggle:active {
@@ -138,7 +137,7 @@
         max(18px, env(safe-area-inset-right))
         max(24px, env(safe-area-inset-bottom))
         max(18px, env(safe-area-inset-left));
-    background: rgba(14, 7, 4, 0.92);
+    background: rgba(18, 18, 18, 0.92);
     color: #fff8ec;
     font-family: var(--ui-font);
     cursor: pointer;

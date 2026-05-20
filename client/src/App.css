@@ -24,8 +24,9 @@
 
 .app_screen--match3 {
     background:
-        radial-gradient(circle at top, rgba(92, 79, 131, 0.2), transparent 30%),
-        linear-gradient(180deg, #14111d 0%, #09080f 100%);
+        radial-gradient(circle at 50% 18%, rgba(122, 22, 44, 0.72) 0%, rgba(78, 13, 29, 0.48) 34%, transparent 68%),
+        radial-gradient(circle at 50% 100%, rgba(55, 8, 20, 0.64) 0%, transparent 58%),
+        linear-gradient(180deg, #210812 0%, #080407 100%);
 }
 
 .app_screen--runner {

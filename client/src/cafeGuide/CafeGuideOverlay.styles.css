@@ -75,9 +75,9 @@
     width: 100%;
     min-height: clamp(35px, calc(var(--app-vh) * 4.8), 46px);
     border: 2px solid rgba(255, 248, 232, 0.8);
-    border-radius: 4px;
+    border-radius: 0;
     padding: 8px 10px;
-    background: rgba(18, 12, 8, 0.28);
+    background: rgba(24, 24, 24, 0.68);
     color: #fff8ec;
     cursor: pointer;
     font: 900 clamp(11px, calc(var(--app-vw) * 3.15), 15px)/var(--ui-pixel-line) var(--ui-font);
@@ -88,7 +88,7 @@
 }
 
 .cafe_guide__answer:hover {
-    background: rgba(255, 248, 232, 0.14);
+    background: rgba(36, 36, 36, 0.82);
 }
 
 .cafe_guide__answer:active {

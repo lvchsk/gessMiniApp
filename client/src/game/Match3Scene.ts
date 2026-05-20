@@ -17,6 +17,10 @@ import { collectExplosion } from "./bombs";
 import { collapse } from "./gravity";
 import { refill } from "./refill";
 import type { GameCallbacks } from "./GameManager";
+import {
+  queueMissingMatch3Textures,
+  registerPreloadedMatch3Textures,
+} from "./match3Assets";
 
 export default class Match3Scene extends Phaser.Scene {
   private grid: Grid = [];
@@ -33,11 +37,8 @@ export default class Match3Scene extends Phaser.Scene {
   }
 
   preload(): void {
-    for (let i = 0; i < GEM_ASSET_COUNT; i++) {
-      this.load.image(`gem${i}`, `/assets/gem${i}.png`);
-    }
-
-    this.load.image("gem_bomb", "/assets/gem_bomb.png");
+    registerPreloadedMatch3Textures(this);
+    queueMissingMatch3Textures(this);
   }
 
   create(): void {

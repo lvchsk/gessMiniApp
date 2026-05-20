@@ -26,8 +26,8 @@
 .result_leaderboard__preview_item {
     min-height: 32px;
     padding: 6px 9px;
-    border-radius: 10px;
-    background: rgba(255, 248, 236, 0.09);
+    border-radius: 0;
+    background: rgba(24, 24, 24, 0.62);
     color: #fff8ec;
     font: 700 clamp(11px, calc(var(--app-vw) * 3.1), 13px)/var(--ui-pixel-line) var(--ui-font);
 }
@@ -72,8 +72,8 @@
 
 .result_leaderboard__empty {
     padding: 9px 10px;
-    border-radius: 10px;
-    background: rgba(255, 248, 236, 0.08);
+    border-radius: 0;
+    background: rgba(24, 24, 24, 0.62);
     color: rgba(255, 248, 236, 0.8);
     font: 700 13px/1.2 var(--ui-font);
     text-align: center;
@@ -82,7 +82,7 @@
 .result_leaderboard__top_button,
 .result_leaderboard__close {
     border: 0;
-    border-radius: 14px;
+    border-radius: 0;
     padding: 11px 16px;
     font: 800 15px/var(--ui-pixel-line) var(--ui-font);
     color: #fff8ec;
@@ -92,13 +92,13 @@
 
 .result_leaderboard__top_button {
     width: 100%;
-    background: linear-gradient(180deg, #d38b42, #97531a);
-    box-shadow: 0 10px 22px rgba(22, 10, 3, 0.24);
+    background: rgba(24, 24, 24, 0.78);
+    box-shadow: none;
     text-transform: uppercase;
 }
 
 .result_leaderboard__close {
-    background: rgba(255, 248, 236, 0.16);
+    background: rgba(24, 24, 24, 0.78);
 }
 
 .result_leaderboard__top_button:hover,
@@ -124,7 +124,7 @@
         max(16px, env(safe-area-inset-right))
         max(24px, env(safe-area-inset-bottom))
         max(16px, env(safe-area-inset-left));
-    background: rgba(12, 7, 3, 0.94);
+    background: rgba(18, 18, 18, 0.94);
     color: #fff8ec;
     box-sizing: border-box;
     min-width: 0;
@@ -175,8 +175,8 @@
     min-height: 52px;
     padding: 10px 12px;
     border: 1px solid rgba(255, 248, 236, 0.16);
-    border-radius: 12px;
-    background: rgba(255, 248, 236, 0.08);
+    border-radius: 0;
+    background: rgba(24, 24, 24, 0.62);
     font: 800 clamp(12px, calc(var(--app-vw) * 3.45), 15px)/var(--ui-pixel-line) var(--ui-font);
 }
 

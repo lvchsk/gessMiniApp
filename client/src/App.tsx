@@ -27,6 +27,8 @@ interface ScoreSyncResult {
 }
 
 const tg = window.Telegram?.WebApp;
+const LOCAL_DEV_DISPLAY_NAME = 'разработчик';
+const LOCAL_DEV_REGISTRATION_DATE = 'local-dev';
 
 const EMPTY_LEADERBOARDS: Record<BackendGame, LeaderboardItem[]> = {
   runner: [],
@@ -43,6 +45,31 @@ function getScoreSyncMessage(_game: BackendGame, status: ScoreSyncStatus): strin
   }
 
   return '';
+}
+
+function withLocalResult(
+  items: LeaderboardItem[],
+  username: string | undefined,
+  score: number,
+): LeaderboardItem[] {
+  if (!import.meta.env.DEV || !username) {
+    return items;
+  }
+
+  const normalizedScore = Math.max(0, Math.floor(score));
+  const localItem: LeaderboardItem = {
+    rank: 0,
+    username,
+    registrationDate: LOCAL_DEV_REGISTRATION_DATE,
+    score: normalizedScore,
+  };
+
+  return [localItem, ...items.filter((item) => item.username !== username)]
+    .sort((left, right) => right.score - left.score)
+    .map((item, index) => ({
+      ...item,
+      rank: index + 1,
+    }));
 }
 
 export default function App() {
@@ -264,7 +291,10 @@ export default function App() {
       });
   }, [runnerGameOver, score, state, syncHighScore]);
 
-  const displayName = backendUser?.username || telegramUser?.first_name;
+  const displayName =
+    backendUser?.username ||
+    telegramUser?.first_name ||
+    (import.meta.env.DEV ? LOCAL_DEV_DISPLAY_NAME : undefined);
 
   const handleOpenCafe = () => {
     void refreshLeaderboards();
@@ -376,7 +406,11 @@ export default function App() {
           finalScore={runnerDisplayedFinalScore}
           showShipmentReward={showRunnerShipmentReward}
           resultMessage={runnerResultMessage}
-          leaderboardItems={leaderboards.runner}
+          leaderboardItems={withLocalResult(
+            leaderboards.runner,
+            displayName,
+            runnerDisplayedFinalScore,
+          )}
           isLeaderboardLoading={leaderboardsLoading}
           onExit={handleRunnerExit}
         />
@@ -393,7 +427,7 @@ export default function App() {
         resultScore={matchResultScore}
         resultMessage={matchResultMessage}
         isSyncingResult={matchResultSyncing}
-        leaderboardItems={leaderboards.match}
+        leaderboardItems={withLocalResult(leaderboards.match, displayName, matchResultScore)}
         isLeaderboardLoading={leaderboardsLoading}
         onExitRequest={handleMatchExitRequest}
         onResultClose={handleMatchResultClose}

@@ -13,11 +13,16 @@ function getMatch3Audio(): HTMLAudioElement | null {
   if (!match3Audio) {
     match3Audio = new Audio(MATCH3_SOUNDTRACK_SRC);
     match3Audio.loop = true;
-    match3Audio.preload = 'none';
+    match3Audio.preload = 'auto';
     match3Audio.volume = MATCH3_VOLUME;
   }
 
   return match3Audio;
+}
+
+export function prepareMatch3Music(): void {
+  const audio = getMatch3Audio();
+  audio?.load();
 }
 
 export async function playMatch3Music(): Promise<boolean> {

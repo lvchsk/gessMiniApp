@@ -1,6 +1,8 @@
 import './RunnerMenuPreview.styles.css';
-import type { KeyboardEvent } from 'react';
+import { useEffect, type KeyboardEvent } from 'react';
+import { prepareRunnerMusic } from '../audio/runnerMusic';
 import type { LeaderboardItem } from '../lib/backend';
+import { warmRunnerGame } from '../runner/RunnerGameManager';
 import ResultLeaderboard from './ResultLeaderboard';
 
 interface Props {
@@ -14,6 +16,22 @@ export default function RunnerMenuPreview({
   isLoading,
   onStart,
 }: Props) {
+  useEffect(() => {
+    prepareRunnerMusic();
+
+    const warmRunner = () => {
+      warmRunnerGame();
+    };
+
+    if ('requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(warmRunner, { timeout: 600 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = globalThis.setTimeout(warmRunner, 120);
+    return () => globalThis.clearTimeout(timeoutId);
+  }, []);
+
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();

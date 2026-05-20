@@ -55,7 +55,7 @@ export default function RunnerUI({
         <div className='runner_ui__score' aria-label={`Ничегошек: ${score}`}>
           <img
             className='runner_ui__score_icon'
-            src='/assets/nichego_сoin.png'
+            src='/assets/nichego_coin.png'
             alt=''
             aria-hidden='true'
           />
@@ -79,7 +79,7 @@ export default function RunnerUI({
               <span>{finalScore}</span>
               <img
                 className='runner_ui__shipment_message_icon'
-                src='/assets/nichego_сoin.png'
+                src='/assets/nichego_coin.png'
                 alt=''
                 aria-hidden='true'
               />
@@ -106,7 +106,7 @@ export default function RunnerUI({
               <span>Итог:</span>
               <img
                 className='runner_ui__result_icon'
-                src='/assets/nichego_сoin.png'
+                src='/assets/nichego_coin.png'
                 alt=''
                 aria-hidden='true'
               />

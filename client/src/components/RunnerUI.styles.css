@@ -11,7 +11,7 @@
 .runner_ui__secondary {
     pointer-events: auto;
     border: 0;
-    border-radius: 16px;
+    border-radius: 0;
     padding: 12px 18px;
     font: 700 18px/var(--ui-pixel-line) var(--ui-font);
     color: #fff8ec;
@@ -20,14 +20,14 @@
 }
 
 .runner_ui__restart {
-    background: linear-gradient(180deg, #d38b42, #97531a);
-    box-shadow: 0 10px 22px rgba(22, 10, 3, 0.26);
+    background: rgba(24, 24, 24, 0.78);
+    box-shadow: none;
 }
 
 .runner_ui__secondary {
-    background: rgba(28, 15, 7, 0.82);
+    background: rgba(24, 24, 24, 0.78);
     border: 1px solid rgba(255, 242, 221, 0.22);
-    box-shadow: 0 10px 22px rgba(22, 10, 3, 0.18);
+    box-shadow: none;
 }
 
 .runner_ui__restart:hover,
@@ -42,9 +42,9 @@
 }
 
 .runner_ui__card {
-    background: rgba(28, 15, 7, 0.62);
+    background: rgba(24, 24, 24, 0.72);
     border: 1px solid rgba(255, 242, 221, 0.22);
-    box-shadow: 0 10px 30px rgba(13, 7, 3, 0.18);
+    box-shadow: none;
     backdrop-filter: blur(8px);
 }
 
@@ -90,14 +90,14 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: rgba(15, 7, 2, 0.26);
+    background: rgba(12, 12, 12, 0.32);
     pointer-events: auto;
 }
 
 .runner_ui__card {
     pointer-events: auto;
     width: min(440px, 100%);
-    border-radius: 24px;
+    border-radius: 0;
     padding: 24px;
 }
 
@@ -170,7 +170,7 @@
     color: #fff8ec;
     font-family: var(--ui-font);
     text-align: center;
-    background: rgba(10, 5, 2, 0.72);
+    background: rgba(18, 18, 18, 0.78);
     cursor: pointer;
     pointer-events: auto;
 }

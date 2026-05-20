@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { stopMatch3Music } from '../audio/match3Music';
+import { prepareMatch3Music, stopMatch3Music } from '../audio/match3Music';
 import { playMenuMainMusic, stopMenuMainMusic } from '../audio/menuMainMusic';
 import {
   isGameMusicEnabled,
@@ -14,6 +14,7 @@ import {
   markCafeGuideCompleted,
   resetCafeGuideCompletion,
 } from '../cafeGuide';
+import { preloadGameAssetsInBackground } from '../lib/assetPreloader';
 import './CafeMenu.styles.css';
 
 interface Props {
@@ -64,6 +65,9 @@ export default function CafeMenu({
 
   useEffect(() => {
     let isMounted = true;
+
+    void preloadGameAssetsInBackground();
+    prepareMatch3Music();
 
     const tryStartMusic = async () => {
       const didStart = await playMenuMainMusic();

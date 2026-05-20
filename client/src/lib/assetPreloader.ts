@@ -1,4 +1,5 @@
 import { CAFE_GUIDE_STEPS } from '../cafeGuide/guideSteps';
+import akedopikuseruFontUrl from '../assets/fonts/Akedopikuseru-Regular.otf?url';
 
 export interface AssetPreloadProgress {
   loaded: number;
@@ -6,7 +7,7 @@ export interface AssetPreloadProgress {
   progress: number;
 }
 
-type AssetKind = 'font' | 'image';
+type AssetKind = 'audio' | 'font' | 'image';
 
 interface AssetEntry {
   kind: AssetKind;
@@ -16,7 +17,7 @@ interface AssetEntry {
 const preloadedImages = new Map<string, HTMLImageElement>();
 
 const ASSETS_TO_PRELOAD: AssetEntry[] = [
-  { kind: 'font', path: '/fonts/Akedopikuseru-Regular.otf' },
+  { kind: 'font', path: akedopikuseruFontUrl },
   { kind: 'image', path: '/assets/start_menu.PNG' },
   { kind: 'image', path: '/assets/menu_main.jpg' },
   { kind: 'image', path: '/assets/menu_main.webp' },
@@ -35,8 +36,10 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/gem7.png' },
   { kind: 'image', path: '/assets/gem8.png' },
   { kind: 'image', path: '/assets/gem_bomb.png' },
+  { kind: 'audio', path: '/assets/soundtrack3_in_a_row.m4a' },
+  { kind: 'audio', path: '/assets/soundtrack_runner.m4a' },
   { kind: 'image', path: '/assets/kepka_coin.png' },
-  { kind: 'image', path: '/assets/nichego_сoin.png' },
+  { kind: 'image', path: '/assets/nichego_coin.png' },
   { kind: 'image', path: '/assets/music_on.png' },
   { kind: 'image', path: '/assets/music_off.png' },
   { kind: 'image', path: '/assets/leader_1.svg' },
@@ -45,6 +48,38 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/favicon.svg' },
   { kind: 'image', path: '/icons.svg' },
 ];
+
+const GAME_ASSET_PATHS = new Set([
+  '/assets/spritesheet_runner.jpg',
+  '/assets/runner_apparat.png?v=2',
+  '/assets/runner_menu_preview.png',
+  '/assets/runner_hero.png',
+  '/assets/gem0.png',
+  '/assets/gem1.png',
+  '/assets/gem2.png',
+  '/assets/gem3.png',
+  '/assets/gem4.png',
+  '/assets/gem5.png',
+  '/assets/gem6.png',
+  '/assets/gem7.png',
+  '/assets/gem8.png',
+  '/assets/gem_bomb.png',
+  '/assets/soundtrack3_in_a_row.m4a',
+  '/assets/soundtrack_runner.m4a',
+  '/assets/kepka_coin.png',
+  '/assets/nichego_coin.png',
+]);
+
+function isGameAsset(asset: AssetEntry): boolean {
+  return GAME_ASSET_PATHS.has(asset.path);
+}
+
+const APP_SHELL_ASSETS_TO_PRELOAD = ASSETS_TO_PRELOAD.filter(
+  (asset) => !isGameAsset(asset),
+);
+const GAME_ASSETS_TO_PRELOAD = ASSETS_TO_PRELOAD.filter(isGameAsset);
+
+let gameAssetsPreloadPromise: Promise<void> | null = null;
 
 function preloadImage(path: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -103,13 +138,13 @@ async function preloadAsset(asset: AssetEntry): Promise<void> {
 export async function preloadAppAssets(
   onProgress: (progress: AssetPreloadProgress) => void,
 ): Promise<void> {
-  const total = ASSETS_TO_PRELOAD.length;
+  const total = APP_SHELL_ASSETS_TO_PRELOAD.length;
   let loaded = 0;
 
   onProgress({ loaded, total, progress: 0 });
 
   await Promise.all(
-    ASSETS_TO_PRELOAD.map(async (asset) => {
+    APP_SHELL_ASSETS_TO_PRELOAD.map(async (asset) => {
       try {
         await preloadAsset(asset);
       } catch (error) {
@@ -124,6 +159,20 @@ export async function preloadAppAssets(
       }
     }),
   );
+}
+
+export function preloadGameAssetsInBackground(): Promise<void> {
+  gameAssetsPreloadPromise ??= Promise.all(
+    GAME_ASSETS_TO_PRELOAD.map(async (asset) => {
+      try {
+        await preloadAsset(asset);
+      } catch (error) {
+        console.warn(error);
+      }
+    }),
+  ).then(() => undefined);
+
+  return gameAssetsPreloadPromise;
 }
 
 export function getPreloadedImage(path: string): HTMLImageElement | null {

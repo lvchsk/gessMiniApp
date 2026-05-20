@@ -28,11 +28,11 @@
 .game_ui__back,
 .game_ui__score,
 .game_ui__card {
-    border-radius: 16px;
+    border-radius: 0;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(19, 15, 29, 0.72);
+    background: rgba(24, 24, 24, 0.74);
     color: #f6efff;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
+    box-shadow: none;
     backdrop-filter: blur(10px);
 }
 
@@ -47,7 +47,7 @@
 }
 
 .game_ui__back {
-    background: rgba(19, 15, 29, 0.72);
+    background: rgba(24, 24, 24, 0.74);
     color: #f6efff;
     padding: 8px 13px;
     font-size: clamp(12px, calc(var(--app-vw) * 3.45), 14px);
@@ -98,7 +98,7 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background: rgba(8, 6, 14, 0.42);
+    background: rgba(12, 12, 12, 0.42);
     pointer-events: auto;
 }
 
@@ -106,7 +106,7 @@
     pointer-events: auto;
     width: min(420px, 100%);
     padding: 24px;
-    border-radius: 24px;
+    border-radius: 0;
 }
 
 .game_ui__title {
@@ -130,8 +130,8 @@
 .game_ui__confirm {
     width: 100%;
     margin-bottom: 14px;
-    border-radius: 16px;
-    background: linear-gradient(180deg, #7f4fb5, #4a2a73);
+    border-radius: 0;
+    background: rgba(24, 24, 24, 0.78);
     color: #fff8ec;
 }
 
