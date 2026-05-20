@@ -5,6 +5,7 @@ import CafeMenu from './components/CafeMenu';
 import GameCanvas from './components/GameCanvas';
 import GameUI from './components/GameUI';
 import RunnerCanvas from './components/RunnerCanvas';
+import RunnerMenuPreview from './components/RunnerMenuPreview';
 import RunnerUI from './components/RunnerUI';
 import {
   authenticateWithTelegram,
@@ -17,7 +18,7 @@ import {
 import { preloadAppAssets } from './lib/assetPreloader';
 import { RUNNER_SHIPMENT_SCORE_THRESHOLD } from './runner/config';
 
-type AppState = 'menu' | 'cafe' | 'game' | 'runner';
+type AppState = 'menu' | 'cafe' | 'game' | 'runnerPreview' | 'runner';
 type ScoreSyncStatus = 'guest' | 'unchanged' | 'synced';
 
 interface ScoreSyncResult {
@@ -279,7 +280,12 @@ export default function App() {
     setState('game');
   };
 
-  const handleOpenRunner = () => {
+  const handleOpenRunnerPreview = () => {
+    void refreshLeaderboards();
+    setState('runnerPreview');
+  };
+
+  const handleStartRunner = () => {
     setScore(0);
     setRunnerGameOver(false);
     setRunnerFinalScore(0);
@@ -335,7 +341,17 @@ export default function App() {
     return (
       <CafeMenu
         onPlay={handleOpenMatch3}
-        onRunnerPlay={handleOpenRunner}
+        onRunnerPlay={handleOpenRunnerPreview}
+      />
+    );
+  }
+
+  if (state === 'runnerPreview') {
+    return (
+      <RunnerMenuPreview
+        items={leaderboards.runner}
+        isLoading={leaderboardsLoading}
+        onStart={handleStartRunner}
       />
     );
   }

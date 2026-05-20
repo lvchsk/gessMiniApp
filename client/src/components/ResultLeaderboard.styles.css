@@ -115,7 +115,7 @@
 .result_leaderboard__modal {
     position: fixed;
     inset: 0;
-    z-index: 20;
+    z-index: 120;
     display: grid;
     grid-template-rows: auto 1fr;
     gap: 14px;

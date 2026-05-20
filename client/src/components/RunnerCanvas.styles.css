@@ -29,11 +29,11 @@
 
 .runner_canvas__mount {
     position: absolute;
-    left: 21.94%;
-    top: 26.57%;
+    left: 19.55%;
+    top: 25.62%;
     z-index: 1;
-    width: 55.93%;
-    height: 28%;
+    width: 60.33%;
+    height: 29.42%;
     overflow: hidden;
     pointer-events: none;
     background: linear-gradient(180deg, #f7cb8a 0%, #efb96d 100%);

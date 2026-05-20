@@ -9,6 +9,7 @@ interface Props {
   isLoading: boolean;
   showTopThree?: boolean;
   className?: string;
+  topButtonLabel?: string;
 }
 
 const TITLE_LABEL_BY_GAME: Record<BackendGame, string> = {
@@ -43,6 +44,7 @@ export default function ResultLeaderboard({
   isLoading,
   showTopThree = true,
   className,
+  topButtonLabel = 'топ-100',
 }: Props) {
   const [isTopOpen, setIsTopOpen] = useState(false);
   const leaders = items.slice(0, 100);
@@ -174,7 +176,7 @@ export default function ResultLeaderboard({
       ) : null}
 
       <button className='result_leaderboard__top_button' type='button' onClick={handleOpenTop}>
-        топ-100
+        {topButtonLabel}
       </button>
 
       {topModal ? createPortal(topModal, document.body) : null}

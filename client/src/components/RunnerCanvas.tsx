@@ -79,7 +79,7 @@ export default function RunnerCanvas({
       <div className='runner_canvas__tap_zone' onPointerDown={handleTap}>
         <div className='runner_canvas__cabinet'>
           <div ref={mountRef} className='runner_canvas__mount' />
-          <img className='runner_canvas__apparat' src='/assets/runner_apparat.png' alt='' />
+          <img className='runner_canvas__apparat' src='/assets/runner_apparat.png?v=2' alt='' />
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import {
   stopRunnerShipmentMusic,
 } from '../audio/runnerShipmentMusic';
 import type { LeaderboardItem } from '../lib/backend';
-import { RUNNER_END_EVENT } from '../runner/config';
 import ResultLeaderboard from './ResultLeaderboard';
 import './RunnerUI.styles.css';
 
@@ -50,31 +49,17 @@ export default function RunnerUI({
     }
   };
 
-  const handleBack = () => {
-    if (isGameOver) {
-      onExit();
-      return;
-    }
-
-    window.dispatchEvent(new CustomEvent(RUNNER_END_EVENT));
-  };
-
   return (
     <div className='runner_ui'>
       {!showShipmentReward ? (
-        <div className='runner_ui__topbar'>
-          <button className='runner_ui__back' onClick={handleBack}>
-            Назад
-          </button>
-          <div className='runner_ui__score' aria-label={`Ничегошек: ${score}`}>
-            <img
-              className='runner_ui__score_icon'
-              src='/assets/nichego_сoin.png'
-              alt=''
-              aria-hidden='true'
-            />
-            <span className='runner_ui__score_value'>{score}</span>
-          </div>
+        <div className='runner_ui__score' aria-label={`Ничегошек: ${score}`}>
+          <img
+            className='runner_ui__score_icon'
+            src='/assets/nichego_сoin.png'
+            alt=''
+            aria-hidden='true'
+          />
+          <span className='runner_ui__score_value'>{score}</span>
         </div>
       ) : null}
 
