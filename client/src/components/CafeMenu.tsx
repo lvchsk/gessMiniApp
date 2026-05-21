@@ -14,7 +14,6 @@ import {
   markCafeGuideCompleted,
   resetCafeGuideCompletion,
 } from '../cafeGuide';
-import { preloadGameAssetsInBackground } from '../lib/assetPreloader';
 import './CafeMenu.styles.css';
 
 interface Props {
@@ -66,7 +65,6 @@ export default function CafeMenu({
   useEffect(() => {
     let isMounted = true;
 
-    void preloadGameAssetsInBackground();
     prepareMatch3Music();
 
     const tryStartMusic = async () => {
