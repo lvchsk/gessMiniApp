@@ -1,12 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import "tailwindcss";
-
-@font-face {
-  font-family: 'Akedopikuseru';
-  src: url('./assets/fonts/PressStart2P-Regular.ttf') format('opentype');
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
 
 :root {
   --text: #6b6375;
@@ -21,7 +14,7 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --ui-font: 'Akedopikuseru', system-ui, sans-serif;
+  --ui-font: 'Press Start 2P', system-ui, sans-serif;
   --sans: var(--ui-font);
   --heading: var(--ui-font);
   --mono: var(--ui-font);

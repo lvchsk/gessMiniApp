@@ -23,9 +23,12 @@ import type { RunnerCallbacks, RunnerObstacle, RunnerPattern, RunnerSpawnSpec } 
 
 const RUNNER_HERO_TEXTURE_KEY = 'runner-hero';
 const RUNNER_HERO_ASSET_PATH = '/assets/runner_hero.png';
-const PLAYER_BASELINE_Y = GROUND_Y - 48;
-const PLAYER_DISPLAY_WIDTH = 64;
-const PLAYER_DISPLAY_HEIGHT = 92;
+const RUNNER_BACKGROUND_TEXTURE_KEY = 'runner-background';
+const RUNNER_BACKGROUND_ASSET_PATH = '/assets/runner_background.png';
+const PLAYER_ORIGINAL_DISPLAY_HEIGHT = 92;
+const PLAYER_DISPLAY_WIDTH = 91;
+const PLAYER_DISPLAY_HEIGHT = 138;
+const PLAYER_BASELINE_Y = GROUND_Y - 48 + (PLAYER_DISPLAY_HEIGHT - PLAYER_ORIGINAL_DISPLAY_HEIGHT) / 2;
 const PLAYER_HITBOX_HEIGHT = 76;
 const PLAYER_HITBOX_WIDTH = 30;
 const PLAYER_HITBOX_OFFSET_X = 17;
@@ -50,11 +53,9 @@ export default class RunnerScene extends Phaser.Scene {
   private callbacks: RunnerCallbacks;
 
   private player!: Phaser.Physics.Arcade.Sprite;
-  private ground!: Phaser.GameObjects.TileSprite;
+  private background!: Phaser.GameObjects.TileSprite;
+  private road!: Phaser.GameObjects.TileSprite;
   private floor!: Phaser.GameObjects.Rectangle;
-  private skyline!: Phaser.GameObjects.TileSprite;
-  private cloudFar!: Phaser.GameObjects.TileSprite;
-  private cloudNear!: Phaser.GameObjects.TileSprite;
   private obstacles!: Phaser.Physics.Arcade.Group;
 
   private spaceKey?: Phaser.Input.Keyboard.Key;
@@ -78,6 +79,7 @@ export default class RunnerScene extends Phaser.Scene {
 
   preload(): void {
     this.addPreloadedHeroTexture();
+    this.addPreloadedBackgroundTexture();
     this.createTextures();
   }
 
@@ -93,6 +95,21 @@ export default class RunnerScene extends Phaser.Scene {
 
     if (!this.textures.exists(RUNNER_HERO_TEXTURE_KEY)) {
       this.load.image(RUNNER_HERO_TEXTURE_KEY, RUNNER_HERO_ASSET_PATH);
+    }
+  }
+
+  private addPreloadedBackgroundTexture(): void {
+    if (this.textures.exists(RUNNER_BACKGROUND_TEXTURE_KEY)) {
+      return;
+    }
+
+    const preloadedBackground = getPreloadedImage(RUNNER_BACKGROUND_ASSET_PATH);
+    if (preloadedBackground) {
+      this.textures.addImage(RUNNER_BACKGROUND_TEXTURE_KEY, preloadedBackground);
+    }
+
+    if (!this.textures.exists(RUNNER_BACKGROUND_TEXTURE_KEY)) {
+      this.load.image(RUNNER_BACKGROUND_TEXTURE_KEY, RUNNER_BACKGROUND_ASSET_PATH);
     }
   }
 
@@ -165,78 +182,73 @@ export default class RunnerScene extends Phaser.Scene {
     const graphics = this.make.graphics({ x: 0, y: 0 });
 
     if (!this.textures.exists('runner-obstacle-single')) {
-      graphics.fillStyle(0x734117, 1);
-      graphics.fillRoundedRect(8, 8, 54, 90, 18);
-      graphics.fillStyle(0x492105, 1);
-      graphics.fillRect(0, 58, 64, 12);
-      graphics.fillRect(0, 84, 64, 14);
-      graphics.generateTexture('runner-obstacle-single', 64, 100);
+      graphics.fillStyle(0x4c4a47, 1);
+      graphics.fillRoundedRect(11, 12, 42, 84, 10);
+      graphics.fillStyle(0x736d65, 1);
+      graphics.fillRoundedRect(15, 16, 16, 76, 6);
+      graphics.fillStyle(0x2c2b2b, 1);
+      graphics.fillRect(5, 4, 54, 12);
+      graphics.fillRect(4, 86, 56, 14);
+      graphics.fillStyle(0x9a9184, 1);
+      graphics.fillRect(17, 18, 8, 70);
+      graphics.fillRect(36, 18, 6, 70);
+      graphics.fillStyle(0x242323, 1);
+      graphics.fillRect(11, 98, 42, 6);
+      graphics.generateTexture('runner-obstacle-single', 64, 112);
       graphics.clear();
     }
 
     if (!this.textures.exists('runner-obstacle-double')) {
-      graphics.fillStyle(0x6d2f18, 1);
-      graphics.fillRoundedRect(14, 20, 44, 132, 18);
-      graphics.fillStyle(0xb73e1f, 1);
-      graphics.fillRoundedRect(18, 26, 36, 108, 14);
-      graphics.fillStyle(0xffd26f, 1);
-      graphics.fillRect(10, 12, 52, 10);
-      graphics.fillRect(10, 146, 52, 8);
-      graphics.fillStyle(0xfff1b8, 1);
-      graphics.fillRect(18, 42, 36, 8);
-      graphics.fillRect(18, 68, 36, 8);
-      graphics.fillRect(18, 94, 36, 8);
-      graphics.fillRect(18, 120, 36, 8);
-      graphics.generateTexture('runner-obstacle-double', 72, 160);
+      graphics.fillStyle(0x3f3d3b, 1);
+      graphics.fillRoundedRect(14, 16, 44, 160, 10);
+      graphics.fillStyle(0x706a62, 1);
+      graphics.fillRoundedRect(18, 22, 16, 148, 6);
+      graphics.fillStyle(0x2b2a2a, 1);
+      graphics.fillRect(6, 6, 60, 16);
+      graphics.fillRect(5, 166, 62, 16);
+      graphics.fillStyle(0x948b80, 1);
+      graphics.fillRect(20, 26, 8, 138);
+      graphics.fillRect(40, 26, 7, 138);
+      graphics.fillStyle(0x242323, 1);
+      graphics.fillRect(13, 182, 46, 8);
+      graphics.generateTexture('runner-obstacle-double', 72, 198);
       graphics.clear();
     }
 
-    if (!this.textures.exists('runner-ground')) {
-      graphics.fillStyle(0xf5d59c, 1);
-      graphics.fillRect(0, 0, 256, 64);
-      graphics.fillStyle(0xe1ae61, 1);
-      graphics.fillRect(0, 44, 256, 20);
-      graphics.fillStyle(0xc47a33, 1);
-      graphics.fillRect(0, 50, 256, 14);
-      graphics.generateTexture('runner-ground', 256, 64);
-      graphics.clear();
-    }
-
-    if (!this.textures.exists('runner-cloud')) {
-      graphics.fillStyle(0xffefcf, 1);
-      graphics.fillEllipse(70, 36, 92, 34);
-      graphics.fillEllipse(118, 30, 92, 42);
-      graphics.fillEllipse(160, 36, 82, 30);
-      graphics.generateTexture('runner-cloud', 220, 76);
-      graphics.clear();
-    }
-
-    if (!this.textures.exists('runner-hills')) {
-      graphics.fillStyle(0xd28d46, 1);
-      graphics.fillTriangle(0, 130, 70, 28, 140, 130);
-      graphics.fillTriangle(100, 130, 190, 42, 280, 130);
-      graphics.generateTexture('runner-hills', 280, 140);
+    if (!this.textures.exists('runner-road')) {
+      graphics.fillStyle(0x312c2c, 1);
+      graphics.fillRect(0, 0, 320, 92);
+      graphics.fillStyle(0x4a4140, 1);
+      graphics.fillRect(0, 0, 320, 10);
+      graphics.fillStyle(0x1e1c1c, 1);
+      graphics.fillRect(0, 72, 320, 20);
+      graphics.fillStyle(0x514746, 0.55);
+      for (let x = 0; x < 320; x += 46) {
+        graphics.fillRect(x, 16, 24, 4);
+        graphics.fillRect(x + 18, 42, 32, 4);
+      }
+      graphics.generateTexture('runner-road', 320, 92);
     }
 
     graphics.destroy();
   }
 
   private createWorld(): void {
-    this.cameras.main.setBackgroundColor('#f5c888');
+    this.cameras.main.setBackgroundColor('#15100f');
 
-    this.add.rectangle(RUNNER_WIDTH / 2, RUNNER_HEIGHT / 2, RUNNER_WIDTH, RUNNER_HEIGHT, 0xf7ca87);
-    this.add.rectangle(RUNNER_WIDTH / 2, RUNNER_HEIGHT * 0.58, RUNNER_WIDTH, RUNNER_HEIGHT * 0.65, 0xf0be73, 0.28);
+    this.background = this.add.tileSprite(
+      RUNNER_WIDTH / 2,
+      RUNNER_HEIGHT / 2,
+      RUNNER_WIDTH,
+      RUNNER_HEIGHT,
+      RUNNER_BACKGROUND_TEXTURE_KEY,
+    );
+    this.background.setDepth(0);
+    this.background.setTileScale(RUNNER_HEIGHT / 724);
+    this.background.tilePositionY = 0;
 
-    this.cloudFar = this.add.tileSprite(RUNNER_WIDTH / 2, 160, RUNNER_WIDTH, 120, 'runner-cloud');
-    this.cloudFar.setAlpha(0.24);
-
-    this.cloudNear = this.add.tileSprite(RUNNER_WIDTH / 2, 210, RUNNER_WIDTH, 140, 'runner-cloud');
-    this.cloudNear.setAlpha(0.4);
-
-    this.skyline = this.add.tileSprite(RUNNER_WIDTH / 2, GROUND_Y - 60, RUNNER_WIDTH, 140, 'runner-hills');
-    this.skyline.setAlpha(0.68);
-
-    this.ground = this.add.tileSprite(RUNNER_WIDTH / 2, GROUND_Y + 32, RUNNER_WIDTH, 64, 'runner-ground');
+    this.road = this.add.tileSprite(RUNNER_WIDTH / 2, FLOOR_TOP + 30, RUNNER_WIDTH, 92, 'runner-road');
+    this.road.setDepth(4);
     this.floor = this.add.rectangle(
       RUNNER_WIDTH / 2,
       FLOOR_TOP + FLOOR_HEIGHT / 2,
@@ -600,10 +612,8 @@ export default class RunnerScene extends Phaser.Scene {
   }
 
   private advanceBackground(deltaSeconds: number): void {
-    this.cloudFar.tilePositionX += this.scrollSpeed * deltaSeconds * 0.08;
-    this.cloudNear.tilePositionX += this.scrollSpeed * deltaSeconds * 0.16;
-    this.skyline.tilePositionX += this.scrollSpeed * deltaSeconds * 0.38;
-    this.ground.tilePositionX += this.scrollSpeed * deltaSeconds;
+    this.background.tilePositionX += this.scrollSpeed * deltaSeconds * 0.22;
+    this.road.tilePositionX += this.scrollSpeed * deltaSeconds;
   }
 
   private triggerGameOver(): void {

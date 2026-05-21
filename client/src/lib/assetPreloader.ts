@@ -1,5 +1,4 @@
 import { CAFE_GUIDE_STEPS } from '../cafeGuide/guideSteps';
-import akedopikuseruFontUrl from '../assets/fonts/Akedopikuseru-Regular.otf?url';
 
 export interface AssetPreloadProgress {
   loaded: number;
@@ -15,13 +14,16 @@ interface AssetEntry {
 }
 
 const preloadedImages = new Map<string, HTMLImageElement>();
+const PRESS_START_2P_STYLESHEET_URL =
+  'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap';
 
 const ASSETS_TO_PRELOAD: AssetEntry[] = [
-  { kind: 'font', path: akedopikuseruFontUrl },
+  { kind: 'font', path: PRESS_START_2P_STYLESHEET_URL },
   { kind: 'image', path: '/assets/start_menu.PNG' },
   { kind: 'image', path: '/assets/menu_main.jpg' },
   { kind: 'image', path: '/assets/menu_main.webp' },
   { kind: 'image', path: '/assets/spritesheet_runner.jpg' },
+  { kind: 'image', path: '/assets/runner_background.png' },
   { kind: 'image', path: '/assets/runner_apparat.png?v=2' },
   { kind: 'image', path: '/assets/runner_menu_preview.png' },
   { kind: 'image', path: '/assets/runner_hero.png' },
@@ -51,6 +53,7 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
 
 const GAME_ASSET_PATHS = new Set([
   '/assets/spritesheet_runner.jpg',
+  '/assets/runner_background.png',
   '/assets/runner_apparat.png?v=2',
   '/assets/runner_menu_preview.png',
   '/assets/runner_hero.png',
@@ -117,7 +120,7 @@ async function preloadFont(path: string): Promise<void> {
   await preloadFetchableAsset(path);
 
   if (typeof document !== 'undefined' && 'fonts' in document) {
-    await document.fonts.load('1em Akedopikuseru');
+    await document.fonts.load('1em "Press Start 2P"');
   }
 }
 

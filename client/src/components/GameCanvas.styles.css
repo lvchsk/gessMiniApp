@@ -14,8 +14,8 @@
 }
 
 .game_canvas__mount {
-    width: min(100%, 390px);
-    aspect-ratio: 3 / 5;
+    width: min(100%, 342px);
+    aspect-ratio: 342 / 566;
     height: auto;
     display: flex;
     align-items: center;

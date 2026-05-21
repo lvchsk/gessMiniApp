@@ -158,16 +158,42 @@
     flex: 0 0 auto;
 }
 
+.result_leaderboard__modal_body {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
 .result_leaderboard__modal_list {
     display: grid;
     align-content: start;
     gap: 8px;
+    height: 100%;
     min-width: 0;
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: y proximity;
+    scrollbar-width: none;
+}
+
+.result_leaderboard__modal_list::-webkit-scrollbar {
+    display: none;
+}
+
+.result_leaderboard__modal_swiper {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: transparent;
+    cursor: grab;
+    touch-action: none;
+}
+
+.result_leaderboard__modal_swiper:active {
+    cursor: grabbing;
 }
 
 .result_leaderboard__modal_item {
