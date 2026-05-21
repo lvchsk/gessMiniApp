@@ -17,11 +17,12 @@
 
 .cafe_guide__asset {
     position: absolute;
-    left: max(8px, calc(env(safe-area-inset-left) + var(--app-width) * 0.018));
-    bottom: env(safe-area-inset-bottom);
+    /* left: max(8px, calc(env(safe-area-inset-left) + var(--app-width) * 0.018)); */
+    /* bottom: env(safe-area-inset-bottom); */
+    bottom: 0;
     z-index: 1;
     display: block;
-    width: min(88.5%, 585px);
+    /* width: min(88.5%, 585px); */
     max-height: 64.5%;
     object-fit: contain;
     object-position: left bottom;
