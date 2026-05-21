@@ -51,7 +51,7 @@ export default function RunnerMenuPreview({
       <div className='runner_menu_preview__cabinet'>
         <img
           className='runner_menu_preview__image'
-          src='/assets/runner_menu_preview.png'
+          src='/assets/runner_menu_preview.webp'
           alt=''
           aria-hidden='true'
         />

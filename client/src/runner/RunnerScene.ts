@@ -22,9 +22,9 @@ import {
 import type { RunnerCallbacks, RunnerObstacle, RunnerPattern, RunnerSpawnSpec } from './types';
 
 const RUNNER_HERO_TEXTURE_KEY = 'runner-hero';
-const RUNNER_HERO_ASSET_PATH = '/assets/runner_hero.png';
+const RUNNER_HERO_ASSET_PATH = '/assets/runner_hero.webp';
 const RUNNER_BACKGROUND_TEXTURE_KEY = 'runner-background';
-const RUNNER_BACKGROUND_ASSET_PATH = '/assets/runner_background.png';
+const RUNNER_BACKGROUND_ASSET_PATH = '/assets/runner_background.webp';
 const PLAYER_ORIGINAL_DISPLAY_HEIGHT = 92;
 const PLAYER_DISPLAY_WIDTH = 91;
 const PLAYER_DISPLAY_HEIGHT = 138;

@@ -150,7 +150,7 @@ export default function CafeMenu({
       >
         <img
           className='cafe_menu__music_toggle_sprite'
-          src={isMusicEnabled ? '/assets/music_on.png' : '/assets/music_off.png'}
+          src={isMusicEnabled ? '/assets/music_on.webp' : '/assets/music_off.webp'}
           alt=''
         />
       </button>

@@ -245,7 +245,7 @@
 .runner_ui__shipment_sprite_track {
     width: 1200%;
     height: 100%;
-    background-image: url('/assets/spritesheet_runner.jpg');
+    background-image: url('/assets/spritesheet_runner.webp');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     animation: runner_ui__shipment_sprite_frames 6s step-end infinite;

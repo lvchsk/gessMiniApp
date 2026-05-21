@@ -4,12 +4,12 @@ import { GEM_ASSET_COUNT } from './config';
 
 const GEM_ASSET_PATHS = Array.from({ length: GEM_ASSET_COUNT }, (_, index) => ({
   key: `gem${index}`,
-  path: `/assets/gem${index}.png`,
+  path: `/assets/gem${index}.webp`,
 }));
 
 const MATCH3_ASSET_PATHS = [
   ...GEM_ASSET_PATHS,
-  { key: 'gem_bomb', path: '/assets/gem_bomb.png' },
+  { key: 'gem_bomb', path: '/assets/gem_bomb.webp' },
 ];
 
 export function registerPreloadedMatch3Textures(scene: Phaser.Scene): void {
