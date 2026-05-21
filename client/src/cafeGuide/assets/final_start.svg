@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="final start placeholder">
-  <rect width="640" height="360" fill="#130f0c"/>
-  <rect x="92" y="74" width="456" height="212" rx="18" fill="#2e241c"/>
-  <path d="M288 138l104 42-104 42z" fill="#ffd58a"/>
-  <text x="320" y="272" text-anchor="middle" fill="#ffd58a" font-family="monospace" font-size="32" font-weight="700">final_start</text>
-</svg>

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="runner machine placeholder">
-  <rect width="640" height="360" fill="#201711"/>
-  <rect x="190" y="38" width="260" height="286" rx="22" fill="#38322d"/>
-  <rect x="224" y="78" width="192" height="126" rx="10" fill="#f5c887"/>
-  <circle cx="320" cy="244" r="24" fill="#d93d1d"/>
-  <text x="320" y="182" text-anchor="middle" fill="#3b180d" font-family="monospace" font-size="24" font-weight="700">runner_machine</text>
-</svg>

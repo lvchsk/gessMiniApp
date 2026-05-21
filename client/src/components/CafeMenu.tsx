@@ -24,6 +24,8 @@ interface Props {
 const MOSCOW_TIME_ZONE = 'Europe/Moscow';
 const KEPKA_MENU_START_DAY = Date.UTC(2026, 4, 5) / 86_400_000;
 const KEPKA_MENU_COUNT = 10;
+const MUSIC_ON_ICON_SRC = '/assets/music_on.webp?v=2';
+const MUSIC_OFF_ICON_SRC = '/assets/music_off.webp?v=2';
 
 function getMoscowDayNumber(date = new Date()): number {
   const parts = new Intl.DateTimeFormat('en-US', {
@@ -150,7 +152,7 @@ export default function CafeMenu({
       >
         <img
           className='cafe_menu__music_toggle_sprite'
-          src={isMusicEnabled ? '/assets/music_on.webp' : '/assets/music_off.webp'}
+          src={isMusicEnabled ? MUSIC_ON_ICON_SRC : MUSIC_OFF_ICON_SRC}
           alt=''
         />
       </button>

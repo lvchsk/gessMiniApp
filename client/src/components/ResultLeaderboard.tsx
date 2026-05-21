@@ -25,7 +25,7 @@ const TITLE_LABEL_BY_GAME: Record<BackendGame, string> = {
 };
 
 const TITLE_COIN_BY_GAME: Record<BackendGame, string> = {
-  match: '/assets/kepka_coin.png',
+  match: '/assets/kepka_coin.webp',
   runner: '/assets/nichego_coin.webp',
 };
 

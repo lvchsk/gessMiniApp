@@ -65,8 +65,8 @@
     top: 17.2%;
     right: 5.4%;
     z-index: 3;
-    width: clamp(52px, calc(var(--app-width) * 0.15), 68px);
-    aspect-ratio: 204 / 249;
+    width: clamp(64px, calc(var(--app-width) * 0.19), 86px);
+    aspect-ratio: 219 / 187;
     border: 0;
     padding: 0;
     background: transparent;
@@ -89,10 +89,13 @@
 }
 
 .cafe_menu__music_toggle_sprite {
-    display: block;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
     height: 100%;
-    object-fit: contain;
+    width: auto;
+    max-width: none;
+    pointer-events: none;
 }
 
 .cafe_menu__hitbox--runner {

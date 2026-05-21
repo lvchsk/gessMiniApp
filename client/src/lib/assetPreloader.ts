@@ -19,36 +19,35 @@ const PRESS_START_2P_STYLESHEET_URL =
 
 const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'font', path: PRESS_START_2P_STYLESHEET_URL },
-  { kind: 'image', path: '/assets/start_menu.PNG' },
-  { kind: 'image', path: '/assets/menu_main.jpg' },
+  { kind: 'image', path: '/assets/start_menu.webp' },
   { kind: 'image', path: '/assets/menu_main.webp' },
-  { kind: 'image', path: '/assets/spritesheet_runner.jpg' },
-  { kind: 'image', path: '/assets/runner_background.png' },
-  { kind: 'image', path: '/assets/runner_apparat.png?v=2' },
-  { kind: 'image', path: '/assets/runner_menu_preview.png' },
-  { kind: 'image', path: '/assets/runner_hero.png' },
+  { kind: 'image', path: '/assets/spritesheet_runner.webp' },
+  { kind: 'image', path: '/assets/runner_background.webp' },
+  { kind: 'image', path: '/assets/runner_apparat.webp?v=2' },
+  { kind: 'image', path: '/assets/runner_menu_preview.webp' },
+  { kind: 'image', path: '/assets/runner_hero.webp' },
   ...CAFE_GUIDE_STEPS.map((step) => ({ kind: 'image' as const, path: step.asset })),
-  { kind: 'image', path: '/assets/gem0.png' },
-  { kind: 'image', path: '/assets/gem1.png' },
-  { kind: 'image', path: '/assets/gem2.png' },
-  { kind: 'image', path: '/assets/gem3.png' },
-  { kind: 'image', path: '/assets/gem4.png' },
-  { kind: 'image', path: '/assets/gem5.png' },
-  { kind: 'image', path: '/assets/gem6.png' },
-  { kind: 'image', path: '/assets/gem7.png' },
-  { kind: 'image', path: '/assets/gem8.png' },
-  { kind: 'image', path: '/assets/gem_bomb.png' },
+  { kind: 'image', path: '/assets/gem0.webp' },
+  { kind: 'image', path: '/assets/gem1.webp' },
+  { kind: 'image', path: '/assets/gem2.webp' },
+  { kind: 'image', path: '/assets/gem3.webp' },
+  { kind: 'image', path: '/assets/gem4.webp' },
+  { kind: 'image', path: '/assets/gem5.webp' },
+  { kind: 'image', path: '/assets/gem6.webp' },
+  { kind: 'image', path: '/assets/gem7.webp' },
+  { kind: 'image', path: '/assets/gem8.webp' },
+  { kind: 'image', path: '/assets/gem_bomb.webp' },
   { kind: 'audio', path: '/assets/soundtrack3_in_a_row.m4a' },
+  { kind: 'audio', path: '/assets/soundtrack_menu_main.mp3' },
   { kind: 'audio', path: '/assets/soundtrack_runner.m4a' },
-  { kind: 'image', path: '/assets/kepka_coin.png' },
-  { kind: 'image', path: '/assets/nichego_coin.png' },
-  { kind: 'image', path: '/assets/music_on.png' },
-  { kind: 'image', path: '/assets/music_off.png' },
+  { kind: 'audio', path: '/assets/soundtrack_runner_underdog.mp3' },
+  { kind: 'image', path: '/assets/kepka_coin.webp' },
+  { kind: 'image', path: '/assets/nichego_coin.webp' },
+  { kind: 'image', path: '/assets/music_on.webp?v=2' },
+  { kind: 'image', path: '/assets/music_off.webp?v=2' },
   { kind: 'image', path: '/assets/leader_1.svg' },
   { kind: 'image', path: '/assets/leader_2.svg' },
   { kind: 'image', path: '/assets/leader_3.svg' },
-  { kind: 'image', path: '/favicon.svg' },
-  { kind: 'image', path: '/icons.svg' },
 ];
 
 function preloadImage(path: string): Promise<void> {
@@ -115,18 +114,14 @@ export async function preloadAppAssets(
 
   await Promise.all(
     ASSETS_TO_PRELOAD.map(async (asset) => {
-      try {
-        await preloadAsset(asset);
-      } catch (error) {
-        console.warn(error);
-      } finally {
-        loaded += 1;
-        onProgress({
-          loaded,
-          total,
-          progress: total > 0 ? loaded / total : 1,
-        });
-      }
+      await preloadAsset(asset);
+
+      loaded += 1;
+      onProgress({
+        loaded,
+        total,
+        progress: total > 0 ? loaded / total : 1,
+      });
     }),
   );
 }

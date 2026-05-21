@@ -147,6 +147,8 @@ export default function App() {
         setAssetsProgress(1);
         setAreAssetsReady(true);
       }
+    }).catch((error) => {
+      console.error('Failed to preload app assets', error);
     });
 
     return () => {
