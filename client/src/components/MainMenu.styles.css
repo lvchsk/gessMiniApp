@@ -51,6 +51,10 @@
     font-size: 0.92em;
 }
 
+.container--ready .main_menu__greeting {
+    bottom: clamp(48px, calc(var(--app-vh) * 5.8), 70px);
+}
+
 .main_menu__start_hitbox {
     position: absolute;
     left: 50%;
@@ -89,13 +93,39 @@
     border: 0;
 }
 
-.main_menu__loader {
+.main_menu__loading_stack {
     position: absolute;
     left: 50%;
-    bottom: clamp(30px, calc(var(--app-vh) * 4.2), 52px);
+    bottom: clamp(22px, calc(var(--app-vh) * 3.4), 44px);
     z-index: 3;
     width: min(calc(var(--app-width) * 0.72), 310px);
     transform: translateX(-50%);
+    display: grid;
+    justify-items: center;
+    gap: clamp(8px, calc(var(--app-vh) * 1.1), 12px);
+}
+
+.main_menu__steps {
+    --steps-frame-size: clamp(116px, calc(var(--app-width) * 0.34), 164px);
+
+    position: absolute;
+    left: 29%;
+    bottom: clamp(44px, calc(var(--app-vh) * 7.5), 78px);
+    z-index: 3;
+    width: var(--steps-frame-size);
+    height: var(--steps-frame-size);
+    transform: translateX(-50%);
+    background-image: url('/assets/shagi_preload.png');
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: calc(var(--steps-frame-size) * 6) var(--steps-frame-size);
+    image-rendering: pixelated;
+    pointer-events: none;
+    animation: main-menu-steps 1.8s steps(6) infinite;
+}
+
+.main_menu__loader {
+    width: 100%;
     color: #fff8ec;
     text-align: center;
     text-shadow: 0 4px 14px rgba(12, 6, 3, 0.54);
@@ -135,6 +165,10 @@
         font-size: clamp(18px, calc(var(--app-vw) * 5.4), 30px);
     }
 
+    .container--ready .main_menu__greeting {
+        bottom: clamp(46px, calc(var(--app-vh) * 5.6), 66px);
+    }
+
     .main_menu__start_hitbox {
         top: clamp(248px, calc(var(--app-vh) * 31), 308px);
         width: min(calc(var(--app-width) * 0.88), 348px);
@@ -148,7 +182,17 @@
         font-size: clamp(17px, calc(var(--app-vw) * 5), 26px);
     }
 
+    .container--ready .main_menu__greeting {
+        bottom: clamp(42px, calc(var(--app-vh) * 5.2), 60px);
+    }
+
     .main_menu__start_hitbox {
         top: clamp(232px, calc(var(--app-vh) * 30), 286px);
+    }
+}
+
+@keyframes main-menu-steps {
+    to {
+        background-position-x: calc(var(--steps-frame-size) * -6);
     }
 }

@@ -36,7 +36,11 @@
     height: 29.42%;
     overflow: hidden;
     pointer-events: none;
-    background: linear-gradient(180deg, #f7cb8a 0%, #efb96d 100%);
+    background:
+        #a77682
+        url('/assets/runner_background.webp')
+        center / cover
+        no-repeat;
 }
 
 .runner_canvas__mount canvas {

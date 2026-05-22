@@ -30,14 +30,17 @@ export default function MainMenu({
         <span className='main_menu__greeting_label'>Привет,</span>
         {user ? <span className='main_menu__greeting_name'>{user}</span> : null}
       </h1>
+      {isReady ? <div className='main_menu__steps' aria-hidden='true' /> : null}
       {!isReady ? (
-        <div className='main_menu__loader' role='status' aria-live='polite'>
-          <div className='main_menu__loader_label'>Загрузка {loadingPercent}%</div>
-          <div className='main_menu__loader_track' aria-hidden='true'>
-            <div
-              className='main_menu__loader_bar'
-              style={{ transform: `scaleX(${loadingProgress})` }}
-            />
+        <div className='main_menu__loading_stack'>
+          <div className='main_menu__loader' role='status' aria-live='polite'>
+            <div className='main_menu__loader_label'>Загрузка {loadingPercent}%</div>
+            <div className='main_menu__loader_track' aria-hidden='true'>
+              <div
+                className='main_menu__loader_bar'
+                style={{ transform: `scaleX(${loadingProgress})` }}
+              />
+            </div>
           </div>
         </div>
       ) : null}

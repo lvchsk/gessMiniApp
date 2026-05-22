@@ -26,6 +26,7 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/runner_apparat.webp?v=2' },
   { kind: 'image', path: '/assets/runner_menu_preview.webp' },
   { kind: 'image', path: '/assets/runner_hero.webp' },
+  { kind: 'image', path: '/assets/shagi_preload.png' },
   ...CAFE_GUIDE_STEPS.map((step) => ({ kind: 'image' as const, path: step.asset })),
   { kind: 'image', path: '/assets/gem0.webp' },
   { kind: 'image', path: '/assets/gem1.webp' },

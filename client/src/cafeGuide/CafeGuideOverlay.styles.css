@@ -4,7 +4,7 @@
     z-index: 12;
     box-sizing: border-box;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.45);
     color: #fff8ec;
     font-family: var(--ui-font);
     pointer-events: auto;
@@ -41,7 +41,7 @@
 .cafe_guide__body {
     position: absolute;
     left: max(22px, calc(env(safe-area-inset-left) + var(--app-width) * 0.105));
-    top: max(210px, calc(env(safe-area-inset-top) + var(--app-height) * 0.295));
+    top: max(158px, calc(env(safe-area-inset-top) + var(--app-height) * 0.225));
     width: min(75%, 510px);
     max-height: 38%;
     box-sizing: border-box;
@@ -124,7 +124,7 @@
     }
 
     .cafe_guide__body {
-        top: max(126px, calc(env(safe-area-inset-top) + var(--app-height) * 0.27));
+        top: max(76px, calc(env(safe-area-inset-top) + var(--app-height) * 0.2));
         width: min(76%, 470px);
         max-height: 40%;
         font-size: clamp(11px, calc(var(--app-vw) * 3.05), 16px);

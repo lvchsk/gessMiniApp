@@ -12,7 +12,7 @@ export class RunnerGameManager {
       width: RUNNER_WIDTH,
       height: RUNNER_HEIGHT,
       parent: container,
-      backgroundColor: '#f7cb8a',
+      backgroundColor: '#15100f',
       physics: {
         default: 'arcade',
         arcade: {
