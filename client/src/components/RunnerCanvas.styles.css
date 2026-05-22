@@ -36,11 +36,7 @@
     height: 29.42%;
     overflow: hidden;
     pointer-events: none;
-    background:
-        #a77682
-        url('/assets/runner_background.webp')
-        center / cover
-        no-repeat;
+    background: transparent;
 }
 
 .runner_canvas__mount canvas {

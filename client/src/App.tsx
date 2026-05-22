@@ -78,6 +78,7 @@ export default function App() {
   const [state, setState] = useState<AppState>('menu');
   const [score, setScore] = useState(0);
   const [runnerGameOver, setRunnerGameOver] = useState(false);
+  const [runnerSceneReady, setRunnerSceneReady] = useState(false);
   const [runnerFinalScore, setRunnerFinalScore] = useState(0);
   const [runnerResultMessage, setRunnerResultMessage] = useState<string | null>(null);
   const [matchResultOpen, setMatchResultOpen] = useState(false);
@@ -320,10 +321,15 @@ export default function App() {
   const handleStartRunner = () => {
     setScore(0);
     setRunnerGameOver(false);
+    setRunnerSceneReady(false);
     setRunnerFinalScore(0);
     setRunnerResultMessage(null);
     setState('runner');
   };
+
+  const handleRunnerSceneReady = useCallback(() => {
+    setRunnerSceneReady(true);
+  }, []);
 
   const handleMatchExitRequest = () => {
     const finalScore = Math.max(0, Math.floor(score));
@@ -400,8 +406,20 @@ export default function App() {
         <RunnerCanvas
           onScoreChange={setScore}
           onGameOverChange={setRunnerGameOver}
+          onReady={handleRunnerSceneReady}
           isRunnerMusicMuted={showRunnerShipmentReward}
         />
+        {!runnerSceneReady ? (
+          <div className='runner_boot_cover' aria-hidden='true'>
+            <div className='runner_boot_cover__cabinet'>
+              <img
+                className='runner_boot_cover__image'
+                src='/assets/runner_menu_preview.webp'
+                alt=''
+              />
+            </div>
+          </div>
+        ) : null}
         <RunnerUI
           score={score}
           isGameOver={runnerGameOver}

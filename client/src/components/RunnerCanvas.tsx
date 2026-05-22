@@ -7,12 +7,14 @@ import './RunnerCanvas.styles.css';
 interface Props {
   onScoreChange: (score: number) => void;
   onGameOverChange: (isGameOver: boolean) => void;
+  onReady?: () => void;
   isRunnerMusicMuted?: boolean;
 }
 
 export default function RunnerCanvas({
   onScoreChange,
   onGameOverChange,
+  onReady,
   isRunnerMusicMuted = false,
 }: Props) {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -58,6 +60,7 @@ export default function RunnerCanvas({
     manager.mount(mountRef.current, {
       onScoreChange,
       onGameOverChange,
+      onReady,
     });
 
     window.requestAnimationFrame(() => {
@@ -75,7 +78,7 @@ export default function RunnerCanvas({
       stopRunnerMusic();
       manager.destroy();
     };
-  }, [onGameOverChange, onScoreChange]);
+  }, [onGameOverChange, onReady, onScoreChange]);
 
   const handleTap = () => {
     window.dispatchEvent(new CustomEvent(RUNNER_TAP_EVENT));

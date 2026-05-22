@@ -140,6 +140,9 @@ export default class RunnerScene extends Phaser.Scene {
     window.addEventListener(RESTART_EVENT, this.handleExternalRestart);
     window.addEventListener(RUNNER_END_EVENT, this.handleExternalEnd);
     window.addEventListener(RUNNER_TAP_EVENT, this.handleJumpInput);
+    this.game.events.once(Phaser.Core.Events.POST_RENDER, () => {
+      this.callbacks.onReady?.();
+    });
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.spaceKey?.off('down', this.handleJumpInput, this);
       window.removeEventListener(RESTART_EVENT, this.handleExternalRestart);

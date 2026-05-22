@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 export interface RunnerCallbacks {
   onScoreChange?: (score: number) => void;
   onGameOverChange?: (isGameOver: boolean) => void;
+  onReady?: () => void;
 }
 
 export interface RunnerObstacle extends Phaser.Physics.Arcade.Sprite {
