@@ -9,7 +9,7 @@
         max(16px, env(safe-area-inset-left));
     box-sizing: border-box;
     overflow: hidden;
-    background-image: url('/assets/start_menu.webp');
+    background-image: url('/assets/start_menu.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

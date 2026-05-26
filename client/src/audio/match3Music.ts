@@ -1,6 +1,6 @@
 import { isGameMusicEnabled } from './musicPreference';
 
-const MATCH3_SOUNDTRACK_SRC = '/assets/soundtrack3_in_a_row.m4a';
+const MATCH3_SOUNDTRACK_SRC = '/assets/soundtrack3_in_a_row.mp3';
 const MATCH3_VOLUME = 0.42;
 
 let match3Audio: HTMLAudioElement | null = null;

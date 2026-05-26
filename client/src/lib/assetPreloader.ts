@@ -19,7 +19,7 @@ const PRESS_START_2P_STYLESHEET_URL =
 
 const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'font', path: PRESS_START_2P_STYLESHEET_URL },
-  { kind: 'image', path: '/assets/start_menu.webp' },
+  { kind: 'image', path: '/assets/start_menu.jpg' },
   { kind: 'image', path: '/assets/menu_main.webp' },
   { kind: 'image', path: '/assets/spritesheet_runner.webp' },
   { kind: 'image', path: '/assets/runner_background.webp' },
@@ -50,7 +50,7 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/gem7.webp' },
   { kind: 'image', path: '/assets/gem8.webp' },
   { kind: 'image', path: '/assets/gem_bomb.webp' },
-  { kind: 'audio', path: '/assets/soundtrack3_in_a_row.m4a' },
+  { kind: 'audio', path: '/assets/soundtrack3_in_a_row.mp3' },
   { kind: 'audio', path: '/assets/soundtrack_menu_main.mp3' },
   { kind: 'audio', path: '/assets/soundtrack_runner.m4a' },
   { kind: 'audio', path: '/assets/soundtrack_runner_underdog.mp3' },
