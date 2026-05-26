@@ -33,13 +33,10 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
     kind: 'image' as const,
     path: `/assets/gost_menu_${index + 1}.svg`,
   })),
+  { kind: 'image', path: '/assets/kepka_menu_1.webp' },
   ...Array.from({ length: 9 }, (_, index) => ({
     kind: 'image' as const,
-    path: `/assets/kepka_menu_${index + 1}.svg`,
-  })),
-  ...Array.from({ length: 9 }, (_, index) => ({
-    kind: 'image' as const,
-    path: `/assets/kepka_menu_${index + 1}_sprite.svg`,
+    path: `/assets/kepka_menu_${index + 1}_sprite.webp`,
   })),
   { kind: 'image', path: '/assets/gem0.webp' },
   { kind: 'image', path: '/assets/gem1.webp' },

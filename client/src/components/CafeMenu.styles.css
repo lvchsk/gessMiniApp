@@ -200,15 +200,21 @@
 }
 
 .cafe_menu__popup--kepka {
+    display: block;
+    overflow: hidden;
+    padding: 0;
     background: rgba(13, 9, 8, 0.78);
 }
 
 .cafe_menu__kepka_window {
-    position: relative;
+    position: absolute;
+    left: 50%;
+    top: 50%;
     z-index: 1;
     display: block;
-    width: min(calc(var(--app-width) * 0.84), 360px);
+    width: min(calc(var(--app-width) * 1.26), 540px);
     aspect-ratio: 4 / 5;
+    transform: translate(-50%, -50%);
     pointer-events: none;
 }
 
@@ -228,30 +234,9 @@
 .cafe_menu__kepka_sprite {
     position: absolute;
     left: 50%;
-    top: 48%;
+    top: 51%;
     z-index: 2;
-    width: min(calc(var(--app-width) * 0.52), 230px);
-    max-height: min(calc(var(--app-height) * 0.42), 360px);
+    width: min(calc(var(--app-width) * 0.78), 345px);
+    max-height: min(calc(var(--app-height) * 0.63), 540px);
     transform: translate(-50%, -50%);
-}
-
-.cafe_menu__kepka_text {
-    position: absolute;
-    left: 50%;
-    bottom: 7%;
-    z-index: 3;
-    display: block;
-    width: 84%;
-    transform: translateX(-50%);
-    overflow: hidden;
-    color: #fff8ec;
-    font-size: clamp(13px, calc(var(--app-vw) * 3.6), 18px);
-    font-weight: 900;
-    line-height: var(--ui-pixel-line);
-    text-align: center;
-    text-overflow: clip;
-    text-shadow:
-        0 3px 0 rgba(30, 15, 9, 0.52),
-        0 8px 18px rgba(0, 0, 0, 0.34);
-    white-space: nowrap;
 }

@@ -92,9 +92,8 @@ export default function CafeMenu({
   const [isGuideOpen, setIsGuideOpen] = useState(() => !isCafeGuideCompleted());
   const dailyGostAsset = `/assets/gost_menu_${dailyGostIndex}.svg`;
   const popupKepkaIndex = popup?.kind === 'kepka' ? popup.index : dailyGostIndex;
-  const popupKepkaAsset = `/assets/kepka_menu_${popupKepkaIndex}.svg`;
-  const popupKepkaSpriteAsset = `/assets/kepka_menu_${popupKepkaIndex}_sprite.svg`;
-  const popupKepkaText = popupKepkaIndex === 1 ? 'stenosis' : `kepka_menu_${popupKepkaIndex}`;
+  const popupKepkaAsset = '/assets/kepka_menu_1.webp';
+  const popupKepkaSpriteAsset = `/assets/kepka_menu_${popupKepkaIndex}_sprite.webp`;
 
   useEffect(() => {
     let timeoutId: number | undefined;
@@ -254,7 +253,6 @@ export default function CafeMenu({
         >
           <span className='cafe_menu__kepka_window'>
             <img className='cafe_menu__kepka_background' src={popupKepkaAsset} alt='' />
-            <span className='cafe_menu__kepka_text'>{popupKepkaText}</span>
           </span>
           <img className='cafe_menu__kepka_sprite' src={popupKepkaSpriteAsset} alt='' />
         </button>

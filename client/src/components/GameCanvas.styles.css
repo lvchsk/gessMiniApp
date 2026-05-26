@@ -39,7 +39,7 @@
 .game_canvas__days_counter {
     position: absolute;
     left: 50%;
-    bottom: max(56px, calc(env(safe-area-inset-bottom) + var(--app-height) * 0.105));
+    bottom: 50px;
     z-index: 2;
     width: min(calc(var(--app-width) * 0.42), 180px);
     transform: translateX(-50%);
