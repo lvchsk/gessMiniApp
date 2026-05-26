@@ -22,10 +22,21 @@ interface Props {
 }
 
 const MOSCOW_TIME_ZONE = 'Europe/Moscow';
-const KEPKA_MENU_START_DAY = Date.UTC(2026, 4, 5) / 86_400_000;
-const KEPKA_MENU_COUNT = 10;
+const MOSCOW_UTC_OFFSET_MS = 3 * 60 * 60 * 1000;
+const GOST_MENU_START_DAY = Date.UTC(2026, 4, 5) / 86_400_000;
+const GOST_MENU_COUNT = 9;
 const MUSIC_ON_ICON_SRC = '/assets/music_on.webp?v=2';
 const MUSIC_OFF_ICON_SRC = '/assets/music_off.webp?v=2';
+
+type CafePopup =
+  | {
+      kind: 'text';
+      title: string;
+    }
+  | {
+      kind: 'kepka';
+      index: number;
+    };
 
 function getMoscowDayNumber(date = new Date()): number {
   const parts = new Intl.DateTimeFormat('en-US', {
@@ -42,11 +53,26 @@ function getMoscowDayNumber(date = new Date()): number {
   return Date.UTC(year, month - 1, day) / 86_400_000;
 }
 
-function getDailyKepkaMenuName(): string {
-  const daysSinceStart = getMoscowDayNumber() - KEPKA_MENU_START_DAY;
-  const index = ((daysSinceStart % KEPKA_MENU_COUNT) + KEPKA_MENU_COUNT) % KEPKA_MENU_COUNT;
+function getDailyGostMenuIndex(date = new Date()): number {
+  const daysSinceStart = getMoscowDayNumber(date) - GOST_MENU_START_DAY;
+  const index = ((daysSinceStart % GOST_MENU_COUNT) + GOST_MENU_COUNT) % GOST_MENU_COUNT;
 
-  return `kepka_menu_${index}`;
+  return index + 1;
+}
+
+function getNextMoscowMidnightDelay(date = new Date()): number {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: MOSCOW_TIME_ZONE,
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  }).formatToParts(date);
+  const year = Number(parts.find((part) => part.type === 'year')?.value);
+  const month = Number(parts.find((part) => part.type === 'month')?.value);
+  const day = Number(parts.find((part) => part.type === 'day')?.value);
+  const nextMoscowMidnightUtcMs = Date.UTC(year, month - 1, day + 1) - MOSCOW_UTC_OFFSET_MS;
+
+  return Math.max(1000, nextMoscowMidnightUtcMs - date.getTime());
 }
 
 function stopAllGameMusic(): void {
@@ -60,9 +86,34 @@ export default function CafeMenu({
   onPlay,
   onRunnerPlay,
 }: Props) {
-  const [popupTitle, setPopupTitle] = useState<string | null>(null);
+  const [popup, setPopup] = useState<CafePopup | null>(null);
+  const [dailyGostIndex, setDailyGostIndex] = useState(getDailyGostMenuIndex);
   const [isMusicEnabled, setIsMusicEnabledState] = useState(isGameMusicEnabled);
   const [isGuideOpen, setIsGuideOpen] = useState(() => !isCafeGuideCompleted());
+  const dailyGostAsset = `/assets/gost_menu_${dailyGostIndex}.svg`;
+  const popupKepkaIndex = popup?.kind === 'kepka' ? popup.index : dailyGostIndex;
+  const popupKepkaAsset = `/assets/kepka_menu_${popupKepkaIndex}.svg`;
+  const popupKepkaSpriteAsset = `/assets/kepka_menu_${popupKepkaIndex}_sprite.svg`;
+  const popupKepkaText = popupKepkaIndex === 1 ? 'stenosis' : `kepka_menu_${popupKepkaIndex}`;
+
+  useEffect(() => {
+    let timeoutId: number | undefined;
+
+    const scheduleNextUpdate = () => {
+      timeoutId = window.setTimeout(() => {
+        setDailyGostIndex(getDailyGostMenuIndex());
+        scheduleNextUpdate();
+      }, getNextMoscowMidnightDelay());
+    };
+
+    scheduleNextUpdate();
+
+    return () => {
+      if (typeof timeoutId === 'number') {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -124,7 +175,7 @@ export default function CafeMenu({
 
   const handleGuideReplay = () => {
     resetCafeGuideCompletion();
-    setPopupTitle(null);
+    setPopup(null);
     setIsGuideOpen(true);
   };
 
@@ -172,24 +223,40 @@ export default function CafeMenu({
         className='cafe_menu__hitbox cafe_menu__hitbox--listik'
         type='button'
         aria-label='Открыть listik_meshok'
-        onClick={() => setPopupTitle('listik_meshok')}
+        onClick={() => setPopup({ kind: 'text', title: 'listik_meshok' })}
       />
       <button
-        className='cafe_menu__hitbox cafe_menu__hitbox--kepka'
+        className='cafe_menu__guest_button cafe_menu__hitbox--kepka'
         type='button'
-        aria-label='Открыть ежедневное меню кепки'
-        onClick={() => setPopupTitle(getDailyKepkaMenuName())}
-      />
+        aria-label={`Открыть меню ${dailyGostIndex}`}
+        onClick={() => setPopup({ kind: 'kepka', index: dailyGostIndex })}
+      >
+        <img className='cafe_menu__guest_image' src={dailyGostAsset} alt='' />
+      </button>
 
-      {popupTitle ? (
+      {popup?.kind === 'text' ? (
         <button
           className='cafe_menu__popup'
           type='button'
           aria-label='Закрыть поп-ап'
-          onClick={() => setPopupTitle(null)}
+          onClick={() => setPopup(null)}
         >
-          <span className='cafe_menu__popup_title'>{popupTitle}</span>
+          <span className='cafe_menu__popup_title'>{popup.title}</span>
           <span className='cafe_menu__popup_hint'>тапни, чтобы закрыть</span>
+        </button>
+      ) : null}
+      {popup?.kind === 'kepka' ? (
+        <button
+          className='cafe_menu__popup cafe_menu__popup--kepka'
+          type='button'
+          aria-label='Закрыть меню кепки'
+          onClick={() => setPopup(null)}
+        >
+          <span className='cafe_menu__kepka_window'>
+            <img className='cafe_menu__kepka_background' src={popupKepkaAsset} alt='' />
+            <span className='cafe_menu__kepka_text'>{popupKepkaText}</span>
+          </span>
+          <img className='cafe_menu__kepka_sprite' src={popupKepkaSpriteAsset} alt='' />
         </button>
       ) : null}
 

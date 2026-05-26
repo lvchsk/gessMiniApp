@@ -30,6 +30,33 @@
     outline-offset: 3px;
 }
 
+.cafe_menu__guest_button {
+    position: absolute;
+    z-index: 2;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cafe_menu__guest_button:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+.cafe_menu__guest_button:focus-visible {
+    outline: 3px solid rgba(255, 249, 225, 0.86);
+    outline-offset: 3px;
+}
+
+.cafe_menu__guest_image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
 .cafe_menu__guide_button {
     position: absolute;
     left: max(16px, calc(env(safe-area-inset-left) + var(--app-width) * 0.025));
@@ -165,4 +192,61 @@
     color: rgba(255, 248, 236, 0.72);
     font-size: 13px;
     font-weight: 700;
+}
+
+.cafe_menu__popup--kepka {
+    background: rgba(13, 9, 8, 0.78);
+}
+
+.cafe_menu__kepka_window {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: min(calc(var(--app-width) * 0.84), 360px);
+    aspect-ratio: 4 / 5;
+    pointer-events: none;
+}
+
+.cafe_menu__kepka_background,
+.cafe_menu__kepka_sprite {
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cafe_menu__kepka_background {
+    width: 100%;
+    height: 100%;
+}
+
+.cafe_menu__kepka_sprite {
+    position: absolute;
+    left: 50%;
+    top: 48%;
+    z-index: 2;
+    width: min(calc(var(--app-width) * 0.52), 230px);
+    max-height: min(calc(var(--app-height) * 0.42), 360px);
+    transform: translate(-50%, -50%);
+}
+
+.cafe_menu__kepka_text {
+    position: absolute;
+    left: 50%;
+    bottom: 7%;
+    z-index: 3;
+    display: block;
+    width: 84%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    color: #fff8ec;
+    font-size: clamp(13px, calc(var(--app-vw) * 3.6), 18px);
+    font-weight: 900;
+    line-height: var(--ui-pixel-line);
+    text-align: center;
+    text-overflow: clip;
+    text-shadow:
+        0 3px 0 rgba(30, 15, 9, 0.52),
+        0 8px 18px rgba(0, 0, 0, 0.34);
+    white-space: nowrap;
 }

@@ -9,8 +9,9 @@
         max(16px, env(safe-area-inset-left));
     box-sizing: border-box;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: max(122px, calc(env(safe-area-inset-top) + var(--app-height) * 0.168));
 }
 
 .game_canvas__mount {
@@ -41,5 +42,6 @@
             max(12px, env(safe-area-inset-right))
             max(14px, env(safe-area-inset-bottom))
             max(12px, env(safe-area-inset-left));
+        padding-top: max(116px, calc(env(safe-area-inset-top) + var(--app-height) * 0.158));
     }
 }

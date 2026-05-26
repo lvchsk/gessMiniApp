@@ -33,8 +33,12 @@ const PLAYER_HITBOX_HEIGHT = 76;
 const PLAYER_HITBOX_WIDTH = 30;
 const PLAYER_HITBOX_OFFSET_X = 17;
 const PLAYER_HITBOX_OFFSET_Y = 12;
+const PLAYER_VISUAL_OFFSET_Y = 10;
 const FLOOR_TOP = PLAYER_BASELINE_Y - PLAYER_DISPLAY_HEIGHT / 2 + PLAYER_HITBOX_OFFSET_Y + PLAYER_HITBOX_HEIGHT;
 const FLOOR_HEIGHT = 18;
+const ROAD_TEXTURE_WIDTH = 320;
+const ROAD_TEXTURE_HEIGHT = 150;
+const ROAD_VISIBLE_HEIGHT = RUNNER_HEIGHT - (FLOOR_TOP - 16);
 const RESTART_EVENT = 'runner:restart';
 const LANDING_RESET_DELAY_MS = 120;
 const SPAWN_X = RUNNER_WIDTH + 160;
@@ -220,17 +224,30 @@ export default class RunnerScene extends Phaser.Scene {
 
     if (!this.textures.exists('runner-road')) {
       graphics.fillStyle(0x312c2c, 1);
-      graphics.fillRect(0, 0, 320, 92);
+      graphics.fillRect(0, 0, ROAD_TEXTURE_WIDTH, ROAD_TEXTURE_HEIGHT);
       graphics.fillStyle(0x4a4140, 1);
-      graphics.fillRect(0, 0, 320, 10);
+      graphics.fillRect(0, 0, ROAD_TEXTURE_WIDTH, 10);
       graphics.fillStyle(0x1e1c1c, 1);
-      graphics.fillRect(0, 72, 320, 20);
+      graphics.fillRect(0, 72, ROAD_TEXTURE_WIDTH, 20);
+      graphics.fillStyle(0x262222, 1);
+      graphics.fillRect(0, 92, ROAD_TEXTURE_WIDTH, ROAD_TEXTURE_HEIGHT - 92);
+      graphics.fillStyle(0x3a3332, 1);
+      graphics.fillRect(0, 92, ROAD_TEXTURE_WIDTH, 7);
+      graphics.fillStyle(0x181616, 1);
+      for (let x = 0; x < ROAD_TEXTURE_WIDTH; x += 42) {
+        graphics.fillRect(x, 100, 6, ROAD_TEXTURE_HEIGHT - 100);
+      }
+      graphics.fillStyle(0x4a4240, 0.52);
+      for (let x = -18; x < ROAD_TEXTURE_WIDTH; x += 48) {
+        graphics.fillRect(x, 116, 34, 4);
+        graphics.fillRect(x + 20, 136, 34, 4);
+      }
       graphics.fillStyle(0x514746, 0.55);
-      for (let x = 0; x < 320; x += 46) {
+      for (let x = 0; x < ROAD_TEXTURE_WIDTH; x += 46) {
         graphics.fillRect(x, 16, 24, 4);
         graphics.fillRect(x + 18, 42, 32, 4);
       }
-      graphics.generateTexture('runner-road', 320, 92);
+      graphics.generateTexture('runner-road', ROAD_TEXTURE_WIDTH, ROAD_TEXTURE_HEIGHT);
     }
 
     graphics.destroy();
@@ -250,7 +267,13 @@ export default class RunnerScene extends Phaser.Scene {
     this.background.setTileScale(RUNNER_HEIGHT / 724);
     this.background.tilePositionY = 0;
 
-    this.road = this.add.tileSprite(RUNNER_WIDTH / 2, FLOOR_TOP + 30, RUNNER_WIDTH, 92, 'runner-road');
+    this.road = this.add.tileSprite(
+      RUNNER_WIDTH / 2,
+      FLOOR_TOP - 16 + ROAD_VISIBLE_HEIGHT / 2,
+      RUNNER_WIDTH,
+      ROAD_VISIBLE_HEIGHT,
+      'runner-road',
+    );
     this.road.setDepth(4);
     this.floor = this.add.rectangle(
       RUNNER_WIDTH / 2,
@@ -268,13 +291,17 @@ export default class RunnerScene extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.player.setGravityY(GRAVITY_Y * 0.08);
     this.player.setDisplaySize(PLAYER_DISPLAY_WIDTH, PLAYER_DISPLAY_HEIGHT);
+    this.player.setOrigin(
+      0.5,
+      0.5 + PLAYER_VISUAL_OFFSET_Y / PLAYER_DISPLAY_HEIGHT,
+    );
     this.player.setSize(
       PLAYER_HITBOX_WIDTH / this.player.scaleX,
       PLAYER_HITBOX_HEIGHT / this.player.scaleY,
     );
     this.player.setOffset(
       PLAYER_HITBOX_OFFSET_X / this.player.scaleX,
-      PLAYER_HITBOX_OFFSET_Y / this.player.scaleY,
+      (PLAYER_HITBOX_OFFSET_Y + PLAYER_VISUAL_OFFSET_Y) / this.player.scaleY,
     );
     this.player.setDepth(10);
     this.player.setMaxVelocity(0, 1400);

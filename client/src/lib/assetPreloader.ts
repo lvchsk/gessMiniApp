@@ -28,6 +28,18 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/runner_hero.webp' },
   { kind: 'image', path: '/assets/shagi_preload.png' },
   ...CAFE_GUIDE_STEPS.map((step) => ({ kind: 'image' as const, path: step.asset })),
+  ...Array.from({ length: 9 }, (_, index) => ({
+    kind: 'image' as const,
+    path: `/assets/gost_menu_${index + 1}.svg`,
+  })),
+  ...Array.from({ length: 9 }, (_, index) => ({
+    kind: 'image' as const,
+    path: `/assets/kepka_menu_${index + 1}.svg`,
+  })),
+  ...Array.from({ length: 9 }, (_, index) => ({
+    kind: 'image' as const,
+    path: `/assets/kepka_menu_${index + 1}_sprite.svg`,
+  })),
   { kind: 'image', path: '/assets/gem0.webp' },
   { kind: 'image', path: '/assets/gem1.webp' },
   { kind: 'image', path: '/assets/gem2.webp' },
