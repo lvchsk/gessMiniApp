@@ -226,7 +226,7 @@ export default function CafeMenu({
         onClick={() => setPopup({ kind: 'text', title: 'listik_meshok' })}
       />
       <button
-        className='cafe_menu__guest_button cafe_menu__hitbox--kepka'
+        className='cafe_menu__guest_button cafe_menu__hitbox--kepka cafe_menu__guest_button--visual_hidden'
         type='button'
         aria-label={`Открыть меню ${dailyGostIndex}`}
         onClick={() => setPopup({ kind: 'kepka', index: dailyGostIndex })}

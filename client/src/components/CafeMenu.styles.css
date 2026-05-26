@@ -76,6 +76,7 @@
     text-transform: uppercase;
     box-shadow: none;
     -webkit-tap-highlight-color: transparent;
+    opacity: 0;
 }
 
 .cafe_menu__guide_button:active {
@@ -89,7 +90,7 @@
 
 .cafe_menu__music_toggle {
     position: absolute;
-    top: 17.2%;
+    top: 21.2%;
     right: 5.4%;
     z-index: 3;
     width: clamp(64px, calc(var(--app-width) * 0.19), 86px);
@@ -100,6 +101,10 @@
     cursor: pointer;
     transition: opacity 160ms ease, transform 160ms ease;
     -webkit-tap-highlight-color: transparent;
+}
+
+.cafe_menu__guest_button--visual_hidden {
+    opacity: 0;
 }
 
 .cafe_menu__music_toggle--off {
