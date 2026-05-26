@@ -1,28 +1,30 @@
 .game_canvas {
+    --match3-bg-rendered-height: max(calc(var(--app-width) * 2.165725), var(--app-height));
+    --match3-board-width: max(calc(var(--app-width) * 0.794727), calc(var(--app-height) * 0.366957));
+    --match3-board-top: calc(
+        (var(--app-height) - var(--match3-bg-rendered-height)) / 2 +
+        max(calc(var(--app-width) * 0.47081), calc(var(--app-height) * 0.217391))
+    );
+
     position: relative;
     width: 100%;
     min-height: var(--app-height);
     height: var(--app-height);
-    padding:
-        max(16px, env(safe-area-inset-top))
-        max(16px, env(safe-area-inset-right))
-        max(18px, env(safe-area-inset-bottom))
-        max(16px, env(safe-area-inset-left));
     box-sizing: border-box;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: max(122px, calc(env(safe-area-inset-top) + var(--app-height) * 0.168));
+    overflow: hidden;
 }
 
 .game_canvas__mount {
-    width: min(100%, 342px);
+    position: absolute;
+    left: 50%;
+    top: var(--match3-board-top);
+    width: var(--match3-board-width);
     aspect-ratio: 342 / 566;
     height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    transform: translateX(-50%);
     overflow: hidden;
 }
 
@@ -39,7 +41,7 @@
 .game_canvas__days_counter {
     position: absolute;
     left: 50%;
-    bottom: 50px;
+    bottom: 36px;
     z-index: 2;
     width: min(calc(var(--app-width) * 0.42), 180px);
     transform: translateX(-50%);
@@ -55,13 +57,3 @@
     pointer-events: none;
 }
 
-@media (max-width: 640px), (hover: hover) and (pointer: fine) and (min-width: 768px) {
-    .game_canvas {
-        padding:
-            max(12px, env(safe-area-inset-top))
-            max(12px, env(safe-area-inset-right))
-            max(14px, env(safe-area-inset-bottom))
-            max(12px, env(safe-area-inset-left));
-        padding-top: max(116px, calc(env(safe-area-inset-top) + var(--app-height) * 0.158));
-    }
-}
