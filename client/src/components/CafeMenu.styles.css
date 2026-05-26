@@ -90,7 +90,7 @@
 
 .cafe_menu__music_toggle {
     position: absolute;
-    top: 21.2%;
+    top: 23.2%;
     right: 5.4%;
     z-index: 3;
     width: clamp(64px, calc(var(--app-width) * 0.19), 86px);
