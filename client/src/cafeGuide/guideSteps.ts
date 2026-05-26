@@ -20,13 +20,13 @@ export const CAFE_GUIDE_STEPS: readonly CafeGuideStep[] = [
   },
   {
     id: 'denis-caps',
-    asset: '/assets/denis_3.webp',
+    asset: '/assets/denis_4.webp',
     body: 'Тут этих кепок куча!\n\nНе смог выбрать одну.\n\nТрижды подумаю, как она из рук пропадает...\n\nВозможно, нужно ждать физических отправлений.',
     answers: ['Понял', 'Буду ждать'],
   },
   {
     id: 'denis-date',
-    asset: '/assets/denis_4.webp',
+    asset: '/assets/denis_3.webp',
     body: 'Хочешь узнать долгожданную дату отправлений, надоел календарик?',
     answers: ['Хочу', 'Надоел'],
   },
