@@ -231,14 +231,13 @@ export default function CafeMenu({
         aria-label='Открыть listik_meshok'
         onClick={() => setPopup({ kind: 'listik' })}
       />
+      <img className='cafe_menu__guest_overlay' src={dailyGostAsset} alt='' />
       <button
-        className='cafe_menu__guest_button cafe_menu__hitbox--kepka cafe_menu__guest_button--visual_hidden'
+        className='cafe_menu__guest_button cafe_menu__hitbox--kepka'
         type='button'
         aria-label={`Открыть меню ${dailyGostIndex}`}
         onClick={() => setPopup({ kind: 'kepka', index: dailyGostIndex })}
-      >
-        <img className='cafe_menu__guest_image' src={dailyGostAsset} alt='' />
-      </button>
+      />
 
       {popup?.kind === 'text' ? (
         <button
