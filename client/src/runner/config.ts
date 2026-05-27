@@ -14,6 +14,6 @@ export const COYOTE_TIME_MS = 110;
 export const JUMP_BUFFER_MS = 140;
 export const SCORE_PER_SECOND = 12;
 export const SCORE_PER_OBSTACLE = 8;
-export const RUNNER_SHIPMENT_SCORE_THRESHOLD = 500;
+export const RUNNER_SHIPMENT_SCORE_THRESHOLD = 3500;
 export const RUNNER_END_EVENT = 'runner:end';
 export const RUNNER_TAP_EVENT = 'runner:tap';

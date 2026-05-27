@@ -25,6 +25,20 @@ const RUNNER_HERO_TEXTURE_KEY = 'runner-hero';
 const RUNNER_HERO_ASSET_PATH = '/assets/runner_hero.webp';
 const RUNNER_BACKGROUND_TEXTURE_KEY = 'runner-background';
 const RUNNER_BACKGROUND_ASSET_PATH = '/assets/runner_background.webp';
+const LOW_OBSTACLE_ASSETS = [
+  { key: 'runner-obstacle-low-shredder', path: '/assets/low_shredder.png' },
+  { key: 'runner-obstacle-low-terraria', path: '/assets/low_terraria.png' },
+  { key: 'runner-obstacle-low-zombie', path: '/assets/low_zombie.png' },
+] as const;
+const HIGH_OBSTACLE_ASSETS = [
+  { key: 'runner-obstacle-high-robocop', path: '/assets/high_robocop.png' },
+  { key: 'runner-obstacle-high-sans', path: '/assets/high_sans.png' },
+  { key: 'runner-obstacle-high-svidetel', path: '/assets/high_svidetel.png' },
+] as const;
+const OBSTACLE_ASSETS_BY_KIND = {
+  single: LOW_OBSTACLE_ASSETS,
+  double: HIGH_OBSTACLE_ASSETS,
+} as const;
 const PLAYER_ORIGINAL_DISPLAY_HEIGHT = 92;
 const PLAYER_DISPLAY_WIDTH = 91;
 const PLAYER_DISPLAY_HEIGHT = 138;
@@ -74,6 +88,7 @@ export default class RunnerScene extends Phaser.Scene {
   private nextPatternIndex = 0;
   private lastSpawnTailX = Number.NEGATIVE_INFINITY;
   private lastSpawnKind: RunnerSpawnSpec['kind'] | null = null;
+  private lastObstacleTextureKey: string | null = null;
   private runTimeMs = 0;
 
   constructor(callbacks: RunnerCallbacks) {
@@ -84,6 +99,7 @@ export default class RunnerScene extends Phaser.Scene {
   preload(): void {
     this.addPreloadedHeroTexture();
     this.addPreloadedBackgroundTexture();
+    this.addObstacleTextures();
     this.createTextures();
   }
 
@@ -117,6 +133,22 @@ export default class RunnerScene extends Phaser.Scene {
     }
   }
 
+  private addObstacleTextures(): void {
+    [...LOW_OBSTACLE_ASSETS, ...HIGH_OBSTACLE_ASSETS].forEach((asset) => {
+      if (this.textures.exists(asset.key)) {
+        return;
+      }
+
+      const preloadedObstacle = getPreloadedImage(asset.path);
+      if (preloadedObstacle) {
+        this.textures.addImage(asset.key, preloadedObstacle);
+        return;
+      }
+
+      this.load.image(asset.key, asset.path);
+    });
+  }
+
   create(): void {
     this.physics.world.gravity.y = GRAVITY_Y;
     this.physics.world.setBounds(0, 0, RUNNER_WIDTH, RUNNER_HEIGHT);
@@ -131,6 +163,7 @@ export default class RunnerScene extends Phaser.Scene {
     this.nextPatternIndex = 0;
     this.lastSpawnTailX = Number.NEGATIVE_INFINITY;
     this.lastSpawnKind = null;
+    this.lastObstacleTextureKey = null;
     this.runTimeMs = 0;
     this.callbacks.onScoreChange?.(0);
     this.callbacks.onGameOverChange?.(false);
@@ -591,9 +624,9 @@ export default class RunnerScene extends Phaser.Scene {
 
   private spawnObstacle(spec: RunnerSpawnSpec, spawnX: number): RunnerObstacle {
     const isDouble = spec.kind === 'double';
-    const width = isDouble ? Phaser.Math.Between(72, 88) : Phaser.Math.Between(50, 66);
-    const height = isDouble ? Phaser.Math.Between(278, 316) : Phaser.Math.Between(118, 156);
-    const texture = isDouble ? 'runner-obstacle-double' : 'runner-obstacle-single';
+    const width = isDouble ? Phaser.Math.Between(112, 136) : Phaser.Math.Between(76, 92);
+    const height = isDouble ? Phaser.Math.Between(278, 316) : Phaser.Math.Between(130, 156);
+    const texture = this.getNextObstacleTexture(spec.kind);
     const obstacle = this.obstacles.create(
       spawnX + width,
       FLOOR_TOP - height / 2,
@@ -612,6 +645,16 @@ export default class RunnerScene extends Phaser.Scene {
     obstacle.setVelocityX(-this.scrollSpeed);
     obstacle.setDepth(9);
     return obstacle;
+  }
+
+  private getNextObstacleTexture(kind: RunnerSpawnSpec['kind']): string {
+    const obstacleAssets = OBSTACLE_ASSETS_BY_KIND[kind];
+    const availableAssets = obstacleAssets.filter((asset) => asset.key !== this.lastObstacleTextureKey);
+    const candidates = availableAssets.length > 0 ? availableAssets : obstacleAssets;
+    const texture = candidates[Phaser.Math.Between(0, candidates.length - 1)].key;
+
+    this.lastObstacleTextureKey = texture;
+    return texture;
   }
 
   private cleanupObstacles(): void {
