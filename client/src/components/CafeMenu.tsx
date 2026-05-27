@@ -23,7 +23,7 @@ interface Props {
 
 const MOSCOW_TIME_ZONE = 'Europe/Moscow';
 const MOSCOW_UTC_OFFSET_MS = 3 * 60 * 60 * 1000;
-const GOST_MENU_START_DAY = Date.UTC(2026, 4, 5) / 86_400_000;
+const GOST_MENU_START_DAY = Date.UTC(2026, 4, 21) / 86_400_000;
 const GOST_MENU_COUNT = 9;
 const MUSIC_ON_ICON_SRC = '/assets/music_on.webp?v=2';
 const MUSIC_OFF_ICON_SRC = '/assets/music_off.webp?v=2';
@@ -32,6 +32,9 @@ type CafePopup =
   | {
       kind: 'text';
       title: string;
+    }
+  | {
+      kind: 'listik';
     }
   | {
       kind: 'kepka';
@@ -58,6 +61,10 @@ function getDailyGostMenuIndex(date = new Date()): number {
   const index = ((daysSinceStart % GOST_MENU_COUNT) + GOST_MENU_COUNT) % GOST_MENU_COUNT;
 
   return index + 1;
+}
+
+function getGostMenuAsset(index: number): string {
+  return `/assets/gost_menu_${index}.${index === 7 ? 'webp' : 'svg'}`;
 }
 
 function getNextMoscowMidnightDelay(date = new Date()): number {
@@ -90,7 +97,7 @@ export default function CafeMenu({
   const [dailyGostIndex, setDailyGostIndex] = useState(getDailyGostMenuIndex);
   const [isMusicEnabled, setIsMusicEnabledState] = useState(isGameMusicEnabled);
   const [isGuideOpen, setIsGuideOpen] = useState(() => !isCafeGuideCompleted());
-  const dailyGostAsset = `/assets/gost_menu_${dailyGostIndex}.svg`;
+  const dailyGostAsset = getGostMenuAsset(dailyGostIndex);
   const popupKepkaIndex = popup?.kind === 'kepka' ? popup.index : dailyGostIndex;
   const popupKepkaAsset = '/assets/kepka_menu_1.webp';
   const popupKepkaSpriteAsset = `/assets/kepka_menu_${popupKepkaIndex}_sprite.webp`;
@@ -222,7 +229,7 @@ export default function CafeMenu({
         className='cafe_menu__hitbox cafe_menu__hitbox--listik'
         type='button'
         aria-label='Открыть listik_meshok'
-        onClick={() => setPopup({ kind: 'text', title: 'listik_meshok' })}
+        onClick={() => setPopup({ kind: 'listik' })}
       />
       <button
         className='cafe_menu__guest_button cafe_menu__hitbox--kepka cafe_menu__guest_button--visual_hidden'
@@ -242,6 +249,16 @@ export default function CafeMenu({
         >
           <span className='cafe_menu__popup_title'>{popup.title}</span>
           <span className='cafe_menu__popup_hint'>тапни, чтобы закрыть</span>
+        </button>
+      ) : null}
+      {popup?.kind === 'listik' ? (
+        <button
+          className='cafe_menu__popup cafe_menu__popup--listik'
+          type='button'
+          aria-label='Закрыть listik_meshok'
+          onClick={() => setPopup(null)}
+        >
+          <img className='cafe_menu__listik_image' src='/assets/listik_meshok.webp' alt='' />
         </button>
       ) : null}
       {popup?.kind === 'kepka' ? (

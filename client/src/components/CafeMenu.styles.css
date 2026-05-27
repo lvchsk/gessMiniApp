@@ -199,6 +199,22 @@
     font-weight: 700;
 }
 
+.cafe_menu__popup--listik {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.cafe_menu__listik_image {
+    display: block;
+    width: min(calc(var(--app-width) * 0.86), 420px);
+    max-height: min(calc(var(--app-height) * 0.72), 620px);
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+}
+
 .cafe_menu__popup--kepka {
     display: block;
     overflow: hidden;

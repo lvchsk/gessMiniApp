@@ -34,10 +34,11 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/high_sans.png' },
   { kind: 'image', path: '/assets/high_svidetel.png' },
   { kind: 'image', path: '/assets/shagi_preload.png' },
+  { kind: 'image', path: '/assets/listik_meshok.webp' },
   ...CAFE_GUIDE_STEPS.map((step) => ({ kind: 'image' as const, path: step.asset })),
   ...Array.from({ length: 9 }, (_, index) => ({
     kind: 'image' as const,
-    path: `/assets/gost_menu_${index + 1}.svg`,
+    path: `/assets/gost_menu_${index + 1}.${index + 1 === 7 ? 'webp' : 'svg'}`,
   })),
   { kind: 'image', path: '/assets/kepka_menu_1.webp' },
   ...Array.from({ length: 9 }, (_, index) => ({
