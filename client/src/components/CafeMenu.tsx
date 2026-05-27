@@ -21,10 +21,8 @@ interface Props {
   onRunnerPlay: () => void;
 }
 
-const MOSCOW_TIME_ZONE = 'Europe/Moscow';
-const MOSCOW_UTC_OFFSET_MS = 3 * 60 * 60 * 1000;
-const GOST_MENU_START_DAY = Date.UTC(2026, 4, 21) / 86_400_000;
-const GOST_MENU_COUNT = 9;
+const TEST_GOST_MENU_SEQUENCE = [1, 2, 5, 6, 7] as const;
+const GOST_MENU_UPDATE_INTERVAL_MS = 60_000;
 const MUSIC_ON_ICON_SRC = '/assets/music_on.webp?v=2';
 const MUSIC_OFF_ICON_SRC = '/assets/music_off.webp?v=2';
 
@@ -41,45 +39,20 @@ type CafePopup =
       index: number;
     };
 
-function getMoscowDayNumber(date = new Date()): number {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: MOSCOW_TIME_ZONE,
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  }).formatToParts(date);
-
-  const year = Number(parts.find((part) => part.type === 'year')?.value);
-  const month = Number(parts.find((part) => part.type === 'month')?.value);
-  const day = Number(parts.find((part) => part.type === 'day')?.value);
-
-  return Date.UTC(year, month - 1, day) / 86_400_000;
-}
-
 function getDailyGostMenuIndex(date = new Date()): number {
-  const daysSinceStart = getMoscowDayNumber(date) - GOST_MENU_START_DAY;
-  const index = ((daysSinceStart % GOST_MENU_COUNT) + GOST_MENU_COUNT) % GOST_MENU_COUNT;
+  const index = Math.floor(date.getTime() / GOST_MENU_UPDATE_INTERVAL_MS) % TEST_GOST_MENU_SEQUENCE.length;
 
-  return index + 1;
+  return TEST_GOST_MENU_SEQUENCE[index];
 }
 
 function getGostMenuAsset(index: number): string {
-  return `/assets/gost_menu_${index}.${index === 7 ? 'webp' : 'svg'}`;
+  return `/assets/gost_menu_${index}.webp`;
 }
 
-function getNextMoscowMidnightDelay(date = new Date()): number {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: MOSCOW_TIME_ZONE,
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  }).formatToParts(date);
-  const year = Number(parts.find((part) => part.type === 'year')?.value);
-  const month = Number(parts.find((part) => part.type === 'month')?.value);
-  const day = Number(parts.find((part) => part.type === 'day')?.value);
-  const nextMoscowMidnightUtcMs = Date.UTC(year, month - 1, day + 1) - MOSCOW_UTC_OFFSET_MS;
+function getNextGostMenuUpdateDelay(date = new Date()): number {
+  const elapsedInMinute = date.getTime() % GOST_MENU_UPDATE_INTERVAL_MS;
 
-  return Math.max(1000, nextMoscowMidnightUtcMs - date.getTime());
+  return Math.max(250, GOST_MENU_UPDATE_INTERVAL_MS - elapsedInMinute);
 }
 
 function stopAllGameMusic(): void {
@@ -109,7 +82,7 @@ export default function CafeMenu({
       timeoutId = window.setTimeout(() => {
         setDailyGostIndex(getDailyGostMenuIndex());
         scheduleNextUpdate();
-      }, getNextMoscowMidnightDelay());
+      }, getNextGostMenuUpdateDelay());
     };
 
     scheduleNextUpdate();
