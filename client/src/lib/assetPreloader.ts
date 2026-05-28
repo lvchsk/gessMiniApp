@@ -36,7 +36,7 @@ const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'image', path: '/assets/shagi_preload.png' },
   { kind: 'image', path: '/assets/listik_meshok.webp' },
   ...CAFE_GUIDE_STEPS.map((step) => ({ kind: 'image' as const, path: step.asset })),
-  ...[1, 2, 5, 6, 7].map((index) => ({
+  ...[1, 2, 5, 3, 7].map((index) => ({
     kind: 'image' as const,
     path: `/assets/gost_menu_${index}.webp`,
   })),

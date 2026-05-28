@@ -21,7 +21,7 @@ interface Props {
   onRunnerPlay: () => void;
 }
 
-const TEST_GOST_MENU_SEQUENCE = [1, 2, 5, 6, 7] as const;
+const TEST_GOST_MENU_SEQUENCE = [1, 2, 5, 3, 7] as const;
 const GOST_MENU_UPDATE_INTERVAL_MS = 60_000;
 const MUSIC_ON_ICON_SRC = '/assets/music_on.webp?v=2';
 const MUSIC_OFF_ICON_SRC = '/assets/music_off.webp?v=2';
