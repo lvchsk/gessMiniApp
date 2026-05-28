@@ -21,8 +21,9 @@ interface Props {
   onRunnerPlay: () => void;
 }
 
-const TEST_GOST_MENU_SEQUENCE = [1, 2, 5, 3, 7] as const;
-const GOST_MENU_UPDATE_INTERVAL_MS = 60_000;
+const GOST_MENU_SEQUENCE = [1, 2, 5, 3, 7] as const;
+const GOST_MENU_START_AT_MS = Date.UTC(2026, 4, 28, 11);
+const GOST_MENU_UPDATE_INTERVAL_MS = 4 * 60 * 60 * 1000;
 const MUSIC_ON_ICON_SRC = '/assets/music_on.webp?v=2';
 const MUSIC_OFF_ICON_SRC = '/assets/music_off.webp?v=2';
 
@@ -40,9 +41,10 @@ type CafePopup =
     };
 
 function getDailyGostMenuIndex(date = new Date()): number {
-  const index = Math.floor(date.getTime() / GOST_MENU_UPDATE_INTERVAL_MS) % TEST_GOST_MENU_SEQUENCE.length;
+  const elapsedSlots = Math.floor((date.getTime() - GOST_MENU_START_AT_MS) / GOST_MENU_UPDATE_INTERVAL_MS);
+  const index = ((elapsedSlots % GOST_MENU_SEQUENCE.length) + GOST_MENU_SEQUENCE.length) % GOST_MENU_SEQUENCE.length;
 
-  return TEST_GOST_MENU_SEQUENCE[index];
+  return GOST_MENU_SEQUENCE[index];
 }
 
 function getGostMenuAsset(index: number): string {
@@ -50,9 +52,11 @@ function getGostMenuAsset(index: number): string {
 }
 
 function getNextGostMenuUpdateDelay(date = new Date()): number {
-  const elapsedInMinute = date.getTime() % GOST_MENU_UPDATE_INTERVAL_MS;
+  const elapsedSinceStart = date.getTime() - GOST_MENU_START_AT_MS;
+  const elapsedInSlot = ((elapsedSinceStart % GOST_MENU_UPDATE_INTERVAL_MS) + GOST_MENU_UPDATE_INTERVAL_MS) %
+    GOST_MENU_UPDATE_INTERVAL_MS;
 
-  return Math.max(250, GOST_MENU_UPDATE_INTERVAL_MS - elapsedInMinute);
+  return Math.max(250, GOST_MENU_UPDATE_INTERVAL_MS - elapsedInSlot);
 }
 
 function stopAllGameMusic(): void {
