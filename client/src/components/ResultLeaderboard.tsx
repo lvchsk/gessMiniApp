@@ -1,10 +1,7 @@
 import {
-  useRef,
   useState,
   type KeyboardEvent,
   type MouseEvent,
-  type PointerEvent,
-  type WheelEvent,
 } from 'react';
 import { createPortal } from 'react-dom';
 import type { BackendGame, LeaderboardItem } from '../lib/backend';
@@ -54,11 +51,6 @@ export default function ResultLeaderboard({
   topButtonLabel = 'топ-100',
 }: Props) {
   const [isTopOpen, setIsTopOpen] = useState(false);
-  const modalListRef = useRef<HTMLDivElement | null>(null);
-  const swipeStateRef = useRef({
-    isDragging: false,
-    lastY: 0,
-  });
   const leaders = items.slice(0, 100);
   const topThree = leaders.slice(0, 3);
   const rootClassName = ['result_leaderboard', className].filter(Boolean).join(' ');
@@ -75,48 +67,6 @@ export default function ResultLeaderboard({
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     event.stopPropagation();
-  };
-
-  const handleSwiperPointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-
-    swipeStateRef.current = {
-      isDragging: true,
-      lastY: event.clientY,
-    };
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const handleSwiperPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (!swipeStateRef.current.isDragging || !modalListRef.current) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    const deltaY = swipeStateRef.current.lastY - event.clientY;
-    modalListRef.current.scrollTop += deltaY;
-    swipeStateRef.current.lastY = event.clientY;
-  };
-
-  const handleSwiperPointerEnd = (event: PointerEvent<HTMLDivElement>) => {
-    event.stopPropagation();
-    swipeStateRef.current.isDragging = false;
-
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-  };
-
-  const handleSwiperWheel = (event: WheelEvent<HTMLDivElement>) => {
-    if (!modalListRef.current) {
-      return;
-    }
-
-    event.preventDefault();
-    event.stopPropagation();
-    modalListRef.current.scrollTop += event.deltaY;
   };
 
   const topModal = isTopOpen ? (
@@ -148,7 +98,7 @@ export default function ResultLeaderboard({
       </div>
 
       <div className='result_leaderboard__modal_body'>
-        <div className='result_leaderboard__modal_list' ref={modalListRef}>
+        <div className='result_leaderboard__modal_list'>
           {isLoading ? (
             <div className='result_leaderboard__modal_empty'>Загрузка...</div>
           ) : leaders.length > 0 ? (
@@ -184,15 +134,6 @@ export default function ResultLeaderboard({
             <div className='result_leaderboard__modal_empty'>Лидеров пока нет</div>
           )}
         </div>
-        <div
-          className='result_leaderboard__modal_swiper'
-          aria-hidden='true'
-          onPointerDown={handleSwiperPointerDown}
-          onPointerMove={handleSwiperPointerMove}
-          onPointerUp={handleSwiperPointerEnd}
-          onPointerCancel={handleSwiperPointerEnd}
-          onWheel={handleSwiperWheel}
-        />
       </div>
     </div>
   ) : null;
