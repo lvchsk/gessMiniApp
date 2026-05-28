@@ -10,6 +10,7 @@ import RunnerUI from './components/RunnerUI';
 import {
   authenticateWithTelegram,
   fetchLeaderboard,
+  startScoreSession,
   submitHighScore,
   type BackendGame,
   type BackendUser,
@@ -19,7 +20,7 @@ import { preloadAppAssets } from './lib/assetPreloader';
 import { RUNNER_SHIPMENT_SCORE_THRESHOLD } from './runner/config';
 
 type AppState = 'menu' | 'cafe' | 'game' | 'runnerPreview' | 'runner';
-type ScoreSyncStatus = 'guest' | 'unchanged' | 'synced';
+type ScoreSyncStatus = 'guest' | 'unchanged' | 'synced' | 'unverified';
 
 interface ScoreSyncResult {
   status: ScoreSyncStatus;
@@ -42,6 +43,10 @@ function getScoreSyncMessage(_game: BackendGame, status: ScoreSyncStatus): strin
 
   if (status === 'guest') {
     return 'Открой приложение внутри Telegram, чтобы результат попадал в лидерборд.';
+  }
+
+  if (status === 'unverified') {
+    return 'Не удалось подтвердить игровую сессию.';
   }
 
   return '';
@@ -98,6 +103,14 @@ export default function App() {
     match: 0,
   });
   const pendingScoresRef = useRef<Record<BackendGame, number | null>>({
+    runner: null,
+    match: null,
+  });
+  const scoreSessionTokensRef = useRef<Record<BackendGame, string | null>>({
+    runner: null,
+    match: null,
+  });
+  const scoreSessionPromisesRef = useRef<Record<BackendGame, Promise<string | null> | null>>({
     runner: null,
     match: null,
   });
@@ -227,6 +240,49 @@ export default function App() {
     }
   }, [refreshLeaderboards, state]);
 
+  useEffect(() => {
+    scoreSessionTokensRef.current = {
+      runner: null,
+      match: null,
+    };
+    scoreSessionPromisesRef.current = {
+      runner: null,
+      match: null,
+    };
+  }, [sessionToken]);
+
+  const beginScoreSession = useCallback(
+    (game: BackendGame) => {
+      scoreSessionTokensRef.current[game] = null;
+
+      if (!sessionToken) {
+        scoreSessionPromisesRef.current[game] = null;
+        return;
+      }
+
+      const sessionPromise = startScoreSession(sessionToken, game)
+        .then((scoreToken) => {
+          if (scoreSessionPromisesRef.current[game] === sessionPromise) {
+            scoreSessionTokensRef.current[game] = scoreToken;
+          }
+
+          return scoreToken;
+        })
+        .catch((error) => {
+          console.error(`Failed to start ${game} score session`, error);
+
+          if (scoreSessionPromisesRef.current[game] === sessionPromise) {
+            scoreSessionTokensRef.current[game] = null;
+          }
+
+          return null;
+        });
+
+      scoreSessionPromisesRef.current[game] = sessionPromise;
+    },
+    [sessionToken],
+  );
+
   const syncHighScore = useCallback(
     async (game: BackendGame, rawScore: number): Promise<ScoreSyncResult> => {
       const nextScore = Math.max(0, Math.floor(rawScore));
@@ -256,9 +312,24 @@ export default function App() {
       pendingScoresRef.current[game] = nextScore;
 
       try {
-        const response = await submitHighScore(sessionToken, game, nextScore);
+        const scoreSessionToken =
+          scoreSessionTokensRef.current[game] ??
+          (scoreSessionPromisesRef.current[game] ? await scoreSessionPromisesRef.current[game] : null);
+
+        if (!scoreSessionToken) {
+          pendingScoresRef.current[game] = null;
+
+          return {
+            status: 'unverified',
+            bestScore: bestScoresRef.current[game],
+          };
+        }
+
+        const response = await submitHighScore(sessionToken, game, nextScore, scoreSessionToken);
 
         pendingScoresRef.current[game] = null;
+        scoreSessionTokensRef.current[game] = null;
+        scoreSessionPromisesRef.current[game] = null;
         bestScoresRef.current[game] = response.bestScore;
         setBackendUser(response.user);
         await refreshLeaderboards();
@@ -310,6 +381,7 @@ export default function App() {
     setMatchResultScore(0);
     setMatchResultMessage(null);
     setMatchResultSyncing(false);
+    beginScoreSession('match');
     setState('game');
   };
 
@@ -324,6 +396,7 @@ export default function App() {
     setRunnerSceneReady(false);
     setRunnerFinalScore(0);
     setRunnerResultMessage(null);
+    beginScoreSession('runner');
     setState('runner');
   };
 

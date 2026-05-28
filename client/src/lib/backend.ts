@@ -21,6 +21,11 @@ export interface ScoreResponse {
   user: BackendUser;
 }
 
+export interface ScoreSessionResponse {
+  game: BackendGame;
+  scoreToken: string;
+}
+
 export interface LeaderboardItem {
   rank: number;
   username: string;
@@ -95,14 +100,24 @@ export async function fetchLeaderboard(game: BackendGame, limit = 100): Promise<
   return response.items;
 }
 
+export async function startScoreSession(token: string, game: BackendGame): Promise<string> {
+  const response = await requestJson<ScoreSessionResponse>(`/api/scores/${game}/session`, {
+    method: 'POST',
+    token,
+  });
+
+  return response.scoreToken;
+}
+
 export async function submitHighScore(
   token: string,
   game: BackendGame,
   score: number,
+  scoreToken: string,
 ): Promise<ScoreResponse> {
   return requestJson<ScoreResponse>(`/api/scores/${game}`, {
     method: 'POST',
     token,
-    body: { score },
+    body: { score, scoreToken },
   });
 }
