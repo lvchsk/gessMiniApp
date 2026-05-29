@@ -70,6 +70,7 @@ export default function RunnerMenuPreview({
               items={items}
               isLoading={isLoading}
               showTopThree={false}
+              topLimit={500}
               topButtonLabel='>ТОП'
             />
           </span>

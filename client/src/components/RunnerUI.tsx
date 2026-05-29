@@ -16,6 +16,7 @@ interface Props {
   resultMessage?: string | null;
   leaderboardItems: LeaderboardItem[];
   isLeaderboardLoading: boolean;
+  onRestart: () => void;
   onExit: () => void;
 }
 
@@ -27,6 +28,7 @@ export default function RunnerUI({
   resultMessage,
   leaderboardItems,
   isLeaderboardLoading,
+  onRestart,
   onExit,
 }: Props) {
   useEffect(() => {
@@ -96,6 +98,7 @@ export default function RunnerUI({
             items={leaderboardItems}
             isLoading={isLeaderboardLoading}
             showTopThree={false}
+            topLimit={500}
           />
         </div>
       ) : isGameOver ? (
@@ -116,7 +119,7 @@ export default function RunnerUI({
             <div className='runner_ui__actions'>
               <button
                 className='runner_ui__restart'
-                onClick={() => window.dispatchEvent(new CustomEvent('runner:restart'))}
+                onClick={onRestart}
               >
                 Играть снова
               </button>
@@ -128,6 +131,7 @@ export default function RunnerUI({
               game='runner'
               items={leaderboardItems}
               isLoading={isLeaderboardLoading}
+              topLimit={500}
             />
           </div>
         </div>

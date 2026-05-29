@@ -13,6 +13,7 @@ interface Props {
   isLoading: boolean;
   showTopThree?: boolean;
   className?: string;
+  topLimit?: number;
   topButtonLabel?: string;
 }
 
@@ -48,12 +49,14 @@ export default function ResultLeaderboard({
   isLoading,
   showTopThree = true,
   className,
-  topButtonLabel = 'топ-100',
+  topLimit = 100,
+  topButtonLabel,
 }: Props) {
   const [isTopOpen, setIsTopOpen] = useState(false);
-  const leaders = items.slice(0, 100);
+  const leaders = items.slice(0, topLimit);
   const topThree = leaders.slice(0, 3);
   const rootClassName = ['result_leaderboard', className].filter(Boolean).join(' ');
+  const resolvedTopButtonLabel = topButtonLabel ?? `топ-${topLimit}`;
 
   const handleOpenTop = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -90,7 +93,7 @@ export default function ResultLeaderboard({
         <button
           className='result_leaderboard__close'
           type='button'
-          aria-label='Закрыть топ-100'
+          aria-label={`Закрыть топ-${topLimit}`}
           onClick={handleCloseTop}
         >
           Закрыть
@@ -182,7 +185,7 @@ export default function ResultLeaderboard({
       ) : null}
 
       <button className='result_leaderboard__top_button' type='button' onClick={handleOpenTop}>
-        {topButtonLabel}
+        {resolvedTopButtonLabel}
       </button>
 
       {topModal ? createPortal(topModal, document.body) : null}

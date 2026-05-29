@@ -33,7 +33,7 @@ export const CAFE_GUIDE_STEPS: readonly CafeGuideStep[] = [
   {
     id: 'denis-runner',
     asset: '/assets/denis_5.webp',
-    body: 'За 3500 ничегошек из игрового автомата расскажу её тебе.\n\nТам как раз везти эти кепки нужно.',
+    body: 'За 1000 ничегошек из игрового автомата расскажу её тебе.\n\nТам как раз везти эти кепки нужно.',
     answers: ['В автомат!'],
   },
   {

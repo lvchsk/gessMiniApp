@@ -35,6 +35,7 @@ const EMPTY_LEADERBOARDS: Record<BackendGame, LeaderboardItem[]> = {
   runner: [],
   match: [],
 };
+const RUNNER_LEADERBOARD_LIMIT = 500;
 
 function getScoreSyncMessage(_game: BackendGame, status: ScoreSyncStatus): string {
   if (status === 'synced') {
@@ -186,7 +187,7 @@ export default function App() {
 
     try {
       const [runner, match] = await Promise.all([
-        fetchLeaderboard('runner'),
+        fetchLeaderboard('runner', RUNNER_LEADERBOARD_LIMIT),
         fetchLeaderboard('match'),
       ]);
 
@@ -205,7 +206,7 @@ export default function App() {
     let cancelled = false;
 
     const bootstrapBackend = async () => {
-      await refreshLeaderboards();
+      void refreshLeaderboards();
 
       const initData = tg?.initData?.trim();
 
@@ -273,6 +274,7 @@ export default function App() {
 
           if (scoreSessionPromisesRef.current[game] === sessionPromise) {
             scoreSessionTokensRef.current[game] = null;
+            scoreSessionPromisesRef.current[game] = null;
           }
 
           return null;
@@ -282,6 +284,31 @@ export default function App() {
     },
     [sessionToken],
   );
+
+  const ensureScoreSession = useCallback(
+    (game: BackendGame) => {
+      if (scoreSessionTokensRef.current[game] || scoreSessionPromisesRef.current[game]) {
+        return;
+      }
+
+      beginScoreSession(game);
+    },
+    [beginScoreSession],
+  );
+
+  useEffect(() => {
+    if (!sessionToken) {
+      return;
+    }
+
+    if (state === 'runner' && !runnerGameOver) {
+      ensureScoreSession('runner');
+    }
+
+    if (state === 'game' && !matchResultOpen) {
+      ensureScoreSession('match');
+    }
+  }, [ensureScoreSession, matchResultOpen, runnerGameOver, sessionToken, state]);
 
   const syncHighScore = useCallback(
     async (game: BackendGame, rawScore: number): Promise<ScoreSyncResult> => {
@@ -404,6 +431,15 @@ export default function App() {
     setRunnerSceneReady(true);
   }, []);
 
+  const handleRunnerRestart = () => {
+    setScore(0);
+    setRunnerGameOver(false);
+    setRunnerFinalScore(0);
+    setRunnerResultMessage(null);
+    beginScoreSession('runner');
+    window.dispatchEvent(new CustomEvent('runner:restart'));
+  };
+
   const handleMatchExitRequest = () => {
     const finalScore = Math.max(0, Math.floor(score));
 
@@ -505,6 +541,7 @@ export default function App() {
             runnerDisplayedFinalScore,
           )}
           isLeaderboardLoading={leaderboardsLoading}
+          onRestart={handleRunnerRestart}
           onExit={handleRunnerExit}
         />
       </div>
