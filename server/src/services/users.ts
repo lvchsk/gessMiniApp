@@ -5,6 +5,7 @@ export type AppUser = HydratedDocument<UserDocument>;
 export type ScoreGame = 'runner' | 'match';
 
 // жопа)
+// popa)
 
 const SCORE_FIELD_BY_GAME = {
   runner: 'scoreRunner',
