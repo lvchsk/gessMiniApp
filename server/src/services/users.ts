@@ -4,6 +4,8 @@ import { UserModel, type UserDocument } from '../models/User.js';
 export type AppUser = HydratedDocument<UserDocument>;
 export type ScoreGame = 'runner' | 'match';
 
+// жопа)
+
 const SCORE_FIELD_BY_GAME = {
   runner: 'scoreRunner',
   match: 'scoreMatch',
