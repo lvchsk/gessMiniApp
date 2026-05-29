@@ -99,6 +99,7 @@ export default function RunnerUI({
             isLoading={isLeaderboardLoading}
             showTopThree={false}
             topLimit={500}
+            topButtonLabel='топ-500'
           />
         </div>
       ) : isGameOver ? (
@@ -132,6 +133,7 @@ export default function RunnerUI({
               items={leaderboardItems}
               isLoading={isLeaderboardLoading}
               topLimit={500}
+              topButtonLabel='топ-500'
             />
           </div>
         </div>

@@ -18,7 +18,8 @@ router.get(
   asyncHandler(async (req, res) => {
     const rawGame = Array.isArray(req.params.game) ? req.params.game[0] : req.params.game;
     const game = parseGame(rawGame);
-    const limit = req.query.limit ? Number(req.query.limit) : 10;
+    const defaultLimit = game === 'runner' ? 500 : 100;
+    const limit = req.query.limit ? Number(req.query.limit) : defaultLimit;
 
     if (!Number.isInteger(limit) || limit <= 0) {
       throw new AppError('limit must be a positive integer', 400);

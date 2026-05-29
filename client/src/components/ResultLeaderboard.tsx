@@ -27,6 +27,11 @@ const TITLE_COIN_BY_GAME: Record<BackendGame, string> = {
   runner: '/assets/nichego_coin.webp',
 };
 
+const DEFAULT_TOP_LIMIT_BY_GAME: Record<BackendGame, number> = {
+  match: 100,
+  runner: 500,
+};
+
 function getDisplayName(username: string): string {
   return Array.from(username).slice(0, 12).join('');
 }
@@ -49,14 +54,15 @@ export default function ResultLeaderboard({
   isLoading,
   showTopThree = true,
   className,
-  topLimit = 100,
+  topLimit,
   topButtonLabel,
 }: Props) {
   const [isTopOpen, setIsTopOpen] = useState(false);
-  const leaders = items.slice(0, topLimit);
+  const resolvedTopLimit = topLimit ?? DEFAULT_TOP_LIMIT_BY_GAME[game];
+  const leaders = items.slice(0, resolvedTopLimit);
   const topThree = leaders.slice(0, 3);
   const rootClassName = ['result_leaderboard', className].filter(Boolean).join(' ');
-  const resolvedTopButtonLabel = topButtonLabel ?? `топ-${topLimit}`;
+  const resolvedTopButtonLabel = topButtonLabel ?? `топ-${resolvedTopLimit}`;
 
   const handleOpenTop = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -93,7 +99,7 @@ export default function ResultLeaderboard({
         <button
           className='result_leaderboard__close'
           type='button'
-          aria-label={`Закрыть топ-${topLimit}`}
+          aria-label={`Закрыть топ-${resolvedTopLimit}`}
           onClick={handleCloseTop}
         >
           Закрыть

@@ -95,8 +95,11 @@ export async function authenticateWithTelegram(initData: string): Promise<AuthRe
   });
 }
 
-export async function fetchLeaderboard(game: BackendGame, limit = 100): Promise<LeaderboardItem[]> {
-  const response = await requestJson<LeaderboardResponse>(`/api/leaderboards/${game}?limit=${limit}`);
+export async function fetchLeaderboard(game: BackendGame, limit?: number): Promise<LeaderboardItem[]> {
+  const requestedLimit = limit ?? (game === 'runner' ? 500 : 100);
+  const response = await requestJson<LeaderboardResponse>(
+    `/api/leaderboards/${game}?limit=${requestedLimit}`,
+  );
   return response.items;
 }
 
