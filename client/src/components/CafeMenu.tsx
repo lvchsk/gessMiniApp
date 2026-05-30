@@ -24,8 +24,8 @@ interface Props {
 // жопа)
 // popa)
 
-const GOST_MENU_SEQUENCE = [1, 2, 5, 3, 7] as const;
-const GOST_MENU_START_AT_MS = Date.UTC(2026, 4, 28, 11);
+const GOST_MENU_SEQUENCE = [9, 1, 2, 5, 3, 7] as const;
+const GOST_MENU_START_AT_MS = Date.UTC(2026, 4, 30, 11, 30);
 const GOST_MENU_UPDATE_INTERVAL_MS = 4 * 60 * 60 * 1000;
 const MUSIC_ON_ICON_SRC = '/assets/music_on.webp?v=2';
 const MUSIC_OFF_ICON_SRC = '/assets/music_off.webp?v=2';
