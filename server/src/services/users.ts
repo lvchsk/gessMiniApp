@@ -6,6 +6,7 @@ export type ScoreGame = 'runner' | 'match';
 
 // жопа)
 // popa)
+// jopa
 
 const SCORE_FIELD_BY_GAME = {
   runner: 'scoreRunner',

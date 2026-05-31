@@ -23,6 +23,7 @@ interface Props {
 
 // жопа)
 // popa)
+// jopa
 
 const GOST_MENU_SEQUENCE = [9, 1, 2, 5, 3, 7] as const;
 const GOST_MENU_START_AT_MS = Date.UTC(2026, 4, 30, 11, 30);
