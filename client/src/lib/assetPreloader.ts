@@ -20,7 +20,7 @@ const PRESS_START_2P_STYLESHEET_URL =
 const ASSETS_TO_PRELOAD: AssetEntry[] = [
   { kind: 'font', path: PRESS_START_2P_STYLESHEET_URL },
   { kind: 'image', path: '/assets/start_menu.jpg' },
-  { kind: 'image', path: '/assets/menu_main.webp' },
+  { kind: 'image', path: '/assets/menu_main2.jpeg' },
   { kind: 'image', path: '/assets/fon_3_in_a_row.jpg' },
   { kind: 'image', path: '/assets/spritesheet_runner.webp' },
   { kind: 'image', path: '/assets/runner_background.webp' },
