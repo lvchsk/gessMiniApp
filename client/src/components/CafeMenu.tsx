@@ -51,10 +51,6 @@ function getDailyGostMenuIndex(date = new Date()): number {
   return GOST_MENU_SEQUENCE[index];
 }
 
-function getGostMenuAsset(index: number): string {
-  return `/assets/gost_menu_${index}.webp`;
-}
-
 function getNextGostMenuUpdateDelay(date = new Date()): number {
   const elapsedSinceStart = date.getTime() - GOST_MENU_START_AT_MS;
   const elapsedInSlot = ((elapsedSinceStart % GOST_MENU_UPDATE_INTERVAL_MS) + GOST_MENU_UPDATE_INTERVAL_MS) %
@@ -78,7 +74,6 @@ export default function CafeMenu({
   const [dailyGostIndex, setDailyGostIndex] = useState(getDailyGostMenuIndex);
   const [isMusicEnabled, setIsMusicEnabledState] = useState(isGameMusicEnabled);
   const [isGuideOpen, setIsGuideOpen] = useState(() => !isCafeGuideCompleted());
-  const dailyGostAsset = getGostMenuAsset(dailyGostIndex);
   const popupKepkaIndex = popup?.kind === 'kepka' ? popup.index : dailyGostIndex;
   const popupKepkaAsset = '/assets/kepka_menu_1.webp';
   const popupKepkaSpriteAsset = `/assets/kepka_menu_${popupKepkaIndex}_sprite.webp`;
@@ -212,7 +207,6 @@ export default function CafeMenu({
         aria-label='Открыть listik_meshok'
         onClick={() => setPopup({ kind: 'listik' })}
       />
-      <img className='cafe_menu__guest_overlay' src={dailyGostAsset} alt='' />
       <button
         className='cafe_menu__guest_button cafe_menu__hitbox--kepka'
         type='button'

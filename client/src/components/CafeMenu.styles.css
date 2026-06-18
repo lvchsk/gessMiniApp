@@ -50,19 +50,6 @@
     outline-offset: 3px;
 }
 
-.cafe_menu__guest_overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    pointer-events: none;
-    user-select: none;
-}
-
 .cafe_menu__guide_button {
     position: absolute;
     left: max(16px, calc(env(safe-area-inset-left) + var(--app-width) * 0.025));
